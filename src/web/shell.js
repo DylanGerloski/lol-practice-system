@@ -21,6 +21,18 @@ const { adSlot, adsScriptTag } = require('./ads.js');
 // policy excludes projects that involve one.
 const { RIOT_DISCLAIMER, TRADEMARK_NOTICE } = site;
 
+// Inline SVG favicon (spec Section 1.5/6 B4): "a mono wordmark glyph, no
+// image file, no new asset pipeline" -- a single accent-blue circle badge
+// with a white "S" monogram. A data: URI can't reference a CSS custom
+// property, so its two colors are copied here literally from tokens.css's
+// --accent/--paper at the one call site that needs them; this is the same,
+// deliberate exception O-5's own FAVICON_DATA_URI takes to the "no hardcoded
+// hex outside tokens.css" rule -- it's a self-contained embedded image
+// asset, not page styling. scripts/build-og-image.js decodes this exact
+// string to reuse the same mark in the 1200x630 og-image, so the favicon and
+// the social-share image can never drift apart.
+const FAVICON_DATA_URI = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%231B54C8'/%3E%3Ctext x='32' y='45' font-family='Arial, Helvetica, sans-serif' font-size='38' font-weight='700' fill='%23FFFFFF' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E";
+
 // tokens.css + screen.css, read once at require time -- this IS the
 // concatenation the build writes to dist/site.css, and it is also inlined
 // directly into every page's <head> (spec Section 1.6: fast static delivery,
@@ -75,6 +87,7 @@ function documentHead(opts) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">${canonicalLink}${robotsMeta}${og}
+  <link rel="icon" href="${FAVICON_DATA_URI}">
   <style>${SITE_CSS}</style>${jsonLdBlock}${adsScriptBlock}
 </head>`;
 }
@@ -157,6 +170,7 @@ function render404Page() {
 
 module.exports = {
   SITE_CSS,
+  FAVICON_DATA_URI,
   RIOT_DISCLAIMER,
   TRADEMARK_NOTICE,
   NAV_LINKS,

@@ -1,0 +1,106 @@
+'use strict';
+
+// Tests for src/web/pagesB3.js (home/tracker/downloads/about/privacy) --
+// spec Section 6 B3. build.js's build() runs first in each test that needs
+// dist/print/ populated, mirroring how `npm run build:all` actually orders
+// things (print pack, then site) -- these tests don't assume any other test
+// file has already populated dist/print/ for them.
+
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('fs');
+const path = require('path');
+
+const { build: buildPrint } = require('../src/build.js');
+const { build: buildSite, DIST, WEB_PAGES } = require('../src/web/buildSite.js');
+const pagesB3 = require('../src/web/pagesB3.js');
+const site = require('../src/site.js');
+
+const B3_PAGES = ['index.html', 'tracker.html', 'downloads.html', 'about.html', 'privacy.html'];
+
+function readDist(name) {
+  return fs.readFileSync(path.join(DIST, name), 'utf8');
+}
+
+test('downloads.html links every actual file currently in dist/print/ (excluding print.css)', () => {
+  buildPrint();
+  buildSite();
+  const content = readDist('downloads.html');
+  const printFiles = fs.readdirSync(pagesB3.PRINT_DIR).filter(f => f !== 'print.css');
+  assert.ok(printFiles.length > 0, 'expected the print pack to have produced at least one file');
+  for (const f of printFiles) {
+    assert.ok(content.includes(`print/${f}`), `downloads.html is missing a link to ${f}`);
+  }
+});
+
+test('downloads.html shows a file type and a size for every download row', () => {
+  buildPrint();
+  buildSite();
+  const content = readDist('downloads.html');
+  // Every group row's meta span should contain at least one "(<n> KB)" size.
+  const meta = content.match(/<span class="download-meta">[\s\S]*?<\/span>/g) || [];
+  assert.ok(meta.length > 0, 'expected at least one download-meta span');
+  assert.ok(meta.some(m => /KB\)/.test(m)), 'expected at least one size like "(12 KB)" in a download-meta span');
+});
+
+test('every file in dist/print/ has a working (non-noindex-broken) type label -- html/pdf/xlsx all recognized', () => {
+  buildPrint();
+  const files = pagesB3.readPrintFiles();
+  assert.ok(files.length > 0);
+  for (const f of files) {
+    assert.notEqual(f.typeLabel, '', `${f.file} got an empty type label`);
+    assert.ok(/^\d+(\.\d+)? KB$/.test(f.sizeLabel), `${f.file} got a malformed size label: ${f.sizeLabel}`);
+  }
+});
+
+test('home card grid links to every major section, including tracker and downloads', () => {
+  buildSite();
+  const content = readDist('index.html');
+  for (const file of ['program.html', 'baseline.html', 'focus-menu.html', 'drills.html', 'warmup.html',
+    'champion-pool.html', 'vod-review.html', 'tilt-rules.html', 'tracker.html', 'downloads.html', 'faq.html']) {
+    assert.ok(content.includes(site.url(file)), `home page is missing a link to ${file}`);
+  }
+  const cardCount = (content.match(/class="link-card"/g) || []).length;
+  assert.equal(cardCount, 11, 'expected exactly 11 section cards on the home page');
+});
+
+test('about.html carries the full Riot disclaimer and trademark notice in its own body (not just the shared footer)', () => {
+  buildSite();
+  const content = readDist('about.html');
+  const bodyOnly = content.split('</header>')[1] || content;
+  assert.ok(bodyOnly.includes(site.RIOT_DISCLAIMER), 'about.html body should restate the Riot disclaimer');
+  assert.ok(bodyOnly.includes(site.TRADEMARK_NOTICE), 'about.html body should restate the trademark notice');
+  assert.ok(!content.includes('Meridian Path Media'), 'about.html must never use the business-entity contact identity');
+});
+
+test('about.html marks its missing personal contact email as an explicit TODO, not an invented address', () => {
+  buildSite();
+  const content = readDist('about.html');
+  assert.ok(/TODO/.test(content), 'expected an explicit TODO marker for the not-yet-supplied contact email');
+  assert.ok(!/@\w+\.\w+/.test(content.replace(/optout\.aboutads\.info|adssettings\.google\.com/g, '')),
+    'about.html should not contain an invented email address');
+});
+
+test('privacy.html discloses both third-party ad cookies (AdSense) and analytics (GoatCounter)', () => {
+  buildSite();
+  const content = readDist('privacy.html');
+  assert.match(content, /AdSense/);
+  assert.match(content, /GoatCounter/);
+  assert.match(content, /cookies/i);
+});
+
+test('tracker.html and downloads.html each carry exactly one primary action button', () => {
+  buildPrint();
+  buildSite();
+  for (const page of ['tracker.html', 'downloads.html', 'about.html', 'privacy.html', 'index.html']) {
+    const content = readDist(page);
+    const primaryCount = (content.match(/class="btn-primary"/g) || []).length;
+    assert.equal(primaryCount, 1, `${page} should carry exactly one primary action, found ${primaryCount}`);
+  }
+});
+
+test('all five B3 pages are present in WEB_PAGES and build without throwing', () => {
+  for (const name of B3_PAGES) {
+    assert.ok(WEB_PAGES.some(([n]) => n === name), `${name} missing from WEB_PAGES`);
+  }
+});

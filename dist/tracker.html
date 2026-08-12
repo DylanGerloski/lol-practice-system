@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CS per Minute by Rank | Solo Queue Practice</title>
-  <meta name="description" content="How to build an honest Day 0 baseline from your last ten games, and CS-per-minute benchmarks by rank to compare it against.">
-  <link rel="canonical" href="https://dylangerloski.github.io/solo-queue-practice/baseline.html">
-  <meta property="og:title" content="CS per Minute by Rank | Solo Queue Practice">
-  <meta property="og:description" content="How to build an honest Day 0 baseline from your last ten games, and CS-per-minute benchmarks by rank to compare it against.">
-  <meta property="og:url" content="https://dylangerloski.github.io/solo-queue-practice/baseline.html">
-  <meta property="og:type" content="article">
+  <title>Free LoL Practice Tracker Spreadsheet | Solo Queue Practice</title>
+  <meta name="description" content="A free spreadsheet for logging League of Legends solo queue games: a baseline sheet, a per-game log, and automatic ten-game averages.">
+  <link rel="canonical" href="https://dylangerloski.github.io/solo-queue-practice/tracker.html">
+  <meta property="og:title" content="Free LoL Practice Tracker Spreadsheet | Solo Queue Practice">
+  <meta property="og:description" content="A free spreadsheet for logging League of Legends solo queue games: a baseline sheet, a per-game log, and automatic ten-game averages.">
+  <meta property="og:url" content="https://dylangerloski.github.io/solo-queue-practice/tracker.html">
+  <meta property="og:type" content="website">
   <meta property="og:site_name" content="Solo Queue Practice">
   <meta property="og:image" content="https://dylangerloski.github.io/solo-queue-practice/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -444,48 +444,33 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
       <a href="/solo-queue-practice/focus-menu.html">Focus menu</a>
       <a href="/solo-queue-practice/drills.html">Drills</a>
       <a href="/solo-queue-practice/warmup.html">Warmup</a>
-      <a href="/solo-queue-practice/tracker.html">Tracker</a>
+      <a href="/solo-queue-practice/tracker.html" aria-current="page">Tracker</a>
       <a href="/solo-queue-practice/downloads.html">Downloads</a>
       <a href="/solo-queue-practice/faq.html">FAQ</a>
     </nav>
   </header>
   <main id="main" class="page-shell">
-<h1>Day 0: Baseline and Benchmarks</h1>
-    <p class="lead">Before picking a focus, read your own last ten games and compare your numbers against real rank benchmarks. Everything after this point measures you against yourself, not against this table.</p>
+<h1>The Tracker Workbook</h1>
+    <p class="lead">One spreadsheet, one row per game. It is the only tool in this program that does math for you on purpose -- everything else here is a habit you build by hand.</p>
+    <a class="btn-primary" href="/solo-queue-practice/print/05-tracker-workbook.xlsx">Download the tracker workbook (.xlsx)</a>
+    <p class="download-meta">Excel Workbook &middot; 50 KB</p>
+    <h2>What is inside</h2>
+    <ul>
+      <li><strong>Baseline sheet.</strong> Enter your last ten games once, before you start. The sheet computes your ten-game averages for you, so you cannot accidentally round in your own favor.</li>
+      <li><strong>Game log.</strong> One row per game after that: CS at the ten-minute mark, final CS/min, deaths, vision score, result, and which focus you were holding that game.</li>
+      <li><strong>Running averages.</strong> Every formula is already built in -- you read numbers, you never calculate them.</li>
+    </ul>
+    <h2>How to use it</h2>
+    <ol>
+      <li>Fill in your Day 0 baseline from your last ten games -- see the <a href="/solo-queue-practice/baseline.html">baseline page</a> for how to read the result.</li>
+      <li>Pick one focus from the <a href="/solo-queue-practice/focus-menu.html">focus menu</a> and log every game while you hold it, including the ones you lose badly.</li>
+      <li>At the end of each ten-game block, read the averages and decide whether to graduate to a new focus or repeat.</li>
+    </ol>
+    <p>It opens in Excel, LibreOffice Calc, or Google Sheets (File &gt; Import). No macros, no add-ins, no account, and nothing you enter leaves your computer -- it is a local file, not a connected app.</p>
+    <p>Want the rest of the program on paper too? The <a href="/solo-queue-practice/downloads.html">full printable pack</a> has the guide, the drills, and two blank study sheets alongside this workbook.</p>
     <aside class="ad-slot" aria-label="Advertisement">
   <span class="ad-slot-label">Advertisement</span>
 </aside>
-    <section class="guide-section">
-      <h2>Day 0: Baseline</h2>
-      <p>Before picking a focus, you need an honest read on where you actually are. This section is a manual data-collection step, done once, before Block 1 begins.</p>
-<ul><li>Open your in-client match history and find your last 10 completed games (ranked if you have them, normal if not -- consistency of game mode matters less than having 10 real games).</li><li>For each game, open the post-game stats screen and read off: the game number/date, your CS at the 10-minute mark (use the in-game timeline/graphs tab if your client has one; otherwise estimate from your final CS and average CS/min), your final CS/min, your total deaths, your vision score, and the result (win/loss).</li><li>Enter all 10 rows into the Baseline sheet in the Tracker Workbook. Do not skip a bad game -- a badly-performing game is data, not something to leave out.</li><li>Let the sheet compute your 10-game averages. Do not average them by hand; the workbook does this so you cannot accidentally round in your own favor.</li></ul>
-<p>This step takes about twenty minutes the first time, using nothing but your own client and the included spreadsheet. There is no automated shortcut in this package on purpose -- reading your own games manually is the first rep of the self-review habit Section A8 builds on later, and it means this program depends on no external tool, account, or API staying available.</p>
-<p class="callout">If you are brand new and do not have 10 completed games yet, play 10 normal games as close to how you&#39;d play ranked as possible, then use those as your baseline. The number matters less than having an honest starting point to measure change against.</p>
-<p>Resist the urge to &quot;clean up&quot; the numbers by excluding a game where you got outplayed badly, or one where a teammate went AFK. Ten real games, including the ugly ones, is what makes the baseline honest. A baseline built only from your best games will make every future block look like regression, which is discouraging and wrong.</p>
-    </section>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
-    <section class="guide-section">
-      <h2>Read Your Baseline</h2>
-      <p>With your 10-game averages computed, compare your CS/min against the Benchmarks table below for your current rank. This is the only comparison in this program that uses a number you did not personally measure over time -- everything after this point compares you against your own baseline, not against a community table.</p>
-<table class="data-table"><thead><tr><th scope="col">Rank</th><th class="num" scope="col">CS/min</th></tr></thead><tbody><tr><td>Iron-Bronze</td><td class="num">3-5</td></tr><tr><td>Silver</td><td class="num">4-6</td></tr><tr><td>Gold</td><td class="num">5-7</td></tr><tr><td>Platinum</td><td class="num">6-8</td></tr><tr><td>Emerald</td><td class="num">7-8.5</td></tr><tr><td>Diamond</td><td class="num">7-9</td></tr><tr><td>Master+</td><td class="num">8-10</td></tr></tbody></table><p class="slot-label">Community coaching-figures, not Riot-published data: boostingmarket.com, leagueoflegendstools.com, wecoach.gg CS/min-by-rank tables, cross-checked against the 90-CS-by-10:00 and stricter 107-CS-by-10:00 practice-tool targets. Treat every number here as a calibration target, not a guarantee.</p>
-  <p class="slot-label">Junglers run roughly one CS/min lower than the lane figures below because jungle-clear pathing and ganking time trade directly against farm. Subtract 1 from both ends of your rank&#39;s band before comparing your own jungle CS/min.</p>
-<p>If your CS/min sits below your rank&#39;s band, farming consistency (the Farming Consistency focus card) is a strong first pick -- it is the single most common gap and it compounds into gold for every other decision you make. If your CS/min is inside or above your band, look instead at your deaths-per-game and vision score against your own sense of what a clean game looks like for you, and consider Death Cause Control or Vision Cadence instead.</p>
-<p>The rule for picking your first focus: choose the ONE measurable thing that is furthest from where it should be, not the one that feels most embarrassing or the one your teammates complain about most. A quiet weakness that is dragging every game down is worth more to fix first than a loud one that only shows up occasionally.</p>
-<p class="callout">Pick exactly one focus for Block 1. If two things look equally broken, pick the one that is easiest to measure cleanly -- an ambiguous focus produces an ambiguous review, and an ambiguous review is where this whole method quietly falls apart.</p>
-    </section>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
-    <nav class="cross-links" aria-label="Related pages">
-      <ul>
-      <li><a href="/solo-queue-practice/drills.html#cs-10min">Run the 10-Minute CS Drill</a></li>
-      <li><a href="/solo-queue-practice/focus-menu.html">See the full Focus Menu</a></li>
-      <li><a href="/solo-queue-practice/tracker.html">Get the free tracker spreadsheet</a></li>
-      <li><a href="/solo-queue-practice/downloads.html">Download the full printable pack</a></li>
-      </ul>
-    </nav>
   </main>
   <footer class="site-footer">
     <p>Solo Queue Practice System was created under Riot Games’ “Legal Jibber Jabber” policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.</p>

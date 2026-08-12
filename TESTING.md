@@ -231,6 +231,36 @@ page doesn't exist" message and a link back to the home page.
 or HTML instead of a styled page; the navigation bar overlapping itself or causing the page
 to scroll sideways at a narrow window width; a missing footer or missing disclaimer text.
 
+## 8b. The guide-derived content pages
+
+`npm run build:site` now also writes 7 more pages into `dist/`: `program.html`,
+`baseline.html`, `focus-menu.html`, `champion-pool.html`, `vod-review.html`,
+`tilt-rules.html`, `faq.html`. These are the actual program content (the same words as the
+print pack's Program Guide), reflowed for the web with a short intro, three "ADVERTISEMENT"
+placeholder boxes per page (same reserved-space placeholder as step 8's home page), and
+links to related pages at the bottom.
+
+Open `dist/program.html`, `dist/baseline.html`, and `dist/focus-menu.html` (double-click
+each) and check:
+- Each page has exactly one big page title, followed by normal-sized section headings --
+  never a heading that looks smaller appearing above a heading that looks bigger.
+- `focus-menu.html` shows 12 cards in a grid (2 or 3 columns on a wide window, 1 column on a
+  narrow one). Each card's "The Drill That Trains It" line is a clickable blue link -- it
+  won't resolve to a real page yet (`drills.html` doesn't exist until a later build step),
+  which is expected at this stage.
+- `baseline.html` shows a benchmarks table (rank names next to a CS/min range).
+- Every page ends with a short list of links ("Get the free tracker spreadsheet",
+  "Download the full printable pack", etc.) -- these also don't resolve yet for the same
+  reason.
+
+**What broken looks like:** a page with two `<h1>`-sized titles, cards that render as plain
+unstyled text instead of bordered boxes, or a card grid that overlaps itself or causes
+horizontal scrolling on a narrow window.
+
+Some navigation links (Drills, Warmup, Tracker, Downloads) and a few cross-links still don't
+resolve to real pages yet -- those come from other, separate build steps. That's expected,
+not a bug, until every page in the site is built.
+
 You can also build everything (the print pack, its PDFs, and the web site) in one step:
 
 ```
