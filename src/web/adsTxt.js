@@ -6,14 +6,14 @@
 // regardless of adConfig.enabled, since ads.txt is inert with no ad units
 // live and becomes correct automatically the moment they are.
 //
-// KNOWN LIMITATION (spec Section 5.2 OPEN RISKS): ads.txt is only read by
-// crawlers from a domain root (https://<domain>/ads.txt). On a GitHub Pages
-// project site (dylangerloski.github.io/solo-queue-practice/) this file
-// exists at /solo-queue-practice/ads.txt and goes effectively unread. It
-// ships anyway -- it costs nothing, and becomes correct the moment a custom
-// domain lands. See the human action items in the spec for the two ways to
-// fix this (a custom domain, or a root dylangerloski.github.io user-pages
-// repo serving a combined ads.txt).
+// RESOLVED (was spec Section 5.2 OPEN RISKS): ads.txt is only read by
+// crawlers from a domain root (https://<domain>/ads.txt), which the
+// un-CNAME'd project-site URL (dylangerloski.github.io/solo-queue-practice/
+// ads.txt) could never satisfy. Now that the site is served from the custom
+// domain lol-practice-system.com (src/site.js SITE_ORIGIN, CNAME written by
+// src/web/buildSite.js), this file lands at the real domain root
+// (https://lol-practice-system.com/ads.txt) and is crawler-readable, once
+// DNS has propagated to GitHub Pages.
 
 const { client } = require('./adConfig.js');
 

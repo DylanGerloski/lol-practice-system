@@ -11,16 +11,22 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 
-const { build, DIST, WEB_PAGES } = require('../src/web/buildSite.js');
+const { build, DIST, WEB_PAGES, KNOWN_MANUAL_OUTPUTS } = require('../src/web/buildSite.js');
 const site = require('../src/site.js');
 
-test('build() writes site.css plus one file per WEB_PAGES entry into dist/', () => {
+test('build() writes site.css, one file per WEB_PAGES entry, the B4 SEO infra files (sitemap.xml/robots.txt/ads.txt), and the GitHub Pages CNAME file into dist/', () => {
   const written = build();
-  const expected = ['site.css', ...WEB_PAGES.map(([name]) => name)];
+  const expected = ['site.css', ...WEB_PAGES.map(([name]) => name), 'sitemap.xml', 'robots.txt', 'ads.txt', 'CNAME'];
   assert.deepEqual(written.slice().sort(), expected.slice().sort());
   for (const f of expected) {
     assert.ok(fs.existsSync(path.join(DIST, f)), `expected ${f} to exist in dist/`);
   }
+});
+
+test('CNAME contains exactly the custom domain hostname derived from site.SITE_ORIGIN', () => {
+  build();
+  const content = fs.readFileSync(path.join(DIST, 'CNAME'), 'utf8');
+  assert.equal(content, `${new URL(site.SITE_ORIGIN).hostname}\n`);
 });
 
 test('every built HTML page has html lang="en", a <title>, and a meta description', () => {
@@ -76,5 +82,30 @@ test('no hardcoded hex color appears in any built HTML page outside a var() refe
     for (const hex of hexCodesInPage) {
       assert.ok(tokenHexCodes.has(hex), `${f} contains a hex color (${hex}) not defined in tokens.css`);
     }
+  }
+});
+
+test('build() removes a stale top-level file left in dist/ by an earlier partial build', () => {
+  build();
+  const staleFile = path.join(DIST, 'this-page-no-longer-exists.html');
+  fs.writeFileSync(staleFile, '<html>orphaned by a renamed/removed WEB_PAGES entry</html>', 'utf8');
+  assert.ok(fs.existsSync(staleFile), 'setup: stale file should exist before rebuilding');
+  build();
+  assert.ok(!fs.existsSync(staleFile), 'a stale top-level file should be pruned by the next build()');
+});
+
+test('build() never touches dist/print/ (owned and cleaned by src/build.js) or a KNOWN_MANUAL_OUTPUTS file', () => {
+  build();
+  const printDir = path.join(DIST, 'print');
+  fs.mkdirSync(printDir, { recursive: true });
+  const printMarker = path.join(printDir, 'marker-from-src-build-js.html');
+  fs.writeFileSync(printMarker, '<html>owned by src/build.js, not this build</html>', 'utf8');
+  for (const manual of KNOWN_MANUAL_OUTPUTS) {
+    fs.writeFileSync(path.join(DIST, manual), 'placeholder for a hand-run output', 'utf8');
+  }
+  build();
+  assert.ok(fs.existsSync(printMarker), 'build() must never delete anything under dist/print/');
+  for (const manual of KNOWN_MANUAL_OUTPUTS) {
+    assert.ok(fs.existsSync(path.join(DIST, manual)), `build() must not delete the known manual output ${manual}`);
   }
 });

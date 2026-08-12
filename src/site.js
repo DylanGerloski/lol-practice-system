@@ -6,14 +6,19 @@
  * not a grep-and-replace across every page template. Pure data, no I/O --
  * safe to require from anywhere.
  *
- * BASE_PATH is a GitHub Pages project-site path (not a user/org root site),
- * since this repo publishes as its own repo, not dylangerloski.github.io
- * itself. Every internal link and every canonical URL must go through url()
- * or absoluteUrl() -- no hardcoded paths anywhere else in the web build.
+ * BASE_PATH is '/' because this site is served from a custom domain
+ * (lol-practice-system.com) via the CNAME file src/web/buildSite.js writes
+ * into dist/. GitHub Pages always serves a CNAME'd custom domain from its
+ * root, regardless of whether the underlying repo is a project site or a
+ * user/org root site -- there is no repo-name path segment once a custom
+ * domain is attached, unlike the un-CNAME'd dylangerloski.github.io/
+ * solo-queue-practice/ URL this site shipped under before the domain moved.
+ * Every internal link and every canonical URL must go through url() or
+ * absoluteUrl() -- no hardcoded paths anywhere else in the web build.
  */
 
-const SITE_ORIGIN = 'https://dylangerloski.github.io';
-const BASE_PATH = '/solo-queue-practice/';
+const SITE_ORIGIN = 'https://lol-practice-system.com';
+const BASE_PATH = '/';
 const SITE_NAME = 'Solo Queue Practice';
 const SITE_TAGLINE = 'A free 30-day deliberate-practice program for League of Legends solo queue: one focus per game, measured, reviewed, and logged.';
 const BUILD_DATE = new Date().toISOString().slice(0, 10);

@@ -59,9 +59,12 @@ function renderSitemapXml(files) {
 
 /**
  * @returns {string} robots.txt content: allow-all, pointing at the
- *   generated sitemap.xml. NOTE: on a github.io project-site path this file
- *   is host-authoritative for /solo-queue-practice/robots.txt only --
- *   GitHub controls the domain-root robots.txt at dylangerloski.github.io/.
+ *   generated sitemap.xml. Served from the custom domain's root
+ *   (https://lol-practice-system.com/robots.txt, per src/site.js's
+ *   SITE_ORIGIN/BASE_PATH and the CNAME src/web/buildSite.js writes) --
+ *   previously this file was only host-authoritative for the
+ *   /solo-queue-practice/ sub-path, with GitHub controlling the real
+ *   domain-root robots.txt at dylangerloski.github.io/.
  */
 function robotsTxtContent() {
   return `User-agent: *\nAllow: /\nSitemap: ${absoluteUrl('sitemap.xml')}\n`;
