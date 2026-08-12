@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node src/build.js",
     "build:site": "node src/web/buildSite.js",
-    "build:all": "npm run build && npm run pdf && npm run build:site",
+    "build:zip": "node src/buildZip.js",
+    "build:all": "npm run build && npm run pdf && npm run build:zip && npm run build:site",
     "test": "node --test --test-concurrency=1 test/*.test.js",
     "pdf": "node src/pdf.js",
     "visual-qa": "node scripts/visual-qa.js"
