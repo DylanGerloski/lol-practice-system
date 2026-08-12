@@ -1,0 +1,20 @@
+{
+  "provenance": "Community coaching-figures, not Riot-published data: boostingmarket.com, leagueoflegendstools.com, wecoach.gg CS/min-by-rank tables, cross-checked against the 90-CS-by-10:00 and stricter 107-CS-by-10:00 practice-tool targets. Treat every number here as a calibration target, not a guarantee.",
+  "junglerAdjustment": {
+    "amount": -1,
+    "note": "Junglers run roughly one CS/min lower than the lane figures below because jungle-clear pathing and ganking time trade directly against farm. Subtract 1 from both ends of your rank's band before comparing your own jungle CS/min."
+  },
+  "ranks": [
+    { "order": 1, "rank": "Iron-Bronze", "csPerMinMin": 3, "csPerMinMax": 5 },
+    { "order": 2, "rank": "Silver", "csPerMinMin": 4, "csPerMinMax": 6 },
+    { "order": 3, "rank": "Gold", "csPerMinMin": 5, "csPerMinMax": 7 },
+    { "order": 4, "rank": "Platinum", "csPerMinMin": 6, "csPerMinMax": 8 },
+    { "order": 5, "rank": "Emerald", "csPerMinMin": 7, "csPerMinMax": 8.5 },
+    { "order": 6, "rank": "Diamond", "csPerMinMin": 7, "csPerMinMax": 9 },
+    { "order": 7, "rank": "Master+", "csPerMinMin": 8, "csPerMinMax": 10 }
+  ],
+  "csAt10Targets": {
+    "baseline": { "value": 90, "label": "90 CS by 10:00, no items", "note": "Common practice-tool default target." },
+    "stretch": { "value": 107, "label": "107 CS by 10:00", "note": "The stricter practice-tool challenge target -- roughly perfect last-hitting with minimal jungle-camp cheats." }
+  }
+}

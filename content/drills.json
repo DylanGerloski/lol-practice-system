@@ -1,0 +1,206 @@
+[
+  {
+    "id": "cs-10min",
+    "name": "10-Minute CS Drill",
+    "skillTrained": "Last-hitting under time pressure",
+    "where": "Practice Tool",
+    "duration": "10 minutes",
+    "procedure": [
+      "Open Practice Tool, solo lane, no bots.",
+      "Farm for exactly 10 minutes, no items purchased.",
+      "Do not recall. Do not use abilities to secure kills you could last-hit normally.",
+      "At the 10:00 mark, screenshot or note your CS count.",
+      "Log the number in the tracker's Game Log or Baseline sheet."
+    ],
+    "passBar": "90 CS at 10:00, no items",
+    "progression": "Once you clear 90 three sessions in a row, move your pass bar to 107 CS at 10:00.",
+    "commonFailure": "Chasing kills across the wave instead of taking the closest safe minion -- costs more CS than it gains."
+  },
+  {
+    "id": "last-hit-under-tower",
+    "name": "Last-Hit Under Tower",
+    "skillTrained": "Farming through tower damage without losing HP",
+    "where": "Practice Tool",
+    "duration": "8 minutes",
+    "procedure": [
+      "Practice Tool, set enemy tower to attack your lane.",
+      "Push a wave under the enemy tower.",
+      "Last-hit every minion under tower aggro for 3 full waves.",
+      "Track how many times tower damage (not the minion) hits you.",
+      "Repeat until you can clear a full wave under tower with zero tower hits taken."
+    ],
+    "passBar": "3 consecutive waves, zero tower hits taken",
+    "progression": "Add a second minion wave overlap (double wave under tower) once the single-wave version is consistent.",
+    "commonFailure": "Standing still to line up a last-hit instead of stutter-stepping in and out of tower range."
+  },
+  {
+    "id": "wave-freeze-setup",
+    "name": "Wave-Freeze Setup",
+    "skillTrained": "Manipulating wave state to hold a lane advantage",
+    "where": "Practice Tool, 2 bots on lane opponent's side",
+    "duration": "10 minutes",
+    "procedure": [
+      "Set up a lane with your minions slightly ahead of the enemy's, near your side of the map.",
+      "Only last-hit -- do not push the wave forward with extra damage.",
+      "Hold the freeze point (roughly the midpoint between your tower and the enemy's) for 3 full waves.",
+      "Note where the freeze breaks and why (a big minion died on the wrong side, you took a harass trade poorly, etc).",
+      "Reset and repeat until you can hold a freeze for a full 3-wave cycle without it collapsing."
+    ],
+    "passBar": "Hold a freeze for 3 consecutive waves without it pushing or crashing",
+    "progression": "Practice freezing while also last-hitting perfectly -- most players can do one or the other at first, not both.",
+    "commonFailure": "Auto-attacking a minion out of habit and accidentally pushing the wave past the freeze point."
+  },
+  {
+    "id": "recall-timing",
+    "name": "Recall Timing",
+    "skillTrained": "Minimizing gold and XP lost to travel time",
+    "where": "Normal or Ranked (self-review, not live drill)",
+    "duration": "One full game, reviewed after",
+    "procedure": [
+      "Play a normal game as you normally would.",
+      "After the game, open the match history timeline and note every recall.",
+      "For each recall, ask: was I recalling with a full wave pushed, or did I leave minions on the table?",
+      "Count how many recalls happened with under 4 minions' worth of gold banked.",
+      "Log the count; the goal is to trend that number toward zero over successive games."
+    ],
+    "passBar": "No more than 1 low-value recall per game",
+    "progression": "Once consistent, add: recall only after resetting a wave (last-hitting the current wave before leaving).",
+    "commonFailure": "Recalling out of boredom or safety rather than because the wave state actually calls for it."
+  },
+  {
+    "id": "ward-clock",
+    "name": "Ward Clock",
+    "skillTrained": "Maintaining vision on a fixed cadence instead of reactively",
+    "where": "Normal or Ranked",
+    "duration": "One full game",
+    "procedure": [
+      "Before the game, decide a ward-refresh cadence (e.g. every time trinket is off cooldown).",
+      "Set a mental or physical timer cue for that cadence.",
+      "Every time the cadence hits, place a ward -- even if nothing feels urgent.",
+      "After the game, check your vision score against your rank's typical range.",
+      "Note any stretch of the game where you went more than 90 seconds with no active ward nearby."
+    ],
+    "passBar": "No gap over 90 seconds with zero active wards in your area of the map",
+    "progression": "Add control wards on a second, slower cadence once the trinket cadence is automatic.",
+    "commonFailure": "Only warding when already worried about a gank -- by then it's too late to prevent it."
+  },
+  {
+    "id": "death-audit",
+    "name": "Death Audit",
+    "skillTrained": "Turning every death into a specific, correctable cause",
+    "where": "Normal or Ranked (self-review, not live drill)",
+    "duration": "5 minutes per game, after playing",
+    "procedure": [
+      "After each death this game, write one sentence: what specifically caused it.",
+      "Avoid vague causes like \"got caught out\" -- name the specific decision (missed vision, overextended past minion wave, ignored a missing enemy on the minimap).",
+      "Group deaths by cause across a full session (10 games).",
+      "Identify your single most repeated death cause.",
+      "Pick one fix for that specific cause and hold it for your next 10-game block."
+    ],
+    "passBar": "One written cause per death, no games skipped",
+    "progression": "Once causes stop repeating, audit deaths for allies too -- learning to read a teammate's death pattern helps positioning around them.",
+    "commonFailure": "Writing \"bad luck\" or \"unlucky\" as a cause -- almost no death is actually unavoidable; find the real decision point."
+  },
+  {
+    "id": "minimap-glance-cadence",
+    "name": "Minimap-Glance Cadence",
+    "skillTrained": "Building the habit of checking the minimap on a fixed rhythm",
+    "where": "Practice Tool or Normal",
+    "duration": "10 minutes",
+    "procedure": [
+      "Pick a fixed glance cadence (e.g. every time you last-hit a minion, or every 8-10 seconds).",
+      "Play a lane phase consciously counting your glances against that cadence.",
+      "Note any stretch where you went more than 15 seconds without glancing.",
+      "In Practice Tool, have a friend or second client move a bot around the map and see how fast you notice.",
+      "Repeat until glancing feels automatic rather than a conscious checklist item."
+    ],
+    "passBar": "No gap over 15 seconds without a minimap glance during laning phase",
+    "progression": "Extend the cadence requirement into mid-game teamfight positioning, where the cost of missing a glance is much higher.",
+    "commonFailure": "Glancing at the minimap but not actually processing what changed -- the habit needs to end in a decision, not just a look."
+  },
+  {
+    "id": "jungle-clear-timing",
+    "name": "Jungle Clear Timing",
+    "skillTrained": "Consistent, efficient jungle pathing",
+    "where": "Practice Tool",
+    "duration": "10 minutes",
+    "procedure": [
+      "Run your standard opening clear in Practice Tool with a stopwatch running.",
+      "Note the exact time your first full clear finishes.",
+      "Run it again, this time trying to shave time by tightening pathing (fewer wasted steps between camps).",
+      "Do this 3 times and take your best clean clear as your calibration baseline -- there is no universal target, only your own baseline.",
+      "Log your baseline in the tracker and compare future clears against it, not against a number you didn't measure yourself."
+    ],
+    "passBar": "Calibrate from your own baseline -- no fabricated number exists for this without knowing your champion and route",
+    "progression": "Once your clear time is stable, add a scripted gank attempt at a fixed timing (e.g. first back-to-back camp finished) and measure how often you're actually there on time.",
+    "commonFailure": "Comparing your clear time to a pro player's without accounting for a different champion, route, or rune setup."
+  },
+  {
+    "id": "trade-then-back",
+    "name": "Trade-Then-Back Pattern",
+    "skillTrained": "Taking a favorable trade and disengaging before it turns unfavorable",
+    "where": "Practice Tool, 1 bot on lane opponent's side",
+    "duration": "10 minutes",
+    "procedure": [
+      "Set up a lane trade scenario against a bot at a level and item state you choose.",
+      "Initiate a trade you believe is favorable (based on ability cooldowns and range).",
+      "Immediately after landing your trade, back off out of the bot's attack range rather than continuing to fight.",
+      "Repeat 10 times, noting how many times you successfully disengaged before taking unnecessary damage back.",
+      "Review any trade where you \"won\" the damage exchange but still ended up low, and identify what kept you in range too long."
+    ],
+    "passBar": "8 of 10 trades end with you disengaging before taking a return hit",
+    "progression": "Once consistent against a stationary bot, practice the same pattern with a wave present, which changes your positioning options.",
+    "commonFailure": "Landing the trade and then staying to auto-attack \"one more time,\" which is exactly when the return hit lands."
+  },
+  {
+    "id": "objective-timer-precall",
+    "name": "Objective-Timer Pre-Call",
+    "skillTrained": "Tracking and communicating objective spawn timers proactively",
+    "where": "Normal or Ranked",
+    "duration": "One full game",
+    "procedure": [
+      "Track your team's major objective spawn timers (the epic jungle monsters) mentally or via a tracking tool through the game.",
+      "30 seconds before each objective spawns, say the timer out loud (or type it) to your team.",
+      "Note whether you actually called it every time an objective was coming up.",
+      "After the game, count how many objective spawns you called versus missed.",
+      "If you missed any, note what you were doing instead (usually: tunneled on lane, not glancing at the clock)."
+    ],
+    "passBar": "Called at least 4 of the game's objective timers 30 seconds early",
+    "progression": "Add calling enemy jungler pathing predictions alongside objective timers once the base habit is automatic.",
+    "commonFailure": "Calling the timer only when the objective is already up, which gives teammates no time to actually rotate."
+  },
+  {
+    "id": "no-flame-comms",
+    "name": "No-Flame Comms Drill",
+    "skillTrained": "Keeping communication useful under tilt instead of venting",
+    "where": "Normal or Ranked",
+    "duration": "One full game",
+    "procedure": [
+      "Before the game, decide on one rule: every message you type must contain either a plan or information, never a complaint about a teammate.",
+      "Play the game normally, holding the rule even when something goes wrong.",
+      "After the game, reread your own chat log if available.",
+      "Flag any message that was a complaint rather than information or a plan.",
+      "Log whether you held the rule for the full game -- this is a pass/fail habit check, not a graded skill."
+    ],
+    "passBar": "Zero complaint-only messages in the chat log for the full game",
+    "progression": "Extend the rule to voice comms with friends once it's automatic in text chat.",
+    "commonFailure": "Typing a complaint and then immediately typing something useful afterward -- the complaint still went out; the fix is not typing it at all."
+  },
+  {
+    "id": "one-sentence-lesson",
+    "name": "One-Sentence End-of-Game Lesson",
+    "skillTrained": "Extracting one specific, actionable lesson from every game instead of zero",
+    "where": "Any game, reviewed within 5 minutes of it ending",
+    "duration": "2 minutes",
+    "procedure": [
+      "Within 5 minutes of the game ending, before queueing again, stop.",
+      "Write exactly one sentence: the single most important thing you'd do differently next time.",
+      "The sentence must name a specific action, not a feeling (\"ward the river bush at 14:00,\" not \"play safer\").",
+      "Log it in the Game Log's one-sentence-lesson column.",
+      "Do not queue the next game until this sentence is written."
+    ],
+    "passBar": "One specific-action sentence logged per game, no games skipped",
+    "progression": "At each block review, reread your last 10 lessons and check whether the same lesson is repeating -- a repeat means the lesson didn't actually change your play.",
+    "commonFailure": "Queueing immediately into the next game because a loss feels urgent to fix right now -- this is exactly the tilt pattern the review step exists to interrupt."
+  }
+]

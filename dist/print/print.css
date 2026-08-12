@@ -1,0 +1,245 @@
+/* Solo Queue Practice System -- web design tokens (spec Section 1.5).
+   Verbatim from the architect spec, including the WCAG-AA contrast fixes to
+   the print system's original --accent/--good values. Builder styles ONLY
+   from these tokens -- a hardcoded hex/px value outside this file is a QA
+   failure. This file is concatenated ahead of screen.css (-> dist/site.css)
+   and ahead of print.css (-> dist/print/print.css) so there is exactly one
+   definition of every value in the project. */
+
+:root {
+  /* Color -- contrast ratios stated against --paper */
+  --paper:        #FFFFFF;
+  --surface:      #F5F7FA;   /* cards, ad wells */
+  --surface-sunk: #EDF0F5;   /* table zebra, code */
+  --ink:          #14161A;   /* body text        16.5:1 */
+  --muted:        #5A6270;   /* labels, captions  6.1:1 */
+  --rule:         #D8DCE3;   /* hairlines -- non-text only */
+  --accent:       #1B54C8;   /* links, buttons    6.7:1 */
+  --accent-hover: #123C93;
+  --accent-rule:  #2A6DF4;   /* decorative rules only -- 4.3:1, NEVER text */
+  --good:         #17703D;   /* pass bars         6.1:1 */
+  --warn:         #B4531A;   /* common failures   5.0:1 */
+  --focus-ring:   #1B54C8;
+
+  /* Type -- 2 families max: system sans + system mono */
+  --font-sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --text-xs:   0.75rem;   --lh-xs:   1.4;   /* 12px / 600 / uppercase labels */
+  --text-sm:   0.875rem;  --lh-sm:   1.5;   /* 14px captions */
+  --text-base: 1rem;      --lh-base: 1.6;   /* 16px body */
+  --text-lg:   1.125rem;  --lh-lg:   1.55;  /* 18px lead paragraph */
+  --text-xl:   1.375rem;  --lh-xl:   1.35;  /* 22px h3 */
+  --text-2xl:  1.75rem;   --lh-2xl:  1.25;  /* 28px h2 */
+  --text-3xl:  2.25rem;   --lh-3xl:  1.15;  /* 36px h1; clamps to --text-2xl below 480px */
+  --weight-body: 400; --weight-ui: 600; --weight-head: 700;
+
+  /* Spacing -- 8px base with one 4px half-step */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
+
+  /* Radius / shadow -- two levels each, no more */
+  --radius-sm: 4px; --radius-md: 8px; --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(20,22,26,.06);
+  --shadow-md: 0 2px 8px rgba(20,22,26,.08);
+
+  /* Layout */
+  --measure:        34em;   /* ~68 characters -- inside the 60-75 rule */
+  --measure-narrow: 46ch;   /* card measure, unchanged from the print system */
+  --page-max:       44rem;  /* content column */
+  --site-max:       68rem;  /* header, footer, index card grid */
+  --ad-min-h-mobile:  100px;
+  --ad-min-h-desktop: 280px;
+}
+
+/* Solo Queue Practice System -- print stylesheet. Every value here is
+   deliberate; do not introduce new colors, sizes, or primitives without
+   updating this file. Color/spacing tokens (--ink, --muted, --rule, --accent,
+   --good, --warn, --paper, etc.) come from src/web/tokens.css, which the
+   build (src/build.js) concatenates ahead of this file into
+   dist/print/print.css -- there is exactly one definition of every token
+   value in the project; this file must never redefine one. */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.page-content {
+  max-width: 34em;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* Card documents (warmups, drills, matchup/VOD sheets) run three-up and use the
+   narrower 46-character card measure instead of the 34em body measure. */
+.card-doc .page-content {
+  max-width: none;
+}
+
+h1 { font-weight: 700; font-size: 1.8rem; }
+h2 { font-weight: 700; font-size: 1.3rem; }
+h3 { font-weight: 700; font-size: 1.1rem; }
+p, li { font-weight: 400; }
+
+.slot-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------------------
+   Five layout primitives. Only these five exist in this design system.
+   --------------------------------------------------------------------------- */
+
+/* 1. CARD */
+.card {
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--accent-rule);
+  padding: 16px;
+  margin-bottom: 24px;
+  break-inside: avoid;
+  max-width: 46ch;
+}
+.card-title {
+  font-size: 12pt;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.card-slot { margin: 6px 0; }
+.card-slot .slot-label { display: block; margin-bottom: 2px; }
+.card-slot .slot-value.pass-bar { color: var(--good); font-weight: 600; }
+.card-slot .slot-value.common-failure { color: var(--warn); }
+
+/* 2. CHECKLIST ROW */
+.checklist-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 12px 0;
+}
+.checklist-box {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  border: 0.6pt solid var(--rule);
+  margin-top: 2px;
+}
+.checklist-text { flex: 1; }
+
+/* 3. FILL LINE */
+.fill-line { margin: 12px 0; }
+.fill-line .slot-label { display: block; margin-bottom: 2px; }
+.fill-line .fill-rule {
+  height: 32px;
+  border-bottom: 0.6pt solid var(--rule);
+}
+
+/* 4. CALLOUT -- at most one per page (a content-authoring rule, not CSS-enforceable) */
+.callout {
+  border-left: 3px solid var(--accent-rule);
+  padding-left: 16px;
+  font-style: italic;
+  margin: 16px 0;
+  color: var(--ink);
+}
+
+/* 5. DATA TABLE */
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+table.data-table th,
+table.data-table td {
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  padding: 6px 8px;
+  text-align: left;
+}
+table.data-table th {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+table.data-table td.num,
+table.data-table th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Drill Library / Focus Menu grid -- three cards to a page per spec Section 2C. */
+.drill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.drill-grid .card { margin-bottom: 0; }
+
+/* ---------------------------------------------------------------------------
+   Document furniture
+   --------------------------------------------------------------------------- */
+
+.cover {
+  text-align: left;
+  padding-top: 48px;
+  margin-bottom: 32px;
+}
+.cover-title { font-size: 24pt; font-weight: 700; margin: 0 0 8px; }
+.cover-subtitle { font-size: 12pt; color: var(--muted); margin: 0 0 16px; }
+.cover-rule { border: none; border-top: 3px solid var(--accent-rule); width: 100%; margin: 16px 0; }
+.cover-meta { font-size: 0.6rem; color: var(--muted); }
+.cover-disclaimer { font-size: 0.6rem; color: var(--muted); margin-top: 8px; }
+
+.page-footer {
+  font-size: 0.6rem;
+  color: var(--muted);
+  border-top: 1px solid var(--rule);
+  padding-top: 8px;
+  margin-top: 32px;
+}
+
+/* ---------------------------------------------------------------------------
+   Print
+   --------------------------------------------------------------------------- */
+
+@media print {
+  @page { size: A4; margin: 16mm; }
+
+  body { font-size: 10.5pt; line-height: 1.45; color: var(--ink); }
+  h1 { font-size: 24pt; }
+  h2 { font-size: 15pt; }
+  h3 { font-size: 12pt; }
+  .slot-label { font-size: 8.5pt; }
+
+  .page-content { max-width: 170mm; padding: 0; margin: 0 auto; }
+
+  .card { break-inside: avoid; margin-bottom: 6mm; }
+  .checklist-row, table.data-table tr { break-inside: avoid; }
+  section.guide-section { break-after: page; }
+  section.guide-section:last-of-type { break-after: auto; }
+
+  /* Three drill/focus cards per printed page (spec Section 2C). */
+  .drill-grid { grid-template-columns: repeat(3, 1fr); }
+  .drill-grid .card:nth-child(3n) { break-after: page; }
+
+  /* Card documents (warmup cards, matchup/VOD sheets) -- each top-level card is its own
+     printed page, since these ship as one-page-per-card documents. */
+  .card-doc section.guide-section { break-after: page; }
+  .card-doc section.guide-section:last-of-type { break-after: auto; }
+
+  .page-footer { font-size: 8.5pt; }
+}

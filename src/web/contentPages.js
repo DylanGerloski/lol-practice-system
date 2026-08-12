@@ -1,0 +1,320 @@
+'use strict';
+
+// Guide-derived content pages (spec Section 6 B1): program.html,
+// baseline.html, focus-menu.html, champion-pool.html, vod-review.html,
+// tilt-rules.html, faq.html. Rendered from content/guide.js sections
+// A1-A11 per spec Section 1.2's page mapping, reusing the same
+// renderGuideBlock/renderBenchmarksTable/renderFocusCards renderers the
+// print pack uses (src/render/pages.js), so a guide section, the
+// benchmarks table, and a focus card look identical in substance on both
+// outputs -- only the surrounding shell differs.
+//
+// Every guide section (a1 through a11) is used exactly once across these
+// seven pages -- see SECTION_MAP below, which is also this module's map
+// from page to spec Section 1.2's "Source content" column.
+
+const fs = require('fs');
+const path = require('path');
+
+const site = require('../site.js');
+const shell = require('./shell.js');
+const { escapeHtml, checklistRow } = require('../render/html.js');
+const {
+  renderGuideBlock,
+  renderBenchmarksTable
+} = require('../render/pages.js');
+
+const guide = require(path.join('..', '..', 'content', 'guide.js'));
+const benchmarks = require(path.join('..', '..', 'content', 'benchmarks.json'));
+const focuses = require(path.join('..', '..', 'content', 'focuses.json'));
+const drills = require(path.join('..', '..', 'content', 'drills.json'));
+
+const sectionsById = new Map(guide.sections.map(s => [s.id, s]));
+const renderCtx = { benchmarks, focuses, drills };
+
+function section(id) {
+  const s = sectionsById.get(id);
+  if (!s) throw new Error(`Unknown guide section id: ${id}`);
+  return s;
+}
+
+/**
+ * Renders one guide section as <h2>title</h2> followed by its blocks --
+ * identical shape to src/render/pages.js's renderGuide(), reused per-section
+ * instead of for the whole guide at once.
+ */
+function renderSection(id) {
+  const s = section(id);
+  return `<section class="guide-section">
+      <h2>${escapeHtml(s.title)}</h2>
+      ${s.body.map(b => renderGuideBlock(b, renderCtx)).join('\n')}
+    </section>`;
+}
+
+/**
+ * The Focus Menu's cards, reimplemented here (rather than calling
+ * src/render/pages.js's renderFocusCards) for one reason: the print pack's
+ * card has no links, but spec Section 1.2 requires each web focus card to
+ * deep-link its drill slot to drills.html#<drillId>, and the shared card()
+ * primitive (src/render/html.js) escapes its slot values as plain text, so
+ * it cannot carry an <a> inside a slot. Every other value/label/class here
+ * matches renderFocusCards()'s output exactly -- only the drill slot's
+ * value gained a link.
+ */
+function renderFocusCardsWithDrillLinks() {
+  const byId = new Map(drills.map(d => [d.id, d]));
+  const cards = focuses.map(f => {
+    const drill = byId.get(f.drillId);
+    const drillLabel = drill ? drill.name : f.drillId;
+    const drillHref = site.url(`drills.html#${f.drillId}`);
+    return `<div class="card">
+    <h3 class="card-title">${escapeHtml(f.title)}</h3>
+    <div class="card-slot">
+      <span class="slot-label">What It Is</span>
+      <span class="slot-value">${escapeHtml(f.whatItIs)}</span>
+    </div>
+    <div class="card-slot">
+      <span class="slot-label">The Number That Proves It</span>
+      <span class="slot-value">${escapeHtml(f.theNumber)}</span>
+    </div>
+    <div class="card-slot">
+      <span class="slot-label">The Drill That Trains It</span>
+      <span class="slot-value"><a href="${escapeHtml(drillHref)}">${escapeHtml(drillLabel)}</a></span>
+    </div>
+    <div class="card-slot">
+      <span class="slot-label">Graduation Bar</span>
+      <span class="slot-value pass-bar">${escapeHtml(f.graduationBar)}</span>
+    </div>
+  </div>`;
+  }).join('\n');
+  return `<div class="drill-grid">${cards}</div>`;
+}
+
+/**
+ * The VOD Review Sheet's fields (src/render/pages.js's renderVodSheet),
+ * reused here as a live checklist rather than a blank fillable template --
+ * spec Section 1.2's "Source content" column for vod-review.html calls for
+ * "guide A8 + VOD sheet fields as a checklist."
+ */
+function renderVodChecklist() {
+  const items = [
+    'Checkpoint 1, 0-3 minutes (Lane Setup): note the timestamp, and whether your level-1 positioning matched the matchup you expected.',
+    'Checkpoint 2, First Back: note the timestamp, whether the recall timing was efficient, and whether your purchase matched the game state.',
+    'Checkpoint 3, Mid-Game Grouping: note the timestamp, whether you were where you needed to be, and whether you called the objective timer early.',
+    'Checkpoint 4, The Fight That Decided It: note the timestamp, watch it twice, and write one thing about your own positioning and one thing the enemy team did that worked.',
+    'Change Next Game: write the one specific action you will change -- not a feeling.'
+  ];
+  return `<div class="vod-checklist">${items.map(checklistRow).join('\n')}</div>`;
+}
+
+function crossLinks(links) {
+  const items = links.map(([href, label]) => `<li><a href="${escapeHtml(href)}">${escapeHtml(label)}</a></li>`).join('\n      ');
+  return `<nav class="cross-links" aria-label="Related pages">
+      <ul>
+      ${items}
+      </ul>
+    </nav>`;
+}
+
+// Every content page ends with links to the tracker and the free download
+// pack (spec Section 1.2's cross-linking rules), on top of whatever
+// page-specific links a given page also carries.
+function standardEndLinks(extra = []) {
+  return crossLinks([
+    ...extra,
+    [site.url('tracker.html'), 'Get the free tracker spreadsheet'],
+    [site.url('downloads.html'), 'Download the full printable pack']
+  ]);
+}
+
+function buildPage({ file, titleBase, description, active, introHtml, sectionsHtml, endLinksHtml }) {
+  const body = `${introHtml}
+    ${shell.adSlot('inContentTop')}
+    ${sectionsHtml}
+    ${shell.adSlot('contentEnd')}
+    ${endLinksHtml}`;
+  return shell.documentShell({
+    title: site.pageTitle(titleBase),
+    description,
+    bodyHtml: body,
+    canonical: site.absoluteUrl(file),
+    active: active || null,
+    ogType: 'article'
+  });
+}
+
+// Splits a page's sections into "everything up to and including the
+// midpoint" so inContentMid lands roughly halfway down a multi-section
+// page, per spec Section 1.4's placement rule. A single-section page gets
+// its mid slot right after that one section, which still satisfies "3 ad
+// slots each" without an empty top/mid gap.
+function renderSectionsWithMidAd(ids) {
+  const mid = Math.max(1, Math.ceil(ids.length / 2));
+  const first = ids.slice(0, mid).map(renderSection).join('\n');
+  const rest = ids.slice(mid).map(renderSection).join('\n');
+  return `${first}
+    ${shell.adSlot('inContentMid')}
+    ${rest}`;
+}
+
+// ---------------------------------------------------------------------------
+// program.html -- guide A1, A5, A6
+// ---------------------------------------------------------------------------
+function renderProgram() {
+  const introHtml = `<h1>The 30-Day Program</h1>
+    <p class="lead">One focus, held for a block of ten games, measured and reviewed before you move to the next. This page covers how the method works, what a normal session looks like, and how the thirty games are laid out.</p>`;
+  return buildPage({
+    file: 'program.html',
+    titleBase: 'The 30-Day Practice Program',
+    description: 'How the Solo Queue Practice System works: one measurable focus per ten-game block, a repeatable session loop, and a 30-day calendar in three blocks.',
+    active: 'program',
+    introHtml,
+    sectionsHtml: renderSectionsWithMidAd(['a1-how-this-works', 'a5-the-session-loop', 'a6-the-30-day-calendar']),
+    endLinksHtml: standardEndLinks([
+      [site.url('focus-menu.html'), 'Pick your first focus from the Focus Menu'],
+      [site.url('warmup.html'), 'Warmup routines by role'],
+      [site.url('drills.html'), 'The 12 practice-tool drills']
+    ])
+  });
+}
+
+// ---------------------------------------------------------------------------
+// baseline.html -- guide A2, A3 (A3 includes the benchmarks table block)
+// ---------------------------------------------------------------------------
+function renderBaseline() {
+  const introHtml = `<h1>Day 0: Baseline and Benchmarks</h1>
+    <p class="lead">Before picking a focus, read your own last ten games and compare your numbers against real rank benchmarks. Everything after this point measures you against yourself, not against this table.</p>`;
+  return buildPage({
+    file: 'baseline.html',
+    titleBase: 'CS per Minute by Rank',
+    description: 'How to build an honest Day 0 baseline from your last ten games, and CS-per-minute benchmarks by rank to compare it against.',
+    introHtml,
+    sectionsHtml: renderSectionsWithMidAd(['a2-day-zero-baseline', 'a3-read-your-baseline']),
+    endLinksHtml: standardEndLinks([
+      [site.url('drills.html#cs-10min'), 'Run the 10-Minute CS Drill'],
+      [site.url('focus-menu.html'), 'See the full Focus Menu']
+    ])
+  });
+}
+
+// ---------------------------------------------------------------------------
+// focus-menu.html -- guide A4 (focus cards, with drill deep-links) + A10
+// ---------------------------------------------------------------------------
+function renderFocusMenu() {
+  const introHtml = `<h1>The Focus Menu</h1>
+    <p class="lead">Twelve measurable things you could work on. Pick exactly one per block, based on what your baseline shows, run its drill, and hold it until it graduates.</p>`;
+  const a4 = section('a4-the-focus-menu');
+  const a4Html = `<section class="guide-section">
+      <h2>${escapeHtml(a4.title)}</h2>
+      ${a4.body.map(b => (b.type === 'focusCards' ? renderFocusCardsWithDrillLinks() : renderGuideBlock(b, renderCtx))).join('\n')}
+    </section>`;
+  const sectionsHtml = `${a4Html}
+    ${shell.adSlot('inContentMid')}
+    ${renderSection('a10-when-to-change-focus')}`;
+  return buildPage({
+    file: 'focus-menu.html',
+    titleBase: 'The Focus Menu: 12 Things to Work On',
+    description: 'Twelve measurable League of Legends focuses, one drill each, and the rule for picking exactly one to work on at a time.',
+    active: 'focus-menu',
+    introHtml,
+    sectionsHtml,
+    endLinksHtml: standardEndLinks([
+      [site.url('drills.html'), 'All 12 practice-tool drills'],
+      [site.url('baseline.html'), 'Read your baseline first']
+    ])
+  });
+}
+
+// ---------------------------------------------------------------------------
+// champion-pool.html -- guide A7
+// ---------------------------------------------------------------------------
+function renderChampionPool() {
+  const introHtml = `<h1>Building a Champion Pool That Supports Practice</h1>
+    <p class="lead">A pool sized and shaped to keep your focus-block data clean, not a list of favorites.</p>`;
+  return buildPage({
+    file: 'champion-pool.html',
+    titleBase: 'How Many Champions Should You Play',
+    description: 'A method for building a two-main-plus-one-blind-pick champion pool that supports deliberate practice instead of diluting it.',
+    introHtml,
+    sectionsHtml: renderSectionsWithMidAd(['a7-champion-pool-setup']),
+    endLinksHtml: standardEndLinks([
+      [site.url('program.html'), 'Back to the 30-day program']
+    ])
+  });
+}
+
+// ---------------------------------------------------------------------------
+// vod-review.html -- guide A8 + VOD sheet fields as a checklist
+// ---------------------------------------------------------------------------
+function renderVodReview() {
+  const introHtml = `<h1>Review Your Own Replays in 12 Minutes</h1>
+    <p class="lead">Four checkpoints, roughly three minutes each, using nothing but your client's own replay feature.</p>`;
+  const a8Html = renderSection('a8-self-vod-review');
+  const checklistSection = `<section class="guide-section">
+      <h2>VOD Review Checklist</h2>
+      <p>The same four checkpoints as a running checklist -- print the fillable version below if you would rather write on paper.</p>
+      ${renderVodChecklist()}
+    </section>`;
+  const sectionsHtml = `${a8Html}
+    ${shell.adSlot('inContentMid')}
+    ${checklistSection}`;
+  return buildPage({
+    file: 'vod-review.html',
+    titleBase: 'Review Your Replays in 12 Minutes',
+    description: 'A 4-checkpoint method for reviewing your own League of Legends replays in about twelve minutes, with a printable checklist.',
+    introHtml,
+    sectionsHtml,
+    endLinksHtml: standardEndLinks([
+      [site.url('print/07-vod-review-sheet.html'), 'Print the blank VOD Review Sheet']
+    ])
+  });
+}
+
+// ---------------------------------------------------------------------------
+// tilt-rules.html -- guide A9
+// ---------------------------------------------------------------------------
+function renderTiltRules() {
+  const introHtml = `<h1>Tilt and Stop Rules</h1>
+    <p class="lead">Pre-committed rules for when to stop a session, decided before you are tilted enough to need them.</p>`;
+  return buildPage({
+    file: 'tilt-rules.html',
+    titleBase: 'Tilt and Stop Rules',
+    description: 'Pre-committed stop rules for League of Legends solo queue: the two-loss rule, a breathing reset, and why logging before closing the client matters.',
+    introHtml,
+    sectionsHtml: renderSectionsWithMidAd(['a9-tilt-and-stop-rules']),
+    endLinksHtml: standardEndLinks([
+      [site.url('program.html'), 'Back to the 30-day program']
+    ])
+  });
+}
+
+// ---------------------------------------------------------------------------
+// faq.html -- guide A11
+// ---------------------------------------------------------------------------
+function renderFaq() {
+  const introHtml = `<h1>FAQ and What This Is Not</h1>
+    <p class="lead">Straight answers, including about what this program cannot promise.</p>`;
+  return buildPage({
+    file: 'faq.html',
+    titleBase: 'FAQ',
+    description: 'What the Solo Queue Practice System is and is not: no boost, no rank guarantee, no Riot affiliation, and no account or API key required.',
+    active: 'faq',
+    introHtml,
+    sectionsHtml: renderSectionsWithMidAd(['a11-faq']),
+    endLinksHtml: standardEndLinks([
+      [site.url('program.html'), 'Read the full program']
+    ])
+  });
+}
+
+const CONTENT_PAGES = [
+  ['program.html', renderProgram],
+  ['baseline.html', renderBaseline],
+  ['focus-menu.html', renderFocusMenu],
+  ['champion-pool.html', renderChampionPool],
+  ['vod-review.html', renderVodReview],
+  ['tilt-rules.html', renderTiltRules],
+  ['faq.html', renderFaq]
+];
+
+module.exports = { CONTENT_PAGES };

@@ -1,0 +1,18 @@
+{
+  "name": "lol-practice-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Solo Queue Practice System -- a 30-day deliberate-practice program for League of Legends solo queue.",
+  "scripts": {
+    "build": "node src/build.js",
+    "build:site": "node src/web/buildSite.js",
+    "build:all": "npm run build && npm run pdf && npm run build:site",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "pdf": "node src/pdf.js",
+    "visual-qa": "node scripts/visual-qa.js"
+  },
+  "devDependencies": {
+    "lighthouse": "^13.4.1",
+    "playwright": "^1.62.1"
+  }
+}
