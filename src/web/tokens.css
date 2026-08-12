@@ -1,9 +1,10 @@
-/* Solo Queue Practice System -- web design tokens (spec Section 1.5).
-   Verbatim from the architect spec, including the WCAG-AA contrast fixes to
-   the print system's original --accent/--good values. Builder styles ONLY
-   from these tokens -- a hardcoded hex/px value outside this file is a QA
-   failure. This file is concatenated ahead of screen.css (-> dist/site.css)
-   and ahead of print.css (-> dist/print/print.css) so there is exactly one
+/* Solo Queue Practice System -- web design tokens: the single source of
+   truth for color, type, spacing, radius, and shadow across the site.
+   Includes WCAG-AA contrast fixes to the print system's original
+   --accent/--good values. Every style in this project should read its
+   values from here rather than hardcoding a hex or pixel value elsewhere.
+   This file is concatenated ahead of screen.css (-> dist/site.css) and
+   ahead of print.css (-> dist/print/print.css) so there is exactly one
    definition of every value in the project. */
 
 :root {

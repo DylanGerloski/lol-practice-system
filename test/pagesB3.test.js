@@ -1,7 +1,7 @@
 'use strict';
 
-// Tests for src/web/pagesB3.js (home/tracker/downloads/about/privacy) --
-// spec Section 6 B3. build.js's build() runs first in each test that needs
+// Tests for src/web/pagesB3.js (home/tracker/downloads/about/privacy).
+// build.js's build() runs first in each test that needs
 // dist/print/ populated, mirroring how `npm run build:all` actually orders
 // things (print pack, then site) -- these tests don't assume any other test
 // file has already populated dist/print/ for them.
@@ -16,7 +16,7 @@ const { build: buildSite, DIST, WEB_PAGES } = require('../src/web/buildSite.js')
 const pagesB3 = require('../src/web/pagesB3.js');
 const site = require('../src/site.js');
 
-const B3_PAGES = ['index.html', 'tracker.html', 'downloads.html', 'about.html', 'privacy.html'];
+const HOME_TRACKER_DOWNLOADS_ABOUT_PRIVACY_PAGES = ['index.html', 'tracker.html', 'downloads.html', 'about.html', 'privacy.html'];
 
 function readDist(name) {
   return fs.readFileSync(path.join(DIST, name), 'utf8');
@@ -73,12 +73,19 @@ test('about.html carries the full Riot disclaimer and trademark notice in its ow
   assert.ok(!content.includes('Meridian Path Media'), 'about.html must never use the business-entity contact identity');
 });
 
-test('about.html marks its missing personal contact email as an explicit TODO, not an invented address', () => {
+test('about.html carries the real personal contact email as a mailto link, not a placeholder', () => {
   buildSite();
   const content = readDist('about.html');
-  assert.ok(/TODO/.test(content), 'expected an explicit TODO marker for the not-yet-supplied contact email');
-  assert.ok(!/@\w+\.\w+/.test(content.replace(/optout\.aboutads\.info|adssettings\.google\.com/g, '')),
-    'about.html should not contain an invented email address');
+  assert.ok(!/no public contact address/i.test(content), 'about.html should no longer show the not-yet-supplied contact placeholder notice now that a real address is wired in');
+  assert.ok(content.includes('mailto:dylanger2525@gmail.com'), 'expected a mailto link to the real contact address');
+  assert.ok(content.includes('dylanger2525@gmail.com'), 'expected the real contact email to appear in the rendered page');
+});
+
+test('about.html carries no internal task/decision ids or process vocabulary in its rendered output', () => {
+  buildSite();
+  const content = readDist('about.html');
+  assert.ok(!/task-ms|decision-ms|orchestrator|chief-of-staff|meridian path media/i.test(content),
+    'about.html should never leak internal ids, role names, or the excluded business-entity identity into rendered output');
 });
 
 test('privacy.html discloses both third-party ad cookies (AdSense) and analytics (GoatCounter)', () => {
@@ -99,8 +106,8 @@ test('tracker.html and downloads.html each carry exactly one primary action butt
   }
 });
 
-test('all five B3 pages are present in WEB_PAGES and build without throwing', () => {
-  for (const name of B3_PAGES) {
+test('all five home/tracker/downloads/about/privacy pages are present in WEB_PAGES and build without throwing', () => {
+  for (const name of HOME_TRACKER_DOWNLOADS_ABOUT_PRIVACY_PAGES) {
     assert.ok(WEB_PAGES.some(([n]) => n === name), `${name} missing from WEB_PAGES`);
   }
 });

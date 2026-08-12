@@ -15,6 +15,6 @@
   ],
   "csAt10Targets": {
     "baseline": { "value": 90, "label": "90 CS by 10:00, no items", "note": "Common practice-tool default target." },
-    "stretch": { "value": 107, "label": "107 CS by 10:00", "note": "The stricter practice-tool challenge target -- roughly perfect last-hitting with minimal jungle-camp cheats." }
+    "stretch": { "value": 107, "label": "107 CS by 10:00", "note": "The stricter practice-tool challenge target — roughly perfect last-hitting with minimal jungle-camp cheats." }
   }
 }

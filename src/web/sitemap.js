@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * sitemap.xml / robots.txt generation (spec Section 6 B4). Generated from
+ * sitemap.xml / robots.txt generation. Generated from
  * the actual list of filenames the site build wrote, never hand-maintained,
  * so it cannot drift from what's really on disk. Pure functions, no I/O --
  * the caller (src/web/buildSite.js) is responsible for actually writing the
@@ -9,8 +9,8 @@
  *
  * Excludes 404.html (the static-hosting error page, marked noindex -- never
  * a real destination) and anything under print/ (the downloadable pack,
- * relocated to dist/print/ with its own noindex + canonical pair per spec
- * Section 1.3 -- these are near-verbatim duplicates of the web pages and
+ * relocated to dist/print/ with its own noindex + canonical pair --
+ * these are near-verbatim duplicates of the web pages and
  * indexing both would be a self-inflicted duplicate-content problem).
  */
 

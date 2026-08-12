@@ -1,12 +1,13 @@
 'use strict';
 
-// Builds the tracker workbook (tracker.xlsx) described in the product spec,
-// Section 2D: six sheets, real .xlsx formula cells (not pre-baked values), no
+// Builds the tracker workbook (tracker.xlsx): six sheets, real .xlsx formula
+// cells (not pre-baked values), no
 // macros. Hand-rolled XML over the minimal ZIP writer in ./zip.js -- see that
-// file's header comment and the fallback rule in the spec (Section 3) for why
+// file's header comment for why
 // this is written by hand instead of pulling in a dependency.
 
 const { ZipWriter } = require('./zip.js');
+const { RIOT_DISCLAIMER, TRADEMARK_NOTICE } = require('../site.js');
 
 // ---------------------------------------------------------------------------
 // XML helpers
@@ -279,7 +280,7 @@ ${rels.join('\n')}
 }
 
 // ---------------------------------------------------------------------------
-// Sheet content -- one builder function per sheet, per spec Section 2D.
+// Sheet content -- one builder function per sheet.
 // ---------------------------------------------------------------------------
 
 const DEATH_CAUSES = [
@@ -317,7 +318,7 @@ function buildStartHereSheet(ss, version, lastReviewed) {
     'This workbook has no macros. Every computed column uses ordinary spreadsheet formulas, so it keeps working if you copy or import it into another spreadsheet application.'
   );
   r++;
-  s.str(r++, 0, `Not endorsed by or affiliated with Riot Games. League of Legends is a trademark of Riot Games, Inc.`, STYLE.NOTE);
+  s.str(r++, 0, `${RIOT_DISCLAIMER} ${TRADEMARK_NOTICE}`, STYLE.NOTE);
   s.str(r++, 0, `v${version} - last reviewed ${lastReviewed}`, STYLE.NOTE);
   return s;
 }

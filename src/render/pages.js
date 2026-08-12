@@ -6,7 +6,7 @@ const { RIOT_DISCLAIMER, TRADEMARK_NOTICE, absoluteUrl } = require('../site.js')
 const VERSION = '1.0.0';
 const LAST_REVIEWED = '2026-08-12';
 // Riot's fan-content policy ("Legal Jibber Jabber") requires this exact
-// wording (spec Section 1.7) -- it replaces the pack's original "Not
+// wording -- it replaces the pack's original "Not
 // endorsed by or affiliated with..." line. Sourced from site.js so the
 // print pack and the web build (src/web/shell.js) never drift apart.
 const DISCLAIMER = `${RIOT_DISCLAIMER} ${TRADEMARK_NOTICE}`;
@@ -16,7 +16,7 @@ function footer(docName) {
 }
 
 function documentShell({ title, description, bodyHtml, docName, cardDoc, canonical, noindex }) {
-  // canonical/noindex (spec Section 1.3): the print pack's HTML documents are
+  // canonical/noindex: the print pack's HTML documents are
   // near-verbatim duplicates of their web-page equivalents, so any print page
   // that has one gets noindex'd and pointed at that web page as canonical --
   // keeps both from competing for the same search query. Optional so the
@@ -108,7 +108,7 @@ function renderBenchmarksTable(benchmarks) {
 }
 
 // ---------------------------------------------------------------------------
-// Document renderers -- one per shipped document, per spec Section 2
+// Document renderers -- one per shipped document
 // ---------------------------------------------------------------------------
 
 function renderGuide(guide, benchmarks, focuses, drills) {
@@ -198,7 +198,7 @@ function renderDrillLibrary(drills) {
 }
 
 function renderMatchupSheet() {
-  const body = `${cover({ title: 'Matchup Study Sheet', subtitle: 'Fill this in yourself for a matchup you want to study -- ships blank on purpose.' })}
+  const body = `${cover({ title: 'Matchup Study Sheet', subtitle: 'Fill this in yourself for a matchup you want to study — ships blank on purpose.' })}
   <div class="card">
     <h3 class="card-title">Matchup Study Sheet</h3>
     ${fillLine('My champion')}
@@ -219,8 +219,8 @@ function renderMatchupSheet() {
     docName: 'Matchup Study Sheet',
     cardDoc: true,
     // No single web page covers matchup study specifically -- downloads.html
-    // is where this sheet is actually presented and linked from (spec
-    // Section 1.2/1.3), so it's the honest "web equivalent" to canonicalize to.
+    // is where this sheet is actually presented and linked from,
+    // so it's the honest "web equivalent" to canonicalize to.
     canonical: absoluteUrl('downloads.html'),
     noindex: true
   });
@@ -253,7 +253,7 @@ function renderVodSheet() {
     bodyHtml: body,
     docName: 'VOD Review Sheet',
     cardDoc: true,
-    // vod-review.html (spec Section 1.2) covers this same checkpoint protocol
+    // vod-review.html covers this same checkpoint protocol
     // as web content -- direct web equivalent.
     canonical: absoluteUrl('vod-review.html'),
     noindex: true
@@ -277,9 +277,9 @@ function renderReadme() {
     { href: '07-vod-review-sheet.html', label: 'VOD Review Sheet', text: 'print blank copies as needed, one per full review.' }
   ];
   const body = `${cover({ title: 'README', subtitle: 'What is in this package, and the order to use it in.' })}
-  <ol>${items.map(i => `<li>${readmeLink(i.href, i.label)} -- ${escapeHtml(i.text)}</li>`).join('')}</ol>
-  <p>All HTML documents open directly in a browser -- double-click the file, no install and no account required. Print via your browser's normal Print dialog (Ctrl+P); every document is designed to print cleanly on A4 or US Letter. A PDF copy of each HTML document ships alongside it (same filename, <code>.pdf</code> instead of <code>.html</code>) when this package was built on a machine with a browser available to generate one -- if you don't see a matching <code>.pdf</code> file, just open the <code>.html</code> version instead; nothing is missing or broken.</p>
-  <p>The tracker workbook (<code>05-tracker-workbook.xlsx</code>) is a real spreadsheet file, not a webpage -- open it in Excel, LibreOffice Calc, or Google Sheets.</p>`;
+  <ol>${items.map(i => `<li>${readmeLink(i.href, i.label)} — ${escapeHtml(i.text)}</li>`).join('')}</ol>
+  <p>All HTML documents open directly in a browser — double-click the file, no install and no account required. Print via your browser's normal Print dialog (Ctrl+P); every document is designed to print cleanly on A4 or US Letter. A PDF copy of each HTML document ships alongside it (same filename, <code>.pdf</code> instead of <code>.html</code>) when this package was built on a machine with a browser available to generate one — if you don't see a matching <code>.pdf</code> file, just open the <code>.html</code> version instead; nothing is missing or broken.</p>
+  <p>The tracker workbook (<code>05-tracker-workbook.xlsx</code>) is a real spreadsheet file, not a webpage — open it in Excel, LibreOffice Calc, or Google Sheets.</p>`;
   return documentShell({
     title: 'Solo Queue Practice System - README',
     description: 'What is included in the Solo Queue Practice System and the order to use each piece in.',
@@ -296,7 +296,7 @@ function renderQuickStart() {
   ${checklistRow('Before your next ranked session, run the Warmup Card for your role.')}
   ${checklistRow('Play 2-3 games holding that one focus. Log every game in the Tracker Workbook.')}
   ${checklistRow('After each game, write a one-sentence lesson before queueing again (Section A8).')}
-  ${checklistRow('Stop the session after 2 losses in a row (Section A9) -- no exceptions.')}
+  ${checklistRow('Stop the session after 2 losses in a row (Section A9) — no exceptions.')}
   ${checklistRow('After 10 games, review: did the number move? Graduate or repeat (Section A10).')}
   ${callout('This is the short version. The full Program Guide explains why each step exists and what to do when something does not go as expected.')}`;
   return documentShell({
@@ -319,7 +319,7 @@ module.exports = {
   renderVodSheet,
   renderReadme,
   renderQuickStart,
-  // Exported so the web build (src/web/contentPages.js, spec Section 6 B1)
+  // Exported so the web build (src/web/contentPages.js)
   // can reuse the same guide-body renderers the print pack uses -- one
   // implementation of "how a guide block/benchmarks table/focus card looks",
   // shared by both outputs.

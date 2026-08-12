@@ -2,7 +2,7 @@
 
 /**
  * Local, one-off generator for the site's social-share image
- * (dist/og-image.png, 1200x630 -- spec Section 1.5/6 B4). One site-wide
+ * (dist/og-image.png, 1200x630). One site-wide
  * image is acceptable at this size of site, referenced from every page's
  * og:image meta tag via src/site.js's absoluteUrl('og-image.png')
  * (see src/web/shell.js's documentHead()).

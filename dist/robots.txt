@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lol-practice-system.com/sitemap.xml

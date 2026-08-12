@@ -127,7 +127,7 @@ table.data-table th.num {
   font-variant-numeric: tabular-nums;
 }
 
-/* Drill Library / Focus Menu grid -- three cards to a page per spec Section 2C. */
+/* Drill Library / Focus Menu grid -- three cards to a page. */
 .drill-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -179,7 +179,7 @@ table.data-table th.num {
   section.guide-section { break-after: page; }
   section.guide-section:last-of-type { break-after: auto; }
 
-  /* Three drill/focus cards per printed page (spec Section 2C). */
+  /* Three drill/focus cards per printed page. */
   .drill-grid { grid-template-columns: repeat(3, 1fr); }
   .drill-grid .card:nth-child(3n) { break-after: page; }
 

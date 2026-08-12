@@ -1,21 +1,21 @@
 'use strict';
 
 /**
- * Build-time metadata correctness check (spec Section 1.6 / Section 6 B4):
- * fails the whole web build loudly on a missing/over-length <title>, a
- * missing/over-length meta description, or two pages sharing either one.
- * "Metadata correctness is a test, not a review item."
+ * Build-time metadata correctness check: fails the whole web build loudly on
+ * a missing/over-length <title>, a missing/over-length meta description, or
+ * two pages sharing either one. Metadata correctness is a test, not a review
+ * item.
  *
  * Operates on each page's already-rendered HTML (extracted with a regex)
  * rather than requiring every page-render function to separately report its
  * own title/description alongside its markup -- that keeps this decoupled
  * from how many render functions WEB_PAGES (src/web/buildSite.js) ends up
- * with, since B1-B3 are adding their own render functions to that array
+ * with, since more render functions may still be added to that array
  * concurrently with this task.
  *
- * Bounds mirror the O-5 (repertoire-builder) precedent: an upper cap plus a
+ * Bounds mirror the same convention used on the human's other site: an upper cap plus a
  * cross-page duplicate check, deliberately with NO lower-bound/floor check
- * on description length. The spec's "140-160 characters" is a copywriting
+ * on description length. "140-160 characters" is a copywriting
  * target for whoever writes each page's description, not a build-breaking
  * gate here -- enforcing a hard floor would fail the build over placeholder
  * or in-progress copy on pages this task doesn't own, which is a worse

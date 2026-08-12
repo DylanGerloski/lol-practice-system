@@ -3,7 +3,7 @@
 // Unit tests for scripts/build-og-image.js's pure logic (token parsing and
 // HTML-card generation). Does NOT launch a browser or write dist/og-image.png
 // -- that requires Playwright and is exercised by hand (see TESTING.md),
-// matching the O-5 precedent that this kind of one-off asset-generation
+// matching the same precedent used on the human's other site: this kind of one-off asset-generation
 // script isn't part of the automated suite's browser-dependent surface.
 
 const test = require('node:test');

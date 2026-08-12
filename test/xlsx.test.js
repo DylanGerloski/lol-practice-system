@@ -1,6 +1,6 @@
 'use strict';
 
-// Spec Section 3, test 5 ("XLSX round-trip"): parse the produced archive's central
+// XLSX round-trip: parse the produced archive's central
 // directory, confirm each entry's bytes parse as well-formed XML, confirm sheet count,
 // and confirm the computed columns contain formula (<f>) elements rather than literal
 // values.
@@ -14,8 +14,8 @@ const benchmarks = require('../content/benchmarks.json');
 
 // A tiny, dependency-free well-formedness check: walks every start/end tag with a
 // stack and confirms every open tag has a matching close tag in the right order.
-// Not a validating XML parser (no schema, no entity/DTD handling) -- it is exactly
-// what the spec asks for: confirm each entry's bytes *parse* as well-formed XML.
+// Not a validating XML parser (no schema, no entity/DTD handling) -- it just
+// confirms each entry's bytes *parse* as well-formed XML.
 function assertWellFormedXml(xmlText, label) {
   assert.ok(xmlText.startsWith('<?xml'), `${label}: missing XML declaration`);
   const tagRe = /<([^!?][^>]*?)>/g;
@@ -70,7 +70,7 @@ test('produced .xlsx round-trips through the central directory with 12 well-form
   }
 });
 
-test('workbook.xml declares exactly 6 sheets, matching the spec\'s Section 2D sheet list', () => {
+test('workbook.xml declares exactly 6 sheets, matching the expected sheet list', () => {
   const buf = buildTrackerWorkbook(benchmarks);
   const entries = readZipEntries(buf);
   const workbookXml = entries.find(e => e.name === 'xl/workbook.xml').data.toString('utf8');
@@ -106,8 +106,8 @@ test('computed columns contain real formula (<f>) elements, not pre-baked litera
 });
 
 test('shared strings (all text shipped in the workbook) contain no denylisted Riot-owned proper noun', () => {
-  // Same build-time IP-hygiene guard as the HTML documents (spec Section 3 test 6,
-  // Section 4) -- extended to this sheet's own shipped file. Not exhaustive (see
+  // Same build-time IP-hygiene guard as the HTML documents --
+  // extended to this sheet's own shipped file. Not exhaustive (see
   // test/ip-hygiene.test.js for the fuller list applied to HTML); this is a
   // representative spot-check on the one text pool (sharedStrings.xml) that carries
   // every string cell in the workbook.

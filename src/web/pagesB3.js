@@ -1,7 +1,7 @@
 'use strict';
 
-// Home, tracker, downloads, about, and privacy -- spec Section 6 B3. Home
-// replaces the minimal stub B0 shipped (its own result field says as much);
+// Home, tracker, downloads, about, and privacy. Home
+// replaces the site's original minimal stub;
 // the other four are new pages. All five are exported and wired into
 // src/web/buildSite.js's WEB_PAGES array, not built standalone.
 
@@ -13,13 +13,16 @@ const { escapeHtml } = require('../render/html.js');
 
 const { RIOT_DISCLAIMER, TRADEMARK_NOTICE } = site;
 
+// Real public contact address for this project.
+const CONTACT_EMAIL = 'dylanger2525@gmail.com';
+
 const PRINT_DIR = path.join(__dirname, '..', '..', 'dist', 'print');
 
 // Friendly labels for the print pack's numbered filenames, matching the
 // names src/render/pages.js's renderReadme() already uses -- keeps the two
 // "what's in the pack" listings (the README document, downloads.html)
 // reading the same way without literally sharing code across the print/web
-// split. A file whose prefix isn't in this map (e.g. a sheet B2 adds later)
+// split. A file whose prefix isn't in this map (e.g. a sheet added later)
 // still renders correctly, with a label derived from its filename -- nothing
 // here can produce a missing/dead entry for an unrecognized file.
 const DOC_LABELS = {
@@ -60,8 +63,8 @@ function formatSize(bytes) {
  *   currently sitting in dist/print/ except print.css (a stylesheet, not a
  *   download), sorted by filename. Reads the directory fresh on every call
  *   -- there is no hardcoded file list anywhere in this module, since
- *   dist/print/'s exact contents depend on B2 (drill/warmup/print sheets,
- *   built concurrently with this task) as well as B0's original pack. An
+ *   dist/print/'s exact contents depend on the drill/warmup/print sheets
+ *   as well as the original print pack. An
  *   empty array (dist/print/ not built yet, e.g. `npm run build:site` run
  *   standalone) is a valid, non-crashing result -- callers render an
  *   honest "check back shortly" message instead of a broken page.
@@ -163,17 +166,16 @@ function renderHome() {
     </section>
     <section>
       <h2>Free printable pack</h2>
-      <p>Every page here also exists as a clean, printable document -- the full guide, the drill library, warmup cards, and two blank study sheets, plus the tracker as a real spreadsheet file. No email, no account, no payment.</p>
+      <p>Every page here also exists as a clean, printable document — the full guide, the drill library, warmup cards, and two blank study sheets, plus the tracker as a real spreadsheet file. No email, no account, no payment.</p>
       <div class="download-row">
-        <a href="${escapeHtml(workbookHref)}">Tracker Workbook -- spreadsheet</a>
+        <a href="${escapeHtml(workbookHref)}">Tracker Workbook — spreadsheet</a>
         <span class="download-meta">.xlsx</span>
       </div>
       <div class="download-row">
-        <a href="${escapeHtml(site.url('downloads.html'))}">Full printable pack -- every guide, drill, and sheet</a>
+        <a href="${escapeHtml(site.url('downloads.html'))}">Full printable pack — every guide, drill, and sheet</a>
         <span class="download-meta">HTML + PDF</span>
       </div>
-    </section>
-    ${shell.adSlot('contentEnd')}`;
+    </section>`;
 
   return shell.documentShell({
     title: site.pageTitle('Solo Queue Practice System'),
@@ -196,24 +198,23 @@ function renderTracker() {
     : '';
 
   const body = `<h1>The Tracker Workbook</h1>
-    <p class="lead">One spreadsheet, one row per game. It is the only tool in this program that does math for you on purpose -- everything else here is a habit you build by hand.</p>
+    <p class="lead">One spreadsheet, one row per game. It is the only tool in this program that does math for you on purpose — everything else here is a habit you build by hand.</p>
     <a class="btn-primary" href="${escapeHtml(workbookHref)}">Download the tracker workbook (.xlsx)</a>
     ${workbookMeta}
     <h2>What is inside</h2>
     <ul>
       <li><strong>Baseline sheet.</strong> Enter your last ten games once, before you start. The sheet computes your ten-game averages for you, so you cannot accidentally round in your own favor.</li>
       <li><strong>Game log.</strong> One row per game after that: CS at the ten-minute mark, final CS/min, deaths, vision score, result, and which focus you were holding that game.</li>
-      <li><strong>Running averages.</strong> Every formula is already built in -- you read numbers, you never calculate them.</li>
+      <li><strong>Running averages.</strong> Every formula is already built in — you read numbers, you never calculate them.</li>
     </ul>
     <h2>How to use it</h2>
     <ol>
-      <li>Fill in your Day 0 baseline from your last ten games -- see the <a href="${escapeHtml(site.url('baseline.html'))}">baseline page</a> for how to read the result.</li>
+      <li>Fill in your Day 0 baseline from your last ten games — see the <a href="${escapeHtml(site.url('baseline.html'))}">baseline page</a> for how to read the result.</li>
       <li>Pick one focus from the <a href="${escapeHtml(site.url('focus-menu.html'))}">focus menu</a> and log every game while you hold it, including the ones you lose badly.</li>
       <li>At the end of each ten-game block, read the averages and decide whether to graduate to a new focus or repeat.</li>
     </ol>
-    <p>It opens in Excel, LibreOffice Calc, or Google Sheets (File &gt; Import). No macros, no add-ins, no account, and nothing you enter leaves your computer -- it is a local file, not a connected app.</p>
-    <p>Want the rest of the program on paper too? The <a href="${escapeHtml(site.url('downloads.html'))}">full printable pack</a> has the guide, the drills, and two blank study sheets alongside this workbook.</p>
-    ${shell.adSlot('contentEnd')}`;
+    <p>It opens in Excel, LibreOffice Calc, or Google Sheets (File &gt; Import). No macros, no add-ins, no account, and nothing you enter leaves your computer — it is a local file, not a connected app.</p>
+    <p>Want the rest of the program on paper too? The <a href="${escapeHtml(site.url('downloads.html'))}">full printable pack</a> has the guide, the drills, and two blank study sheets alongside this workbook.</p>`;
 
   return shell.documentShell({
     title: site.pageTitle('Free LoL Practice Tracker Spreadsheet'),
@@ -247,13 +248,12 @@ function renderDownloads() {
     : '';
 
   const body = `<h1>Free downloads</h1>
-    <p class="lead">Every document from the program as a file you can save, print, or open offline -- the guide, the drill library, warmup cards, two blank study sheets, and the tracker spreadsheet. No email, no account, no payment, for any of it.</p>
+    <p class="lead">Every document from the program as a file you can save, print, or open offline — the guide, the drill library, warmup cards, two blank study sheets, and the tracker spreadsheet. No email, no account, no payment, for any of it.</p>
     ${workbookBlock}
     <h2>The rest of the pack</h2>
     <p>Each document ships as clean HTML you can open straight in a browser, and, where a browser was available at build time, a matching PDF for printing.</p>
-    ${rows || '<p>The download pack is being rebuilt right now -- check back shortly.</p>'}
-    ${readmeLine}
-    ${shell.adSlot('contentEnd')}`;
+    ${rows || '<p>The download pack is being rebuilt right now — check back shortly.</p>'}
+    ${readmeLine}`;
 
   return shell.documentShell({
     title: site.pageTitle('Free Printable LoL Practice Pack'),
@@ -270,12 +270,12 @@ function renderDownloads() {
 
 function renderAbout() {
   const body = `<h1>About</h1>
-    <p class="lead">${escapeHtml(site.SITE_NAME)} is a free, one-person project: a 30-day deliberate-practice program for League of Legends solo queue, built the same way most practiced skills improve -- pick one measurable thing, drill it, review it, then move to the next.</p>
+    <p class="lead">${escapeHtml(site.SITE_NAME)} is a free, one-person project: a 30-day deliberate-practice program for League of Legends solo queue, built the same way most practiced skills improve — pick one measurable thing, drill it, review it, then move to the next.</p>
     <h2>Why it is free</h2>
-    <p>Riot Games' fan-content rules let an individual player run a project like this on passive ad revenue, but not sell anything, take donations or sponsorships, or run it as a company. So this site does neither of those things -- the program, the tracker spreadsheet, and the printable pack are all free, with nothing to fill in and no account to create. The only revenue this site earns comes from the ad space on its content pages.</p>
+    <p>Riot Games' fan-content rules let an individual player run a project like this on passive ad revenue, but not sell anything, take donations or sponsorships, or run it as a company. So this site does neither of those things — the program, the tracker spreadsheet, and the printable pack are all free, with nothing to fill in and no account to create. The only revenue this site earns comes from the ad space on its content pages.</p>
     <h2>Who made it</h2>
     <p>This is an independent, individual project, not a studio, agency, or company.</p>
-    <p><!-- TODO(builder): personal contact email not supplied at build time -- replace before this page is published. See task-msqf2pg0-6b7639's completion note. -->TODO: contact email not yet supplied -- this line is a placeholder and should not go live until it is replaced.</p>
+    <p>Contact: <a href="mailto:${escapeHtml(CONTACT_EMAIL)}">${escapeHtml(CONTACT_EMAIL)}</a></p>
     <h2>Legal</h2>
     <p>${escapeHtml(RIOT_DISCLAIMER)}</p>
     <p>${escapeHtml(TRADEMARK_NOTICE)}</p>
@@ -296,16 +296,16 @@ function renderAbout() {
 
 function renderPrivacy() {
   const body = `<h1>Privacy</h1>
-    <p class="lead">This page explains what happens to your data on ${escapeHtml(site.SITE_NAME)}. Short version: there are no accounts, no forms, and no sign-ups anywhere on this site -- what gets collected comes from your browser and from the two third-party services described below, not from anything you type in.</p>
+    <p class="lead">This page explains what happens to your data on ${escapeHtml(site.SITE_NAME)}. Short version: there are no accounts, no forms, and no sign-ups anywhere on this site — what gets collected comes from your browser and from the two third-party services described below, not from anything you type in.</p>
     <h2>Analytics</h2>
-    <p>This site may use GoatCounter, a privacy-focused analytics tool, to count page views. GoatCounter does not use cookies and does not build a profile of individual visitors -- it reports aggregate numbers only, such as how many people viewed a page and roughly where the traffic came from, never anything tied back to you personally.</p>
+    <p>This site may use GoatCounter, a privacy-focused analytics tool, to count page views. GoatCounter does not use cookies and does not build a profile of individual visitors — it reports aggregate numbers only, such as how many people viewed a page and roughly where the traffic came from, never anything tied back to you personally.</p>
     <h2>Advertising</h2>
-    <p>This site may show ads served by Google AdSense. Google and its advertising partners can set cookies or use similar technology in your browser to serve ads based on your visits to this and other sites, and to measure how those ads perform. This site does not control what those cookies do -- that is between you and Google.</p>
+    <p>This site may show ads served by Google AdSense. Google and its advertising partners can set cookies or use similar technology in your browser to serve ads based on your visits to this and other sites, and to measure how those ads perform. This site does not control what those cookies do — that is between you and Google.</p>
     <p>You can review and adjust what Google uses for ad personalization at <a href="https://adssettings.google.com/">Google Ads Settings</a>, and opt out of personalized advertising more broadly at the Digital Advertising Alliance's <a href="https://optout.aboutads.info/">consumer opt-out page</a>. Most browsers also let you block third-party cookies entirely from their own privacy settings.</p>
     <h2>What this site does not do</h2>
     <ul>
       <li>No account creation, no login, no password, anywhere on the site.</li>
-      <li>No email collection -- every download here is free with nothing to fill in.</li>
+      <li>No email collection — every download here is free with nothing to fill in.</li>
       <li>No sale of any data to anyone, because none is collected here to sell.</li>
     </ul>
     <h2>Changes</h2>

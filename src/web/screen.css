@@ -1,4 +1,4 @@
-/* Solo Queue Practice System -- screen chrome (spec Section 1.5).
+/* Solo Queue Practice System -- screen chrome.
    Styles the shared document shell (header/nav/footer/ad-slot) and the
    generic screen-only building blocks (hero, card grid, download row).
    Also carries screen-side definitions of the five print-system primitives
@@ -272,9 +272,9 @@ main {
 .not-found ul { padding-left: var(--space-5); }
 
 /* ---------------------------------------------------------------------------
-   Content primitives (added by B1) -- card, slot-label, checklist-row,
+   Content primitives -- card, slot-label, checklist-row,
    fill-line, callout, data-table, drill-grid. print.css defines these five
-   primitives (spec Section 1.5), but tokens.css + screen.css is what's
+   primitives, but tokens.css + screen.css is what's
    concatenated into dist/site.css -- print.css is never included on the web
    side -- so without a screen-side definition every guide-derived content
    page (program/baseline/focus-menu/etc.) would render these as unstyled

@@ -1,10 +1,10 @@
 'use strict';
 
-// The shared document shell for every web page (spec Section 6 B0): head
+// The shared document shell for every web page: head
 // meta, canonical, og/twitter, a JSON-LD slot, inlined CSS, a skip link,
 // header + nav, <main>, and a footer carrying Riot's required disclaimer
-// plus About/Privacy links. Every page in the web build (this task's
-// index.html/404.html, and every page later subtasks add) should be built
+// plus About/Privacy links. Every page in the web build (index.html/404.html,
+// and every page added since) should be built
 // by calling documentShell() -- there is exactly one place that assembles
 // <head>/<header>/<footer>, so nothing drifts between pages.
 
@@ -32,7 +32,7 @@ const GOATCOUNTER_URL = 'https://dylangerrrrkerl.goatcounter.com/count';
 const ADSENSE_CLIENT = adConfig.client;
 
 // AdSense Auto ads loader (human-confirmed, currently-generated snippet for
-// this same publisher account -- see task-msqjws1v-ecbdaa). Unconditional,
+// this same publisher account). Unconditional,
 // same as the verification meta tag above: Auto ads places ad units itself
 // once Google approves the site-add, so it isn't gated by
 // adConfig.enabled/slots -- that flag only ever applied to the older
@@ -41,19 +41,19 @@ const ADSENSE_CLIENT = adConfig.client;
 // gated code path untouched rather than removing it.
 const ADSENSE_AUTO_ADS_SCRIPT = `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${escapeHtml(ADSENSE_CLIENT)}" crossorigin="anonymous"></script>`;
 
-// Riot's fan-content policy requires this exact wording (spec Section 1.7),
+// Riot's fan-content policy requires this exact wording,
 // defined once in site.js and shared with the print pack (src/render/pages.js)
 // so both outputs carry byte-identical text. Contact identity throughout the
 // web build is a personal one, never a business/legal entity -- Riot's
 // policy excludes projects that involve one.
 const { RIOT_DISCLAIMER, TRADEMARK_NOTICE } = site;
 
-// Inline SVG favicon (spec Section 1.5/6 B4): "a mono wordmark glyph, no
-// image file, no new asset pipeline" -- a single accent-blue circle badge
+// Inline SVG favicon: a mono wordmark glyph, no
+// image file, no new asset pipeline -- a single accent-blue circle badge
 // with a white "S" monogram. A data: URI can't reference a CSS custom
 // property, so its two colors are copied here literally from tokens.css's
 // --accent/--paper at the one call site that needs them; this is the same,
-// deliberate exception O-5's own FAVICON_DATA_URI takes to the "no hardcoded
+// deliberate exception the human's other site's own FAVICON_DATA_URI takes to the "no hardcoded
 // hex outside tokens.css" rule -- it's a self-contained embedded image
 // asset, not page styling. scripts/build-og-image.js decodes this exact
 // string to reuse the same mark in the 1200x630 og-image, so the favicon and
@@ -62,16 +62,16 @@ const FAVICON_DATA_URI = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/200
 
 // tokens.css + screen.css, read once at require time -- this IS the
 // concatenation the build writes to dist/site.css, and it is also inlined
-// directly into every page's <head> (spec Section 1.6: fast static delivery,
-// no render-blocking stylesheet request for a one-page-and-out visit).
+// directly into every page's <head> for fast static delivery,
+// with no render-blocking stylesheet request for a one-page-and-out visit.
 const SITE_CSS = [
   fs.readFileSync(path.join(__dirname, 'tokens.css'), 'utf8'),
   fs.readFileSync(path.join(__dirname, 'screen.css'), 'utf8')
 ].join('\n');
 
-// Fixed nav order, spec Section 1.5. Every page passes `active` (or null) to
+// Fixed nav order. Every page passes `active` (or null) to
 // mark the current page with aria-current; pages that don't exist yet (until
-// B1-B4 build them) still get a working link into the future filename, since
+// they're built) still get a working link into the future filename, since
 // this shell defines the site's whole navigational shape up front.
 const NAV_LINKS = [
   { key: 'home', label: 'Home', file: '' },
@@ -140,10 +140,9 @@ function renderHeader(active = null) {
 }
 
 /**
- * @returns {string} the shared footer -- Riot's required disclaimer verbatim
- *   (spec Section 1.7), plus About/Privacy links. No Ko-fi/donation link and
- *   no affiliate link anywhere in this footer, ever -- see the spec section
- *   this shell was built from for why.
+ * @returns {string} the shared footer -- Riot's required disclaimer verbatim,
+ *   plus About/Privacy links. No Ko-fi/donation link and
+ *   no affiliate link anywhere in this footer, ever -- kept deliberately clean.
  */
 function renderFooter() {
   return `<footer class="site-footer">
@@ -180,10 +179,10 @@ ${bodyHtml}
 }
 
 /**
- * The static-hosting 404 page (spec Section 6 B0). GitHub Pages serves
+ * The static-hosting 404 page. GitHub Pages serves
  * /404.html automatically. Uses the exact same header/nav/footer shell as
- * every other page, marked noindex, and carries no ad slot (spec Section
- * 1.4: about/privacy/404/print pages get zero ads).
+ * every other page, marked noindex, and carries no ad slot
+ * (about/privacy/404/print pages get zero ads).
  */
 function render404Page() {
   const title = `Page not found | ${site.SITE_NAME}`;

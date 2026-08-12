@@ -1,16 +1,16 @@
 'use strict';
 
 /**
- * schema.org JSON-LD builders (spec Section 6 B4 / Section 1.6). Every
+ * schema.org JSON-LD builders. Every
  * function here returns a ready-to-embed
  * `<script type="application/ld+json">...</script>` string, built with
  * jsonLdScript() below so escaping is handled in exactly one place.
  *
- * Only three types, per the spec: Article (every content page), FAQPage
+ * Only three types are used: Article (every content page), FAQPage
  * (faq.html only), and WebSite (index.html only, no SearchAction -- there is
  * no on-site search). Deliberately NO HowTo on the drill/warmup pages --
  * Google removed HowTo rich results, so the markup would buy nothing and
- * only create a mismatch risk (spec Section 1.6).
+ * only create a mismatch risk.
  *
  * A page render module wires one of these into documentShell({ jsonLd })
  * (src/web/shell.js) itself -- this module only builds the string.
@@ -52,8 +52,8 @@ function stripHtmlToText(html) {
 
 /**
  * Article JSON-LD for one content page. `authorName`/`publisherName` default
- * to SITE_NAME as an Organization, never an invented person byline -- spec
- * Section 1.6 is explicit that nobody involved is a named, reviewed human
+ * to SITE_NAME as an Organization, never an invented person byline --
+ * nobody involved is a named, reviewed human
  * author, so attributing one would be a false claim.
  *
  * @param {object} opts
@@ -86,7 +86,7 @@ function articleJsonLd({ headline, description, datePublished, dateModified, url
  * would be exactly the kind of markup abuse search engines penalize.
  *
  * @param {Array<{question:string, answerHtml:string}>} faqs question/answer
- *   pairs matching the visible FAQ text verbatim (spec Section 1.6).
+ *   pairs matching the visible FAQ text verbatim.
  */
 function faqPageJsonLd(faqs) {
   return jsonLdScript({

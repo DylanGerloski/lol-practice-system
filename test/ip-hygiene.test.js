@@ -10,11 +10,12 @@ const focuses = require('../content/focuses.json');
 const warmups = require('../content/warmups.json');
 const guide = require('../content/guide.js');
 const { build, DIST } = require('../src/build.js');
+const { build: buildSite, DIST: WEB_DIST } = require('../src/web/buildSite.js');
 const { RIOT_DISCLAIMER, TRADEMARK_NOTICE } = require('../src/site.js');
 
 // A representative denylist of Riot-owned proper nouns: champion names, named items,
 // named runes, and named map objectives/locations. Not exhaustive (League has 160+
-// champions) -- this is the build-time guard the spec calls for (Section 3, test 6), sized
+// champions) -- this is a build-time guard sized
 // to catch an accidental slip, not a certified complete trademark audit.
 const DENYLIST = [
   // Champions (representative spread across roles/eras)
@@ -30,7 +31,7 @@ const DENYLIST = [
   'Electrocute', 'Conqueror', 'Grasp of the Undying', 'Aftershock', 'Phase Rush',
   'Summon Aery', 'Arcane Comet', 'Dark Harvest', 'Predator',
   // Named map locations/objectives (generic "dragon"/"baron"/"herald" as gameplay nouns
-  // are allowed per the spec's own IP-hygiene section; these are the specific proper names)
+  // are allowed; these are the specific proper names that aren't)
   'Baron Nashor', 'Rift Herald', "Summoner's Rift", 'Nexus'
 ];
 
@@ -59,24 +60,39 @@ test('no content JSON/JS record contains a denylisted Riot-owned proper noun', (
 
 test('no rendered HTML output contains a denylisted Riot-owned proper noun', () => {
   build();
-  const files = fs.readdirSync(DIST).filter(f => f.endsWith('.html'));
+  buildSite();
+  // Both halves of the build: dist/print/ (the print pack) and dist/*.html
+  // (the web site, excluding the print/ subdirectory itself -- readdirSync
+  // without recursion already skips it, since it's a directory entry, not
+  // a .html file).
+  const printFiles = fs.readdirSync(DIST).filter(f => f.endsWith('.html')).map(f => path.join(DIST, f));
+  const webFiles = fs.readdirSync(WEB_DIST).filter(f => f.endsWith('.html')).map(f => path.join(WEB_DIST, f));
+  const files = [...printFiles, ...webFiles];
   assert.ok(files.length > 0, 'expected at least one built HTML file');
   for (const f of files) {
-    const content = fs.readFileSync(path.join(DIST, f), 'utf8');
+    const content = fs.readFileSync(f, 'utf8');
     for (const term of DENYLIST) {
       assert.ok(!findHits(content, term), `${f} contains denylisted term: ${term}`);
     }
   }
 });
 
-test('every rendered HTML document carries the disclaimer footer line', () => {
+test('every rendered HTML document carries both the disclaimer and the trademark notice, verbatim', () => {
   build();
-  const files = fs.readdirSync(DIST).filter(f => f.endsWith('.html'));
+  buildSite();
+  // The print pack renders these two sentences concatenated into one
+  // literal line (src/render/pages.js's DISCLAIMER constant); the web
+  // shell's footer renders them as two separate <p> elements
+  // (src/web/shell.js's renderFooter()) -- both satisfy Riot's fan-content policy
+  // ("... plus 'League of Legends is a trademark...'"), so this checks each
+  // sentence is present verbatim rather than requiring them adjacent.
+  const printFiles = fs.readdirSync(DIST).filter(f => f.endsWith('.html')).map(f => path.join(DIST, f));
+  const webFiles = fs.readdirSync(WEB_DIST).filter(f => f.endsWith('.html')).map(f => path.join(WEB_DIST, f));
+  const files = [...printFiles, ...webFiles];
+  assert.ok(files.length > 0, 'expected at least one built HTML file');
   for (const f of files) {
-    const content = fs.readFileSync(path.join(DIST, f), 'utf8');
-    assert.ok(
-      content.includes(`${RIOT_DISCLAIMER} ${TRADEMARK_NOTICE}`),
-      `${f} missing the exact disclaimer line`
-    );
+    const content = fs.readFileSync(f, 'utf8');
+    assert.ok(content.includes(RIOT_DISCLAIMER), `${f} missing the exact Riot disclaimer sentence`);
+    assert.ok(content.includes(TRADEMARK_NOTICE), `${f} missing the exact trademark notice sentence`);
   }
 });

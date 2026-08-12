@@ -5,23 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Review Your Replays in 12 Minutes | Solo Queue Practice</title>
   <meta name="description" content="A 4-checkpoint method for reviewing your own League of Legends replays in about twelve minutes, with a printable checklist.">
-  <link rel="canonical" href="https://dylangerloski.github.io/solo-queue-practice/vod-review.html">
+  <link rel="canonical" href="https://lol-practice-system.com/vod-review.html">
   <meta property="og:title" content="Review Your Replays in 12 Minutes | Solo Queue Practice">
   <meta property="og:description" content="A 4-checkpoint method for reviewing your own League of Legends replays in about twelve minutes, with a printable checklist.">
-  <meta property="og:url" content="https://dylangerloski.github.io/solo-queue-practice/vod-review.html">
+  <meta property="og:url" content="https://lol-practice-system.com/vod-review.html">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Solo Queue Practice">
-  <meta property="og:image" content="https://dylangerloski.github.io/solo-queue-practice/og-image.png">
+  <meta property="og:image" content="https://lol-practice-system.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="google-adsense-account" content="ca-pub-9767914878112531">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9767914878112531" crossorigin="anonymous"></script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%231B54C8'/%3E%3Ctext x='32' y='45' font-family='Arial, Helvetica, sans-serif' font-size='38' font-weight='700' fill='%23FFFFFF' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
-  <style>/* Solo Queue Practice System -- web design tokens (spec Section 1.5).
-   Verbatim from the architect spec, including the WCAG-AA contrast fixes to
-   the print system's original --accent/--good values. Builder styles ONLY
-   from these tokens -- a hardcoded hex/px value outside this file is a QA
-   failure. This file is concatenated ahead of screen.css (-> dist/site.css)
-   and ahead of print.css (-> dist/print/print.css) so there is exactly one
+  <style>/* Solo Queue Practice System -- web design tokens: the single source of
+   truth for color, type, spacing, radius, and shadow across the site.
+   Includes WCAG-AA contrast fixes to the print system's original
+   --accent/--good values. Every style in this project should read its
+   values from here rather than hardcoding a hex or pixel value elsewhere.
+   This file is concatenated ahead of screen.css (-> dist/site.css) and
+   ahead of print.css (-> dist/print/print.css) so there is exactly one
    definition of every value in the project. */
 
 :root {
@@ -69,7 +72,7 @@
   --ad-min-h-desktop: 280px;
 }
 
-/* Solo Queue Practice System -- screen chrome (spec Section 1.5).
+/* Solo Queue Practice System -- screen chrome.
    Styles the shared document shell (header/nav/footer/ad-slot) and the
    generic screen-only building blocks (hero, card grid, download row).
    Also carries screen-side definitions of the five print-system primitives
@@ -343,9 +346,9 @@ main {
 .not-found ul { padding-left: var(--space-5); }
 
 /* ---------------------------------------------------------------------------
-   Content primitives (added by B1) -- card, slot-label, checklist-row,
+   Content primitives -- card, slot-label, checklist-row,
    fill-line, callout, data-table, drill-grid. print.css defines these five
-   primitives (spec Section 1.5), but tokens.css + screen.css is what's
+   primitives, but tokens.css + screen.css is what's
    concatenated into dist/site.css -- print.css is never included on the web
    side -- so without a screen-side definition every guide-derived content
    page (program/baseline/focus-menu/etc.) would render these as unstyled
@@ -433,43 +436,38 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
 }
 .drill-grid .card { margin-bottom: 0; }
 </style>
+  <script data-goatcounter="https://dylangerrrrkerl.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
-    <a class="brand" href="/solo-queue-practice/">Solo Queue Practice</a>
+    <a class="brand" href="/">Solo Queue Practice</a>
     <nav class="site-nav" aria-label="Main">
-      <a href="/solo-queue-practice/">Home</a>
-      <a href="/solo-queue-practice/program.html">Program</a>
-      <a href="/solo-queue-practice/focus-menu.html">Focus menu</a>
-      <a href="/solo-queue-practice/drills.html">Drills</a>
-      <a href="/solo-queue-practice/warmup.html">Warmup</a>
-      <a href="/solo-queue-practice/tracker.html">Tracker</a>
-      <a href="/solo-queue-practice/downloads.html">Downloads</a>
-      <a href="/solo-queue-practice/faq.html">FAQ</a>
+      <a href="/">Home</a>
+      <a href="/program.html">Program</a>
+      <a href="/focus-menu.html">Focus menu</a>
+      <a href="/drills.html">Drills</a>
+      <a href="/warmup.html">Warmup</a>
+      <a href="/tracker.html">Tracker</a>
+      <a href="/downloads.html">Downloads</a>
+      <a href="/faq.html">FAQ</a>
     </nav>
   </header>
   <main id="main" class="page-shell">
 <h1>Review Your Own Replays in 12 Minutes</h1>
     <p class="lead">Four checkpoints, roughly three minutes each, using nothing but your client's own replay feature.</p>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
     <section class="guide-section">
       <h2>Self VOD Review in 12 Minutes</h2>
-      <p>This is the fuller review, distinct from the 2-minute one-sentence lesson in the Session Loop -- use it once per block at minimum, or after any game that felt genuinely confusing while you were playing it. It uses your client&#39;s own replay/timeline feature; no external tool is required.</p>
+      <p>This is the fuller review, distinct from the 2-minute one-sentence lesson in the Session Loop — use it once per block at minimum, or after any game that felt genuinely confusing while you were playing it. It uses your client&#39;s own replay/timeline feature; no external tool is required.</p>
 <p>Four checkpoints, roughly three minutes each:</p>
-<ul><li>Checkpoint 1, 0-3 minutes (Lane Setup): watch your first back-and-forth with your lane opponent. Did your positioning at level 1 match the matchup you expected? Note it on the Matchup Study Sheet if this is a matchup you have not documented yet.</li><li>Checkpoint 2, First Back: watch the recall/reset around minions 1-2. Was the timing efficient (Recall Timing drill), and did your item purchase match what the game state actually called for?</li><li>Checkpoint 3, Mid-Game Grouping: watch the first time your team grouped for an objective or fight. Were you where you needed to be, and did you call the objective timer early (Objective-Timer Pre-Call drill)?</li><li>Checkpoint 4, The Fight That Decided It: identify the single fight or skirmish that most changed the game&#39;s outcome and watch it twice -- once for your own positioning, once for what the enemy team did that worked.</li></ul>
-<p>After all four checkpoints, write the same single-sentence lesson the Session Loop asks for after every game -- one specific action, not a feeling. The difference here is that this fuller review sometimes surfaces a lesson the 2-minute version would have missed, because you are watching your own decisions back rather than relying on memory alone.</p>
-<p class="callout">Twelve minutes is a target, not a ceiling. If a checkpoint genuinely needs more time because something confusing happened, take it -- the time budget exists to make this review feel achievable after a long session, not to cut a real insight short.</p>
+<ul><li>Checkpoint 1, 0-3 minutes (Lane Setup): watch your first back-and-forth with your lane opponent. Did your positioning at level 1 match the matchup you expected? Note it on the Matchup Study Sheet if this is a matchup you have not documented yet.</li><li>Checkpoint 2, First Back: watch the recall/reset around minions 1-2. Was the timing efficient (Recall Timing drill), and did your item purchase match what the game state actually called for?</li><li>Checkpoint 3, Mid-Game Grouping: watch the first time your team grouped for an objective or fight. Were you where you needed to be, and did you call the objective timer early (Objective-Timer Pre-Call drill)?</li><li>Checkpoint 4, The Fight That Decided It: identify the single fight or skirmish that most changed the game&#39;s outcome and watch it twice — once for your own positioning, once for what the enemy team did that worked.</li></ul>
+<p>After all four checkpoints, write the same single-sentence lesson the Session Loop asks for after every game — one specific action, not a feeling. The difference here is that this fuller review sometimes surfaces a lesson the 2-minute version would have missed, because you are watching your own decisions back rather than relying on memory alone.</p>
+<p class="callout">Twelve minutes is a target, not a ceiling. If a checkpoint genuinely needs more time because something confusing happened, take it — the time budget exists to make this review feel achievable after a long session, not to cut a real insight short.</p>
 <p>Use the VOD Review Sheet (a fillable one-page template in this package) to write down the timestamp and a short note for each checkpoint as you go, rather than trying to hold all four in memory until the end.</p>
     </section>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
     <section class="guide-section">
       <h2>VOD Review Checklist</h2>
-      <p>The same four checkpoints as a running checklist -- print the fillable version below if you would rather write on paper.</p>
+      <p>The same four checkpoints as a running checklist — print the fillable version below if you would rather write on paper.</p>
       <div class="vod-checklist"><div class="checklist-row">
     <span class="checklist-box" aria-hidden="true"></span>
     <span class="checklist-text">Checkpoint 1, 0-3 minutes (Lane Setup): note the timestamp, and whether your level-1 positioning matched the matchup you expected.</span>
@@ -488,17 +486,14 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
   </div>
 <div class="checklist-row">
     <span class="checklist-box" aria-hidden="true"></span>
-    <span class="checklist-text">Change Next Game: write the one specific action you will change -- not a feeling.</span>
+    <span class="checklist-text">Change Next Game: write the one specific action you will change — not a feeling.</span>
   </div></div>
     </section>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
     <nav class="cross-links" aria-label="Related pages">
       <ul>
-      <li><a href="/solo-queue-practice/print/07-vod-review-sheet.html">Print the blank VOD Review Sheet</a></li>
-      <li><a href="/solo-queue-practice/tracker.html">Get the free tracker spreadsheet</a></li>
-      <li><a href="/solo-queue-practice/downloads.html">Download the full printable pack</a></li>
+      <li><a href="/print/07-vod-review-sheet.html">Print the blank VOD Review Sheet</a></li>
+      <li><a href="/tracker.html">Get the free tracker spreadsheet</a></li>
+      <li><a href="/downloads.html">Download the full printable pack</a></li>
       </ul>
     </nav>
   </main>
@@ -506,8 +501,8 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
     <p>Solo Queue Practice System was created under Riot Games’ “Legal Jibber Jabber” policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.</p>
     <p>League of Legends is a trademark of Riot Games, Inc.</p>
     <p class="footer-links">
-      <a href="/solo-queue-practice/about.html">About</a>
-      <a href="/solo-queue-practice/privacy.html">Privacy</a>
+      <a href="/about.html">About</a>
+      <a href="/privacy.html">Privacy</a>
     </p>
   </footer>
 </body>

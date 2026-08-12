@@ -1,14 +1,14 @@
 'use strict';
 
-// Optional packaging step (spec Section 7 B3): attempts a local, offline
+// Optional packaging step: attempts a local, offline
 // headless-browser print-to-pdf pass over every HTML document in dist/print/,
 // producing a same-named .pdf next to each .html file.
 //
 // This is deliberately a *separate* npm script ("npm run pdf") from "npm run
 // build" -- the core build (HTML + the tracker workbook) must never depend on
-// whether a browser happens to be installed on this machine. Per the spec: "skips
-// cleanly with a printed notice if no browser binary found, never fails the
-// build." Concretely, that means this script:
+// whether a browser happens to be installed on this machine. It skips
+// cleanly with a printed notice if no browser binary is found, and never fails the
+// build. Concretely, that means this script:
 //   - never throws past its own boundary (a top-level try/catch swallows and logs
 //     any unexpected error instead of letting it crash the process),
 //   - always exits 0, whether it found a browser or not, and whether every file
@@ -24,7 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
-// The print pack lives under dist/print/ (spec Section 6 B0) -- this must
+// The print pack lives under dist/print/ -- this must
 // stay in sync with src/build.js's DIST so the PDF pass only ever touches
 // the print pack's own HTML files, never the site build's pages in dist/.
 const DIST = path.join(__dirname, '..', 'dist', 'print');

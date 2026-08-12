@@ -1,14 +1,14 @@
 'use strict';
 
-// drills.html and warmup.html (spec Section 6 B2): the 12 practice-tool
+// drills.html and warmup.html: the 12 practice-tool
 // drills and 5 role warmup routines as web pages, each drill/warmup getting
 // its own anchor id so focus-menu.html (src/web/contentPages.js) can
-// deep-link `drills.html#<drillId>` per spec Section 1.2's cross-linking
-// rules. Reuses the shared card() primitive (src/render/html.js) exactly
+// deep-link `drills.html#<drillId>` per the site's cross-linking
+// convention. Reuses the shared card() primitive (src/render/html.js) exactly
 // like the print pack's Drill Library/Warmup Cards documents -- see
 // drillToSlots() below, ported from src/render/pages.js's private helper of
 // the same name since it isn't exported (a small, deliberate duplication
-// rather than reaching into another subtask's file).
+// rather than reaching into another module's file).
 
 const path = require('path');
 const site = require('../site.js');
@@ -31,7 +31,7 @@ function crossLinks(links) {
 }
 
 // Every content page ends with links to the tracker and the free download
-// pack (spec Section 1.2's cross-linking rules), same convention as
+// pack (the site's cross-linking convention), same convention as
 // src/web/contentPages.js's standardEndLinks -- duplicated here rather than
 // imported since contentPages.js doesn't export it and this is the only
 // other module that needs it.
@@ -70,8 +70,8 @@ function renderDrillJumpList() {
 }
 
 // Each drill card gets a back-link to the Focus Menu card it trains (the
-// other half of focus-menu.html's forward link into drills.html#<drillId>,
-// per spec Section 1.2) plus a same-page "back to top" link into the jump
+// other half of focus-menu.html's forward link into drills.html#<drillId>)
+// plus a same-page "back to top" link into the jump
 // list above, since 12 stacked cards is a long scroll.
 function renderDrillCard(d) {
   const focus = focusByDrillId.get(d.id);
@@ -88,12 +88,10 @@ function renderDrills() {
   const first = drills.slice(0, 6).map(renderDrillCard).join('\n');
   const rest = drills.slice(6).map(renderDrillCard).join('\n');
   const body = `${introHtml}
-    ${shell.adSlot('inContentTop')}
     ${renderDrillJumpList()}
+    <h2>The Drills</h2>
     ${first}
-    ${shell.adSlot('inContentMid')}
     ${rest}
-    ${shell.adSlot('contentEnd')}
     ${standardEndLinks([
       [site.url('focus-menu.html'), 'Which drill matches your focus'],
       [site.url('warmup.html'), 'Warmup routines by role']
@@ -142,12 +140,10 @@ function renderWarmup() {
   const first = warmups.slice(0, 3).map(renderWarmupCard).join('\n');
   const rest = warmups.slice(3).map(renderWarmupCard).join('\n');
   const body = `${introHtml}
-    ${shell.adSlot('inContentTop')}
     ${renderWarmupJumpList()}
+    <h2>The Routines</h2>
     ${first}
-    ${shell.adSlot('inContentMid')}
     ${rest}
-    ${shell.adSlot('contentEnd')}
     ${standardEndLinks([
       [site.url('drills.html'), 'The 12 practice-tool drills'],
       [site.url('program.html'), 'Back to the 30-day program']

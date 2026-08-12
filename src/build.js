@@ -12,7 +12,7 @@ const guide = require('../content/guide.js');
 const pages = require('./render/pages.js');
 const { buildTrackerWorkbook } = require('./xlsx/workbook.js');
 
-// The print pack now lives under dist/print/ (spec Section 6 B0), sharing
+// The print pack now lives under dist/print/, sharing
 // dist/ with the site build (src/web/buildSite.js writes flat .html into
 // dist/ itself). cleanDir() below only ever clears this dist/print/
 // subdirectory, never the parent dist/ -- so a site build's output already
@@ -39,15 +39,15 @@ function build() {
   cleanDir(DIST);
 
   // tokens.css concatenated ahead of print.css -- exactly one definition of
-  // every color/spacing/type value in the project (spec Section 1.5;
-  // src/render/print.css's own :root block was deleted for this reason).
+  // every color/spacing/type value in the project
+  // (src/render/print.css's own :root block was deleted for this reason).
   const tokensSrc = fs.readFileSync(path.join(__dirname, 'web', 'tokens.css'), 'utf8');
   const printSrc = fs.readFileSync(path.join(__dirname, 'render', 'print.css'), 'utf8');
   fs.writeFileSync(path.join(DIST, 'print.css'), `${tokensSrc}\n${printSrc}`, 'utf8');
 
   // Filenames are numbered per the buyer-facing usage order documented in
-  // 00-readme.html itself (spec Section 7 B3: "final dist/ in buyer-facing order
-  // with sane filenames"). A file browser's default alphabetical sort then matches
+  // 00-readme.html itself: final dist/ in buyer-facing order
+  // with sane filenames. A file browser's default alphabetical sort then matches
   // the order a buyer should actually open things in, instead of an arbitrary
   // alphabetization of topic names.
   const written = ['print.css'];

@@ -1,9 +1,9 @@
 'use strict';
 
-// Guide-derived content pages (spec Section 6 B1): program.html,
+// Guide-derived content pages: program.html,
 // baseline.html, focus-menu.html, champion-pool.html, vod-review.html,
 // tilt-rules.html, faq.html. Rendered from content/guide.js sections
-// A1-A11 per spec Section 1.2's page mapping, reusing the same
+// A1-A11 per the site's page mapping, reusing the same
 // renderGuideBlock/renderBenchmarksTable/renderFocusCards renderers the
 // print pack uses (src/render/pages.js), so a guide section, the
 // benchmarks table, and a focus card look identical in substance on both
@@ -11,7 +11,7 @@
 //
 // Every guide section (a1 through a11) is used exactly once across these
 // seven pages -- see SECTION_MAP below, which is also this module's map
-// from page to spec Section 1.2's "Source content" column.
+// from page to source content.
 
 const fs = require('fs');
 const path = require('path');
@@ -53,13 +53,17 @@ function renderSection(id) {
 
 /**
  * The Focus Menu's cards, reimplemented here (rather than calling
- * src/render/pages.js's renderFocusCards) for one reason: the print pack's
- * card has no links, but spec Section 1.2 requires each web focus card to
+ * src/render/pages.js's renderFocusCards) for two reasons: the print pack's
+ * card has no links, but the web version requires each web focus card to
  * deep-link its drill slot to drills.html#<drillId>, and the shared card()
  * primitive (src/render/html.js) escapes its slot values as plain text, so
- * it cannot carry an <a> inside a slot. Every other value/label/class here
- * matches renderFocusCards()'s output exactly -- only the drill slot's
- * value gained a link.
+ * it cannot carry an <a> inside a slot; and each card needs its own anchor
+ * id (id="<focus.id>") so drills.html's "Trains the '<focus>' focus" back-
+ * link (src/web/drillWarmupPages.js, which already targets
+ * focus-menu.html#<focus.id>) lands on the exact card instead of just the
+ * top of the page. Every other value/label/class here matches
+ * renderFocusCards()'s output exactly -- only the anchor id and the drill
+ * slot's value (now a link) differ.
  */
 function renderFocusCardsWithDrillLinks() {
   const byId = new Map(drills.map(d => [d.id, d]));
@@ -67,7 +71,7 @@ function renderFocusCardsWithDrillLinks() {
     const drill = byId.get(f.drillId);
     const drillLabel = drill ? drill.name : f.drillId;
     const drillHref = site.url(`drills.html#${f.drillId}`);
-    return `<div class="card">
+    return `<div class="card" id="${escapeHtml(f.id)}">
     <h3 class="card-title">${escapeHtml(f.title)}</h3>
     <div class="card-slot">
       <span class="slot-label">What It Is</span>
@@ -93,8 +97,8 @@ function renderFocusCardsWithDrillLinks() {
 /**
  * The VOD Review Sheet's fields (src/render/pages.js's renderVodSheet),
  * reused here as a live checklist rather than a blank fillable template --
- * spec Section 1.2's "Source content" column for vod-review.html calls for
- * "guide A8 + VOD sheet fields as a checklist."
+ * vod-review.html's source content is guide A8 plus the VOD sheet fields
+ * as a checklist.
  */
 function renderVodChecklist() {
   const items = [
@@ -102,7 +106,7 @@ function renderVodChecklist() {
     'Checkpoint 2, First Back: note the timestamp, whether the recall timing was efficient, and whether your purchase matched the game state.',
     'Checkpoint 3, Mid-Game Grouping: note the timestamp, whether you were where you needed to be, and whether you called the objective timer early.',
     'Checkpoint 4, The Fight That Decided It: note the timestamp, watch it twice, and write one thing about your own positioning and one thing the enemy team did that worked.',
-    'Change Next Game: write the one specific action you will change -- not a feeling.'
+    'Change Next Game: write the one specific action you will change — not a feeling.'
   ];
   return `<div class="vod-checklist">${items.map(checklistRow).join('\n')}</div>`;
 }
@@ -117,7 +121,7 @@ function crossLinks(links) {
 }
 
 // Every content page ends with links to the tracker and the free download
-// pack (spec Section 1.2's cross-linking rules), on top of whatever
+// pack (the site's cross-linking convention), on top of whatever
 // page-specific links a given page also carries.
 function standardEndLinks(extra = []) {
   return crossLinks([
@@ -129,9 +133,7 @@ function standardEndLinks(extra = []) {
 
 function buildPage({ file, titleBase, description, active, introHtml, sectionsHtml, endLinksHtml }) {
   const body = `${introHtml}
-    ${shell.adSlot('inContentTop')}
     ${sectionsHtml}
-    ${shell.adSlot('contentEnd')}
     ${endLinksHtml}`;
   return shell.documentShell({
     title: site.pageTitle(titleBase),
@@ -144,16 +146,17 @@ function buildPage({ file, titleBase, description, active, introHtml, sectionsHt
 }
 
 // Splits a page's sections into "everything up to and including the
-// midpoint" so inContentMid lands roughly halfway down a multi-section
-// page, per spec Section 1.4's placement rule. A single-section page gets
-// its mid slot right after that one section, which still satisfies "3 ad
-// slots each" without an empty top/mid gap.
+// midpoint" and "the rest" -- originally so a manual ad slot could sit at
+// the midpoint of a multi-section page. The manual ad-slot markup itself
+// was removed (Auto ads now places ads on its own, so the empty
+// placeholder wells were dropped rather than left visually coexisting with
+// it), but the split is kept as-is since callers below still pass a
+// two-part sectionsHtml shape.
 function renderSectionsWithMidAd(ids) {
   const mid = Math.max(1, Math.ceil(ids.length / 2));
   const first = ids.slice(0, mid).map(renderSection).join('\n');
   const rest = ids.slice(mid).map(renderSection).join('\n');
   return `${first}
-    ${shell.adSlot('inContentMid')}
     ${rest}`;
 }
 
@@ -209,7 +212,6 @@ function renderFocusMenu() {
       ${a4.body.map(b => (b.type === 'focusCards' ? renderFocusCardsWithDrillLinks() : renderGuideBlock(b, renderCtx))).join('\n')}
     </section>`;
   const sectionsHtml = `${a4Html}
-    ${shell.adSlot('inContentMid')}
     ${renderSection('a10-when-to-change-focus')}`;
   return buildPage({
     file: 'focus-menu.html',
@@ -252,11 +254,10 @@ function renderVodReview() {
   const a8Html = renderSection('a8-self-vod-review');
   const checklistSection = `<section class="guide-section">
       <h2>VOD Review Checklist</h2>
-      <p>The same four checkpoints as a running checklist -- print the fillable version below if you would rather write on paper.</p>
+      <p>The same four checkpoints as a running checklist — print the fillable version below if you would rather write on paper.</p>
       ${renderVodChecklist()}
     </section>`;
   const sectionsHtml = `${a8Html}
-    ${shell.adSlot('inContentMid')}
     ${checklistSection}`;
   return buildPage({
     file: 'vod-review.html',

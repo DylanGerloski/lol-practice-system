@@ -1,7 +1,7 @@
 'use strict';
 
 // Renders ad-slot placeholders and the AdSense loader script, gated entirely
-// by src/web/adConfig.js (spec Section 1.4). No network calls, no ToS
+// by src/web/adConfig.js. No network calls, no ToS
 // action -- this module only emits static markup.
 
 const adConfig = require('./adConfig.js');

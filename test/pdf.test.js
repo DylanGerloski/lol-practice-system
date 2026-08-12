@@ -1,7 +1,7 @@
 'use strict';
 
-// Tests for src/pdf.js -- the optional headless-browser print-to-pdf pass (spec
-// Section 7 B3). Deliberately does NOT assert that a browser is present or that a
+// Tests for src/pdf.js -- the optional headless-browser print-to-pdf pass.
+// Deliberately does NOT assert that a browser is present or that a
 // PDF actually gets produced -- whether this machine has Edge/Chrome installed is
 // an environment fact, not something a test should require. What IS tested is the
 // contract that matters for "never fails the build": the functions this script is

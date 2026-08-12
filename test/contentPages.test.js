@@ -1,7 +1,7 @@
 'use strict';
 
-// Tests for the guide-derived content pages (src/web/contentPages.js) --
-// spec Section 6 B1: program.html, baseline.html, focus-menu.html,
+// Tests for the guide-derived content pages (src/web/contentPages.js):
+// program.html, baseline.html, focus-menu.html,
 // champion-pool.html, vod-review.html, tilt-rules.html, faq.html.
 
 const test = require('node:test');
@@ -44,10 +44,10 @@ test('every content page has exactly one <h1> and no heading level is skipped', 
   }
 });
 
-test('every content page carries exactly 3 ad slots', () => {
+test('every content page carries no manual ad-slot placeholder (Auto ads loads unconditionally, so the old empty placeholder wells were removed rather than left visually coexisting with it)', () => {
   for (const [name, html] of rendered) {
     const count = (html.match(/class="ad-slot"/g) || []).length;
-    assert.equal(count, 3, `${name} should have 3 ad-slot placeholders, found ${count}`);
+    assert.equal(count, 0, `${name} should have 0 ad-slot placeholders, found ${count}`);
   }
 });
 
@@ -63,6 +63,16 @@ test('focus-menu.html deep-links every focus card to drills.html#<drillId>', () 
   for (const f of focuses) {
     const href = site.url(`drills.html#${f.drillId}`);
     assert.ok(html.includes(`href="${href}"`), `focus-menu.html missing a drill link for ${f.id} -> ${href}`);
+  }
+});
+
+test('every focus card on focus-menu.html carries its own anchor id, so a back-link from drills.html lands on the exact card', () => {
+  const html = rendered.get('focus-menu.html');
+  for (const f of focuses) {
+    assert.ok(
+      html.includes(`class="card" id="${f.id}"`),
+      `focus-menu.html missing an anchor id ("${f.id}") on the "${f.title}" focus card`
+    );
   }
 });
 

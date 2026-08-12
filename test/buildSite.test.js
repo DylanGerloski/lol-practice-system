@@ -1,9 +1,9 @@
 'use strict';
 
 // Tests for the web-site build (src/web/buildSite.js, src/web/shell.js,
-// src/web/ads.js) -- spec Section 6 B0. Covers the two pages this foundation
-// task ships (index.html, 404.html) and the shared shell they're both built
-// from, so later subtasks that add more pages inherit a shell already known
+// src/web/ads.js). Covers the two foundational pages
+// (index.html, 404.html) and the shared shell they're both built
+// from, so later pages that get added inherit a shell already known
 // to satisfy these checks.
 
 const test = require('node:test');
@@ -14,7 +14,7 @@ const path = require('path');
 const { build, DIST, WEB_PAGES, KNOWN_MANUAL_OUTPUTS } = require('../src/web/buildSite.js');
 const site = require('../src/site.js');
 
-test('build() writes site.css, one file per WEB_PAGES entry, the B4 SEO infra files (sitemap.xml/robots.txt/ads.txt), and the GitHub Pages CNAME file into dist/', () => {
+test('build() writes site.css, one file per WEB_PAGES entry, the SEO infra files (sitemap.xml/robots.txt/ads.txt), and the GitHub Pages CNAME file into dist/', () => {
   const written = build();
   const expected = ['site.css', ...WEB_PAGES.map(([name]) => name), 'sitemap.xml', 'robots.txt', 'ads.txt', 'CNAME'];
   assert.deepEqual(written.slice().sort(), expected.slice().sort());
@@ -52,21 +52,26 @@ test('every built HTML page carries the Riot disclaimer, and About/Privacy foote
   }
 });
 
-test('index.html carries a canonical link, a skip link, the full nav, an ad slot, and the unconditional AdSense Auto ads loader', () => {
+test('index.html carries a canonical link, a skip link, the full nav, no manual ad-slot placeholder, and the unconditional AdSense Auto ads loader', () => {
   build();
   const content = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
   assert.ok(content.includes(`<link rel="canonical" href="${site.absoluteUrl('')}">`), 'missing canonical link');
   assert.ok(content.includes('class="skip-link"'), 'missing skip link');
-  assert.ok(content.includes('class="ad-slot"'), 'missing an ad-slot placeholder');
-  // Auto ads (task-msqjws1v-ecbdaa) loads unconditionally, independent of
-  // adConfig.enabled -- unlike the older manual-unit plan below.
+  // The old manual-unit plan (src/web/ads.js's adSlot()) is no longer called
+  // from any page -- Auto ads (below) places ads on its own now, so the old
+  // empty placeholder wells were removed rather than left visually
+  // coexisting with the live Auto ads loader.
+  assert.ok(!content.includes('class="ad-slot"'), 'should not carry a manual ad-slot placeholder now that Auto ads covers the page');
+  // Auto ads loads unconditionally, independent of
+  // adConfig.enabled -- unlike the older manual-unit plan above.
   assert.ok(
     content.includes('<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9767914878112531" crossorigin="anonymous"></script>'),
     'missing the unconditional AdSense Auto ads loader script'
   );
   // The old manual-unit plan (src/web/ads.js's adSlot()/adsScriptTag()) stays
-  // gated on adConfig.enabled, which is still false, so no real ad unit
-  // (<ins class="adsbygoogle">) or its push() call should render.
+  // gated on adConfig.enabled, which is still false, and is no longer called
+  // from any page at all, so no real ad unit (<ins class="adsbygoogle">) or
+  // its push() call should render.
   assert.ok(!content.includes('class="adsbygoogle"'), 'manual ad unit should not render while adConfig.enabled is false');
   assert.ok(!content.includes('adsbygoogle = window.adsbygoogle'), 'manual ad unit push script should not render while adConfig.enabled is false');
 });
@@ -110,12 +115,29 @@ test('build() never touches dist/print/ (owned and cleaned by src/build.js) or a
   fs.mkdirSync(printDir, { recursive: true });
   const printMarker = path.join(printDir, 'marker-from-src-build-js.html');
   fs.writeFileSync(printMarker, '<html>owned by src/build.js, not this build</html>', 'utf8');
+  // This test runs against the real dist/, not an isolated fixture dir, so
+  // stubbing each KNOWN_MANUAL_OUTPUTS file (e.g. og-image.png, a real
+  // Playwright-rendered image normally) with placeholder text -- needed to
+  // prove build() leaves it alone -- would otherwise silently leave that
+  // real, hand-run output stubbed out after every `npm test`. Save each
+  // file's original bytes first and restore them once the assertions below
+  // are done, so this test's own side effect can't undo
+  // scripts/build-og-image.js's work.
+  const originalManualContents = new Map();
   for (const manual of KNOWN_MANUAL_OUTPUTS) {
-    fs.writeFileSync(path.join(DIST, manual), 'placeholder for a hand-run output', 'utf8');
+    const manualPath = path.join(DIST, manual);
+    if (fs.existsSync(manualPath)) originalManualContents.set(manual, fs.readFileSync(manualPath));
+    fs.writeFileSync(manualPath, 'placeholder for a hand-run output', 'utf8');
   }
-  build();
-  assert.ok(fs.existsSync(printMarker), 'build() must never delete anything under dist/print/');
-  for (const manual of KNOWN_MANUAL_OUTPUTS) {
-    assert.ok(fs.existsSync(path.join(DIST, manual)), `build() must not delete the known manual output ${manual}`);
+  try {
+    build();
+    assert.ok(fs.existsSync(printMarker), 'build() must never delete anything under dist/print/');
+    for (const manual of KNOWN_MANUAL_OUTPUTS) {
+      assert.ok(fs.existsSync(path.join(DIST, manual)), `build() must not delete the known manual output ${manual}`);
+    }
+  } finally {
+    for (const [manual, original] of originalManualContents) {
+      fs.writeFileSync(path.join(DIST, manual), original);
+    }
   }
 });

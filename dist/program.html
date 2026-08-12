@@ -5,23 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The 30-Day Practice Program | Solo Queue Practice</title>
   <meta name="description" content="How the Solo Queue Practice System works: one measurable focus per ten-game block, a repeatable session loop, and a 30-day calendar in three blocks.">
-  <link rel="canonical" href="https://dylangerloski.github.io/solo-queue-practice/program.html">
+  <link rel="canonical" href="https://lol-practice-system.com/program.html">
   <meta property="og:title" content="The 30-Day Practice Program | Solo Queue Practice">
   <meta property="og:description" content="How the Solo Queue Practice System works: one measurable focus per ten-game block, a repeatable session loop, and a 30-day calendar in three blocks.">
-  <meta property="og:url" content="https://dylangerloski.github.io/solo-queue-practice/program.html">
+  <meta property="og:url" content="https://lol-practice-system.com/program.html">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Solo Queue Practice">
-  <meta property="og:image" content="https://dylangerloski.github.io/solo-queue-practice/og-image.png">
+  <meta property="og:image" content="https://lol-practice-system.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="google-adsense-account" content="ca-pub-9767914878112531">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9767914878112531" crossorigin="anonymous"></script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%231B54C8'/%3E%3Ctext x='32' y='45' font-family='Arial, Helvetica, sans-serif' font-size='38' font-weight='700' fill='%23FFFFFF' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
-  <style>/* Solo Queue Practice System -- web design tokens (spec Section 1.5).
-   Verbatim from the architect spec, including the WCAG-AA contrast fixes to
-   the print system's original --accent/--good values. Builder styles ONLY
-   from these tokens -- a hardcoded hex/px value outside this file is a QA
-   failure. This file is concatenated ahead of screen.css (-> dist/site.css)
-   and ahead of print.css (-> dist/print/print.css) so there is exactly one
+  <style>/* Solo Queue Practice System -- web design tokens: the single source of
+   truth for color, type, spacing, radius, and shadow across the site.
+   Includes WCAG-AA contrast fixes to the print system's original
+   --accent/--good values. Every style in this project should read its
+   values from here rather than hardcoding a hex or pixel value elsewhere.
+   This file is concatenated ahead of screen.css (-> dist/site.css) and
+   ahead of print.css (-> dist/print/print.css) so there is exactly one
    definition of every value in the project. */
 
 :root {
@@ -69,7 +72,7 @@
   --ad-min-h-desktop: 280px;
 }
 
-/* Solo Queue Practice System -- screen chrome (spec Section 1.5).
+/* Solo Queue Practice System -- screen chrome.
    Styles the shared document shell (header/nav/footer/ad-slot) and the
    generic screen-only building blocks (hero, card grid, download row).
    Also carries screen-side definitions of the five print-system primitives
@@ -343,9 +346,9 @@ main {
 .not-found ul { padding-left: var(--space-5); }
 
 /* ---------------------------------------------------------------------------
-   Content primitives (added by B1) -- card, slot-label, checklist-row,
+   Content primitives -- card, slot-label, checklist-row,
    fill-line, callout, data-table, drill-grid. print.css defines these five
-   primitives (spec Section 1.5), but tokens.css + screen.css is what's
+   primitives, but tokens.css + screen.css is what's
    concatenated into dist/site.css -- print.css is never included on the web
    side -- so without a screen-side definition every guide-derived content
    page (program/baseline/focus-menu/etc.) would render these as unstyled
@@ -433,66 +436,58 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
 }
 .drill-grid .card { margin-bottom: 0; }
 </style>
+  <script data-goatcounter="https://dylangerrrrkerl.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
-    <a class="brand" href="/solo-queue-practice/">Solo Queue Practice</a>
+    <a class="brand" href="/">Solo Queue Practice</a>
     <nav class="site-nav" aria-label="Main">
-      <a href="/solo-queue-practice/">Home</a>
-      <a href="/solo-queue-practice/program.html" aria-current="page">Program</a>
-      <a href="/solo-queue-practice/focus-menu.html">Focus menu</a>
-      <a href="/solo-queue-practice/drills.html">Drills</a>
-      <a href="/solo-queue-practice/warmup.html">Warmup</a>
-      <a href="/solo-queue-practice/tracker.html">Tracker</a>
-      <a href="/solo-queue-practice/downloads.html">Downloads</a>
-      <a href="/solo-queue-practice/faq.html">FAQ</a>
+      <a href="/">Home</a>
+      <a href="/program.html" aria-current="page">Program</a>
+      <a href="/focus-menu.html">Focus menu</a>
+      <a href="/drills.html">Drills</a>
+      <a href="/warmup.html">Warmup</a>
+      <a href="/tracker.html">Tracker</a>
+      <a href="/downloads.html">Downloads</a>
+      <a href="/faq.html">FAQ</a>
     </nav>
   </header>
   <main id="main" class="page-shell">
 <h1>The 30-Day Program</h1>
     <p class="lead">One focus, held for a block of ten games, measured and reviewed before you move to the next. This page covers how the method works, what a normal session looks like, and how the thirty games are laid out.</p>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
     <section class="guide-section">
       <h2>How This Works</h2>
-      <p>This program runs on one rule: one focus, per game, measured. Not &quot;play better&quot; -- one specific, countable thing, held across a block of ten games, then reviewed and changed. That is the entire method. Everything else in this guide exists to make that one rule easy to follow.</p>
+      <p>This program runs on one rule: one focus, per game, measured. Not &quot;play better&quot; — one specific, countable thing, held across a block of ten games, then reviewed and changed. That is the entire method. Everything else in this guide exists to make that one rule easy to follow.</p>
 <p>A focus is not a vague intention like &quot;play safer&quot; or &quot;farm more.&quot; It is one of the twelve cards in the Focus Menu: a named skill, a number that proves whether you did it, a drill that trains it, and a graduation bar that tells you when to move on. You pick one card, hold it for a block of ten games, and ignore everything else on the menu until the block ends.</p>
 <ul><li>Read your baseline (Day 0) and pick your single weakest measurable thing.</li><li>Warm up before every ranked game using the matching Warmup Card for your role.</li><li>Play games in blocks of ten, holding one focus for the whole block.</li><li>Log every game in the Tracker Workbook, even the ones you lose badly.</li><li>Review at each block boundary and decide whether to graduate to a new focus or repeat.</li></ul>
-<p>Rank is the output of hundreds of small decisions compounding over months. This program does not touch rank directly, and it will not move your rank on a fixed schedule -- that would be a promise this program cannot keep. What it measures instead is whether a specific decision pattern in your own games is improving, because that is the only thing you can actually control game to game, and it is the input rank is built from.</p>
-<p class="callout">What this can do: give you a specific, honest number to chase instead of a rank number that moves for reasons outside any one game. What this cannot do: guarantee that number moving translates into a rank climb on any particular timeline -- League has enough variance (teammates, matchups, patches) that a fair test needs more games than most players are willing to log by hand.</p>
-<p>Three ideas carry the whole program. First: deliberate practice beats volume -- three games played with a specific goal and a specific review teach more than fifteen games played on autopilot. Second: you cannot fix what you do not measure -- &quot;I felt like I was farming better&quot; is not a number; CS/min at the 10-minute mark is. Third: one thing at a time -- trying to fix five habits in the same game means you cannot tell which fix, if any, worked. Hold one focus, get a clean read on it, then move to the next.</p>
-<p>You will need: your own last ten ranked or normal games (read manually from your in-client match history -- no API key, no third-party site, no account required), the Tracker Workbook included in this package, and roughly fifteen minutes before each session for the warmup plus five minutes after each game for the review. That is the entire cost of entry.</p>
+<p>Rank is the output of hundreds of small decisions compounding over months. This program does not touch rank directly, and it will not move your rank on a fixed schedule — that would be a promise this program cannot keep. What it measures instead is whether a specific decision pattern in your own games is improving, because that is the only thing you can actually control game to game, and it is the input rank is built from.</p>
+<p class="callout">What this can do: give you a specific, honest number to chase instead of a rank number that moves for reasons outside any one game. What this cannot do: guarantee that number moving translates into a rank climb on any particular timeline — League has enough variance (teammates, matchups, patches) that a fair test needs more games than most players are willing to log by hand.</p>
+<p>Three ideas carry the whole program. First: deliberate practice beats volume — three games played with a specific goal and a specific review teach more than fifteen games played on autopilot. Second: you cannot fix what you do not measure — &quot;I felt like I was farming better&quot; is not a number; CS/min at the 10-minute mark is. Third: one thing at a time — trying to fix five habits in the same game means you cannot tell which fix, if any, worked. Hold one focus, get a clean read on it, then move to the next.</p>
+<p>You will need: your own last ten ranked or normal games (read manually from your in-client match history — no API key, no third-party site, no account required), the Tracker Workbook included in this package, and roughly fifteen minutes before each session for the warmup plus five minutes after each game for the review. That is the entire cost of entry.</p>
     </section>
 <section class="guide-section">
       <h2>The Session Loop</h2>
-      <p>Every ranked session -- not every game, every sitting down to play -- follows the same four-step loop: warm up, play two or three focused games, review once, log everything.</p>
-<ul><li>Warm up (15 minutes) using the Warmup Card matching your role. Do not skip this because you feel warmed up already from a previous session earlier in the day -- fifteen minutes of cold hands costs you more games than the warmup costs you time.</li><li>Play 2-3 games holding your current block&#39;s focus. Not five, not one -- two or three keeps each game&#39;s review sharp in your memory and prevents the session from sliding into unfocused queue-and-forget play.</li><li>After each game, do the 2-minute One-Sentence Lesson (Section A8 covers the fuller VOD-review version for when you have more time) before queueing the next game.</li><li>Log every game in the Tracker Workbook immediately -- date, result, focus adherence, and the raw numbers the focus card asks for. A game logged the next day is a game you will misremember.</li></ul>
-<p>Explicit stop rules exist because a session that runs too long produces bad data, not just bad play. Stop the session if: you have played 3 games and are noticeably more tired or frustrated than when you started; you have lost 2 games in a row (see Section A9&#39;s two-loss rule); or you have crossed 90 minutes of continuous play. None of these are suggestions -- treat them as hard stops the same way you would treat a drill&#39;s pass bar.</p>
+      <p>Every ranked session — not every game, every sitting down to play — follows the same four-step loop: warm up, play two or three focused games, review once, log everything.</p>
+<ul><li>Warm up (15 minutes) using the Warmup Card matching your role. Do not skip this because you feel warmed up already from a previous session earlier in the day — fifteen minutes of cold hands costs you more games than the warmup costs you time.</li><li>Play 2-3 games holding your current block&#39;s focus. Not five, not one — two or three keeps each game&#39;s review sharp in your memory and prevents the session from sliding into unfocused queue-and-forget play.</li><li>After each game, do the 2-minute One-Sentence Lesson (Section A8 covers the fuller VOD-review version for when you have more time) before queueing the next game.</li><li>Log every game in the Tracker Workbook immediately — date, result, focus adherence, and the raw numbers the focus card asks for. A game logged the next day is a game you will misremember.</li></ul>
+<p>Explicit stop rules exist because a session that runs too long produces bad data, not just bad play. Stop the session if: you have played 3 games and are noticeably more tired or frustrated than when you started; you have lost 2 games in a row (see Section A9&#39;s two-loss rule); or you have crossed 90 minutes of continuous play. None of these are suggestions — treat them as hard stops the same way you would treat a drill&#39;s pass bar.</p>
 <p class="callout">A session that ends early because you hit a stop rule is not a failed session. It is the program working correctly. The entire point of the stop rules is to prevent the exact games that would otherwise corrupt your focus-adherence data.</p>
 <p>If you cannot fit 2-3 games in a sitting, one game with a genuine warmup and a genuine review still counts and is still worth logging. Consistency across many short sessions beats occasional long ones for the same reason distributed practice beats cramming in any skill domain.</p>
     </section>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
     <section class="guide-section">
       <h2>The 30-Day Calendar</h2>
-      <p>The program runs in three blocks of ten games each -- not three blocks of ten days, since game count is what actually produces a fair read on a focus, and life does not deliver exactly ten games a day.</p>
-<ul><li>Block 1 (Games 1-10): the focus chosen from your Day 0 baseline review (Section A3).</li><li>Block 1 Review: compare your focus number at the end of the block against where it started. Graduate to a new focus if you cleared the drill&#39;s pass bar; repeat the block with the same focus if you did not.</li><li>Block 2 (Games 11-20): your next focus, chosen the same way -- the single weakest measurable thing remaining.</li><li>Block 2 Review: same process as Block 1.</li><li>Block 3 (Games 21-30): your third focus.</li><li>Block 3 Review, and a full 30-game retrospective: compare your Game 21-30 averages against your original Day 0 baseline across every number the Tracker Workbook tracks, not just the three focuses you happened to work on.</li></ul>
-<p>Thirty games is deliberately modest. It is enough to get a real, if noisy, read on three specific habits -- it is not enough to expect a rank change on a fixed schedule, and this guide will not pretend otherwise. Section A11 addresses this directly: a 30-game program is a measurement window, not a promotion guarantee.</p>
-<p class="callout">If Block 1 needs repeating, that is normal and does not mean the program has failed -- it means the number told you the truth. Repeat until the pass bar clears, then move the calendar forward from wherever that actually happens.</p>
+      <p>The program runs in three blocks of ten games each — not three blocks of ten days, since game count is what actually produces a fair read on a focus, and life does not deliver exactly ten games a day.</p>
+<ul><li>Block 1 (Games 1-10): the focus chosen from your Day 0 baseline review (Section A3).</li><li>Block 1 Review: compare your focus number at the end of the block against where it started. Graduate to a new focus if you cleared the drill&#39;s pass bar; repeat the block with the same focus if you did not.</li><li>Block 2 (Games 11-20): your next focus, chosen the same way — the single weakest measurable thing remaining.</li><li>Block 2 Review: same process as Block 1.</li><li>Block 3 (Games 21-30): your third focus.</li><li>Block 3 Review, and a full 30-game retrospective: compare your Game 21-30 averages against your original Day 0 baseline across every number the Tracker Workbook tracks, not just the three focuses you happened to work on.</li></ul>
+<p>Thirty games is deliberately modest. It is enough to get a real, if noisy, read on three specific habits — it is not enough to expect a rank change on a fixed schedule, and this guide will not pretend otherwise. Section A11 addresses this directly: a 30-game program is a measurement window, not a promotion guarantee.</p>
+<p class="callout">If Block 1 needs repeating, that is normal and does not mean the program has failed — it means the number told you the truth. Repeat until the pass bar clears, then move the calendar forward from wherever that actually happens.</p>
     </section>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
     <nav class="cross-links" aria-label="Related pages">
       <ul>
-      <li><a href="/solo-queue-practice/focus-menu.html">Pick your first focus from the Focus Menu</a></li>
-      <li><a href="/solo-queue-practice/warmup.html">Warmup routines by role</a></li>
-      <li><a href="/solo-queue-practice/drills.html">The 12 practice-tool drills</a></li>
-      <li><a href="/solo-queue-practice/tracker.html">Get the free tracker spreadsheet</a></li>
-      <li><a href="/solo-queue-practice/downloads.html">Download the full printable pack</a></li>
+      <li><a href="/focus-menu.html">Pick your first focus from the Focus Menu</a></li>
+      <li><a href="/warmup.html">Warmup routines by role</a></li>
+      <li><a href="/drills.html">The 12 practice-tool drills</a></li>
+      <li><a href="/tracker.html">Get the free tracker spreadsheet</a></li>
+      <li><a href="/downloads.html">Download the full printable pack</a></li>
       </ul>
     </nav>
   </main>
@@ -500,8 +495,8 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
     <p>Solo Queue Practice System was created under Riot Games’ “Legal Jibber Jabber” policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.</p>
     <p>League of Legends is a trademark of Riot Games, Inc.</p>
     <p class="footer-links">
-      <a href="/solo-queue-practice/about.html">About</a>
-      <a href="/solo-queue-practice/privacy.html">Privacy</a>
+      <a href="/about.html">About</a>
+      <a href="/privacy.html">Privacy</a>
     </p>
   </footer>
 </body>

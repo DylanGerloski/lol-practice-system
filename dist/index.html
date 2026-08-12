@@ -5,23 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Solo Queue Practice System | Solo Queue Practice</title>
   <meta name="description" content="A free, ad-supported 30-day deliberate-practice program for League of Legends solo queue, with drills, warmups, and a printable tracker.">
-  <link rel="canonical" href="https://dylangerloski.github.io/solo-queue-practice/">
+  <link rel="canonical" href="https://lol-practice-system.com/">
   <meta property="og:title" content="Solo Queue Practice System | Solo Queue Practice">
   <meta property="og:description" content="A free, ad-supported 30-day deliberate-practice program for League of Legends solo queue, with drills, warmups, and a printable tracker.">
-  <meta property="og:url" content="https://dylangerloski.github.io/solo-queue-practice/">
+  <meta property="og:url" content="https://lol-practice-system.com/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Solo Queue Practice">
-  <meta property="og:image" content="https://dylangerloski.github.io/solo-queue-practice/og-image.png">
+  <meta property="og:image" content="https://lol-practice-system.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="google-adsense-account" content="ca-pub-9767914878112531">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9767914878112531" crossorigin="anonymous"></script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%231B54C8'/%3E%3Ctext x='32' y='45' font-family='Arial, Helvetica, sans-serif' font-size='38' font-weight='700' fill='%23FFFFFF' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
-  <style>/* Solo Queue Practice System -- web design tokens (spec Section 1.5).
-   Verbatim from the architect spec, including the WCAG-AA contrast fixes to
-   the print system's original --accent/--good values. Builder styles ONLY
-   from these tokens -- a hardcoded hex/px value outside this file is a QA
-   failure. This file is concatenated ahead of screen.css (-> dist/site.css)
-   and ahead of print.css (-> dist/print/print.css) so there is exactly one
+  <style>/* Solo Queue Practice System -- web design tokens: the single source of
+   truth for color, type, spacing, radius, and shadow across the site.
+   Includes WCAG-AA contrast fixes to the print system's original
+   --accent/--good values. Every style in this project should read its
+   values from here rather than hardcoding a hex or pixel value elsewhere.
+   This file is concatenated ahead of screen.css (-> dist/site.css) and
+   ahead of print.css (-> dist/print/print.css) so there is exactly one
    definition of every value in the project. */
 
 :root {
@@ -69,7 +72,7 @@
   --ad-min-h-desktop: 280px;
 }
 
-/* Solo Queue Practice System -- screen chrome (spec Section 1.5).
+/* Solo Queue Practice System -- screen chrome.
    Styles the shared document shell (header/nav/footer/ad-slot) and the
    generic screen-only building blocks (hero, card grid, download row).
    Also carries screen-side definitions of the five print-system primitives
@@ -343,9 +346,9 @@ main {
 .not-found ul { padding-left: var(--space-5); }
 
 /* ---------------------------------------------------------------------------
-   Content primitives (added by B1) -- card, slot-label, checklist-row,
+   Content primitives -- card, slot-label, checklist-row,
    fill-line, callout, data-table, drill-grid. print.css defines these five
-   primitives (spec Section 1.5), but tokens.css + screen.css is what's
+   primitives, but tokens.css + screen.css is what's
    concatenated into dist/site.css -- print.css is never included on the web
    side -- so without a screen-side definition every guide-derived content
    page (program/baseline/focus-menu/etc.) would render these as unstyled
@@ -433,27 +436,28 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
 }
 .drill-grid .card { margin-bottom: 0; }
 </style>
+  <script data-goatcounter="https://dylangerrrrkerl.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
-    <a class="brand" href="/solo-queue-practice/">Solo Queue Practice</a>
+    <a class="brand" href="/">Solo Queue Practice</a>
     <nav class="site-nav" aria-label="Main">
-      <a href="/solo-queue-practice/" aria-current="page">Home</a>
-      <a href="/solo-queue-practice/program.html">Program</a>
-      <a href="/solo-queue-practice/focus-menu.html">Focus menu</a>
-      <a href="/solo-queue-practice/drills.html">Drills</a>
-      <a href="/solo-queue-practice/warmup.html">Warmup</a>
-      <a href="/solo-queue-practice/tracker.html">Tracker</a>
-      <a href="/solo-queue-practice/downloads.html">Downloads</a>
-      <a href="/solo-queue-practice/faq.html">FAQ</a>
+      <a href="/" aria-current="page">Home</a>
+      <a href="/program.html">Program</a>
+      <a href="/focus-menu.html">Focus menu</a>
+      <a href="/drills.html">Drills</a>
+      <a href="/warmup.html">Warmup</a>
+      <a href="/tracker.html">Tracker</a>
+      <a href="/downloads.html">Downloads</a>
+      <a href="/faq.html">FAQ</a>
     </nav>
   </header>
   <main id="main" class="page-shell">
 <section class="hero">
       <h1>Solo Queue Practice</h1>
       <p class="lead">A free 30-day deliberate-practice program for League of Legends solo queue: one focus per game, measured, reviewed, and logged.</p>
-      <a class="btn-primary" href="/solo-queue-practice/program.html">Start the 30-day program</a>
+      <a class="btn-primary" href="/program.html">Start the 30-day program</a>
     </section>
     <section>
       <h2>Three steps to start</h2>
@@ -466,47 +470,47 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
     <section>
       <h2>Everything in the program</h2>
       <div class="card-grid">
-      <a class="link-card" href="/solo-queue-practice/program.html">
+      <a class="link-card" href="/program.html">
         <h3>Program</h3>
         <p>The 30-day plan: one focus per game, in order.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/baseline.html">
+      <a class="link-card" href="/baseline.html">
         <h3>Day 0 Baseline</h3>
         <p>Where your CS/min and deaths actually sit for your rank, before you change anything.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/focus-menu.html">
+      <a class="link-card" href="/focus-menu.html">
         <h3>Focus Menu</h3>
         <p>Twelve named things to work on, one at a time, each with a number that proves you did it.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/drills.html">
+      <a class="link-card" href="/drills.html">
         <h3>Drill Library</h3>
         <p>Twelve practice-tool drills, one per focus, each with a pass bar.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/warmup.html">
+      <a class="link-card" href="/warmup.html">
         <h3>Warmup Routines</h3>
         <p>Five 15-minute warmups, one per role, to run before every ranked game.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/champion-pool.html">
+      <a class="link-card" href="/champion-pool.html">
         <h3>Champion Pool</h3>
         <p>How many champions to play, and how to pick them, while you are practicing.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/vod-review.html">
+      <a class="link-card" href="/vod-review.html">
         <h3>VOD Review</h3>
         <p>Review your own replays in twelve minutes with a four-checkpoint routine.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/tilt-rules.html">
+      <a class="link-card" href="/tilt-rules.html">
         <h3>Tilt &amp; Stop Rules</h3>
         <p>When to log off, decided in advance instead of in the moment.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/tracker.html">
+      <a class="link-card" href="/tracker.html">
         <h3>Tracker Spreadsheet</h3>
         <p>The free workbook that logs every game and averages your numbers for you.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/downloads.html">
+      <a class="link-card" href="/downloads.html">
         <h3>Downloads</h3>
         <p>The entire program as printable HTML and PDF, plus the tracker file.</p>
       </a>
-      <a class="link-card" href="/solo-queue-practice/faq.html">
+      <a class="link-card" href="/faq.html">
         <h3>FAQ</h3>
         <p>What this program is, what it is not, and the questions that come up most.</p>
       </a>
@@ -514,26 +518,23 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
     </section>
     <section>
       <h2>Free printable pack</h2>
-      <p>Every page here also exists as a clean, printable document -- the full guide, the drill library, warmup cards, and two blank study sheets, plus the tracker as a real spreadsheet file. No email, no account, no payment.</p>
+      <p>Every page here also exists as a clean, printable document — the full guide, the drill library, warmup cards, and two blank study sheets, plus the tracker as a real spreadsheet file. No email, no account, no payment.</p>
       <div class="download-row">
-        <a href="/solo-queue-practice/print/05-tracker-workbook.xlsx">Tracker Workbook -- spreadsheet</a>
+        <a href="/print/05-tracker-workbook.xlsx">Tracker Workbook — spreadsheet</a>
         <span class="download-meta">.xlsx</span>
       </div>
       <div class="download-row">
-        <a href="/solo-queue-practice/downloads.html">Full printable pack -- every guide, drill, and sheet</a>
+        <a href="/downloads.html">Full printable pack — every guide, drill, and sheet</a>
         <span class="download-meta">HTML + PDF</span>
       </div>
     </section>
-    <aside class="ad-slot" aria-label="Advertisement">
-  <span class="ad-slot-label">Advertisement</span>
-</aside>
   </main>
   <footer class="site-footer">
     <p>Solo Queue Practice System was created under Riot Games’ “Legal Jibber Jabber” policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.</p>
     <p>League of Legends is a trademark of Riot Games, Inc.</p>
     <p class="footer-links">
-      <a href="/solo-queue-practice/about.html">About</a>
-      <a href="/solo-queue-practice/privacy.html">Privacy</a>
+      <a href="/about.html">About</a>
+      <a href="/privacy.html">Privacy</a>
     </p>
   </footer>
 </body>
