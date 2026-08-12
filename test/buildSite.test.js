@@ -52,13 +52,23 @@ test('every built HTML page carries the Riot disclaimer, and About/Privacy foote
   }
 });
 
-test('index.html carries a canonical link, a skip link, the full nav, and an ad slot', () => {
+test('index.html carries a canonical link, a skip link, the full nav, an ad slot, and the unconditional AdSense Auto ads loader', () => {
   build();
   const content = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
   assert.ok(content.includes(`<link rel="canonical" href="${site.absoluteUrl('')}">`), 'missing canonical link');
   assert.ok(content.includes('class="skip-link"'), 'missing skip link');
   assert.ok(content.includes('class="ad-slot"'), 'missing an ad-slot placeholder');
-  assert.ok(!content.includes('adsbygoogle'), 'ad script should not render while adConfig.enabled is false');
+  // Auto ads (task-msqjws1v-ecbdaa) loads unconditionally, independent of
+  // adConfig.enabled -- unlike the older manual-unit plan below.
+  assert.ok(
+    content.includes('<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9767914878112531" crossorigin="anonymous"></script>'),
+    'missing the unconditional AdSense Auto ads loader script'
+  );
+  // The old manual-unit plan (src/web/ads.js's adSlot()/adsScriptTag()) stays
+  // gated on adConfig.enabled, which is still false, so no real ad unit
+  // (<ins class="adsbygoogle">) or its push() call should render.
+  assert.ok(!content.includes('class="adsbygoogle"'), 'manual ad unit should not render while adConfig.enabled is false');
+  assert.ok(!content.includes('adsbygoogle = window.adsbygoogle'), 'manual ad unit push script should not render while adConfig.enabled is false');
 });
 
 test('404.html is marked noindex and links back to the site root', () => {

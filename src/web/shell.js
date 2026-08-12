@@ -13,6 +13,33 @@ const path = require('path');
 const site = require('./../site.js');
 const { escapeHtml } = require('../render/html.js');
 const { adSlot, adsScriptTag } = require('./ads.js');
+const adConfig = require('./adConfig.js');
+
+// GoatCounter is a free, privacy-respecting, cookieless analytics service
+// (no personal data collected) -- the standard async snippet, unconditional
+// on every page, matching the pattern already live on the human's other
+// asset (lichess-stats-poc / repertoire-builder). No other analytics vendor
+// is wired in anywhere in this build.
+const GOATCOUNTER_URL = 'https://dylangerrrrkerl.goatcounter.com/count';
+
+// AdSense's own site-verification meta tag (independent of ad serving):
+// declares the publisher id so the human can complete the "Add site" step
+// in the AdSense dashboard. This is unconditional (not gated by
+// adConfig.enabled) -- it only proves site ownership to Google, the same
+// job ads.txt does for authorized sellers; it does not itself request,
+// serve, or enable any ad unit. adConfig.enabled/slots stay untouched and
+// still gate actual ad serving, per the human's original decision.
+const ADSENSE_CLIENT = adConfig.client;
+
+// AdSense Auto ads loader (human-confirmed, currently-generated snippet for
+// this same publisher account -- see task-msqjws1v-ecbdaa). Unconditional,
+// same as the verification meta tag above: Auto ads places ad units itself
+// once Google approves the site-add, so it isn't gated by
+// adConfig.enabled/slots -- that flag only ever applied to the older
+// manual-unit plan (src/web/ads.js's adsScriptTag(), still dormant/gated
+// below), which Auto ads supersedes per the human's decision. Left the old
+// gated code path untouched rather than removing it.
+const ADSENSE_AUTO_ADS_SCRIPT = `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${escapeHtml(ADSENSE_CLIENT)}" crossorigin="anonymous"></script>`;
 
 // Riot's fan-content policy requires this exact wording (spec Section 1.7),
 // defined once in site.js and shared with the print pack (src/render/pages.js)
@@ -87,8 +114,11 @@ function documentHead(opts) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">${canonicalLink}${robotsMeta}${og}
+  <meta name="google-adsense-account" content="${escapeHtml(ADSENSE_CLIENT)}">
+  ${ADSENSE_AUTO_ADS_SCRIPT}
   <link rel="icon" href="${FAVICON_DATA_URI}">
   <style>${SITE_CSS}</style>${jsonLdBlock}${adsScriptBlock}
+  <script data-goatcounter="${GOATCOUNTER_URL}" async src="//gc.zgo.at/count.js"></script>
 </head>`;
 }
 
