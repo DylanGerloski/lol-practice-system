@@ -256,7 +256,7 @@ function renderDownloads() {
     ${shell.adSlot('contentEnd')}`;
 
   return shell.documentShell({
-    title: site.pageTitle('Free Printable League of Legends Practice Pack'),
+    title: site.pageTitle('Free Printable LoL Practice Pack'),
     description: 'Download the full Solo Queue Practice System pack free: program guide, drill library, warmup cards, two study sheets, and the tracker spreadsheet.',
     bodyHtml: body,
     canonical: site.absoluteUrl('downloads.html'),
