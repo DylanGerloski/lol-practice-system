@@ -141,15 +141,18 @@ function renderHeader(active = null) {
   </header>`;
 }
 
-// Newsletter signup: no email provider is connected yet. This constant is
-// the ONE place to enable real capture later -- once a provider is chosen,
-// set NEWSLETTER_FORM_ACTION to that provider's real hosted-form action URL
-// (e.g. a Buttondown/ConvertKit "plain HTML form" embed action) -- that one
-// edit is the entire wiring change, no rebuild of renderNewsletterSignup()
-// itself. Left null (the current state) renders an honest "not live yet"
-// placeholder instead of a form with nowhere real to submit to.
-const NEWSLETTER_FORM_ACTION = null;
-const NEWSLETTER_FORM_METHOD = 'POST';
+// Newsletter signup: wired to the project's Substack publication. The
+// embed URL below is the exact value Substack's own "embed a subscribe
+// widget" panel generates for that publication (Settings -> Growth), so
+// it is the one verified pointer to the right destination -- if the
+// provider is ever swapped, replace this one constant. Loaded lazily by
+// the inline script in documentShell() (only once its footer slot nears
+// the viewport) rather than unconditionally on every page -- an
+// eagerly-loaded iframe here cost filetools' whole Lighthouse Performance
+// budget when the same wiring was first tried there, since the footer
+// this renders into is sitewide (see docs/CHANGELOG.md).
+const NEWSLETTER_FORM_ACTION = 'https://builtittheycome.substack.com/embed';
+const SUBSTACK_PUBLICATION_URL = 'https://builtittheycome.substack.com';
 
 /**
  * Shared social-link mark (a ring, a jagged upward line, a dot at the tip)
@@ -191,16 +194,56 @@ function renderNewsletterSignup() {
       <p class="newsletter-description">Email sign-up isn&rsquo;t live yet &mdash; check back soon.</p>
     </div>`;
   }
-  return `<form class="newsletter-signup" action="${escapeHtml(NEWSLETTER_FORM_ACTION)}" method="${escapeHtml(NEWSLETTER_FORM_METHOD)}">
+  const embedTitle = 'Email signup for Solo Queue Practice updates';
+  return `<div class="newsletter-signup">
       <h2 class="newsletter-heading">Get program updates by email</h2>
       <p class="newsletter-description">One email when new drills, warmups, or focus content ship. No spam, unsubscribe anytime.</p>
-      <div class="newsletter-fields">
-        <label for="newsletter-email" class="sr-only">Email address</label>
-        <input id="newsletter-email" name="email" type="email" required placeholder="you@example.com" autocomplete="email">
-        <button type="submit">Subscribe</button>
-      </div>
-    </form>`;
+      <div class="newsletter-embed" data-newsletter-slot data-newsletter-src="${escapeHtml(NEWSLETTER_FORM_ACTION)}" data-newsletter-title="${escapeHtml(embedTitle)}"></div>
+      <noscript><p class="newsletter-description"><a href="${escapeHtml(SUBSTACK_PUBLICATION_URL)}" target="_blank" rel="noopener noreferrer">Subscribe on Substack</a></p></noscript>
+    </div>`;
 }
+
+/**
+ * Deferred loader for the footer newsletter embed -- inline (this project
+ * has no per-page client-script pipeline, unlike filetools' *.client.js
+ * modules) and loaded via IntersectionObserver so the third-party iframe
+ * never fetches until its slot is actually near the viewport. See
+ * NEWSLETTER_FORM_ACTION's comment above for why this matters.
+ */
+const NEWSLETTER_EMBED_SCRIPT = `<script>
+(function () {
+  var slots = document.querySelectorAll('[data-newsletter-slot]');
+  if (!slots.length) return;
+  function loadEmbed(slot) {
+    var src = slot.getAttribute('data-newsletter-src');
+    var title = slot.getAttribute('data-newsletter-title') || 'Email signup form';
+    if (!src || !/^https:\\/\\//.test(src)) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = src;
+    iframe.width = '480';
+    iframe.height = '320';
+    iframe.loading = 'lazy';
+    iframe.title = title;
+    iframe.className = 'newsletter-embed';
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('scrolling', 'no');
+    slot.replaceWith(iframe);
+  }
+  if (!('IntersectionObserver' in window)) {
+    Array.prototype.forEach.call(slots, loadEmbed);
+    return;
+  }
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        observer.unobserve(entry.target);
+        loadEmbed(entry.target);
+      }
+    });
+  }, { rootMargin: '200px 0px' });
+  Array.prototype.forEach.call(slots, function (slot) { observer.observe(slot); });
+})();
+</script>`;
 
 /**
  * @returns {string} the shared footer -- Riot's required disclaimer verbatim,
@@ -238,6 +281,7 @@ ${documentHead({ title, description, canonical, ogType, jsonLd, noindex })}
 ${bodyHtml}
   </main>
   ${renderFooter()}
+  ${NEWSLETTER_EMBED_SCRIPT}
 </body>
 </html>
 `;
