@@ -266,6 +266,72 @@ main {
 }
 .site-footer .footer-links a:hover { color: var(--accent); }
 
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.newsletter-signup {
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  max-width: var(--measure);
+}
+.newsletter-heading {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-ui);
+  color: var(--ink);
+  margin: 0 0 var(--space-2);
+}
+.newsletter-description {
+  color: var(--muted);
+  font-size: var(--text-xs);
+  margin: 0 0 var(--space-3);
+}
+.newsletter-signup--pending .newsletter-description { margin-bottom: 0; }
+.newsletter-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.newsletter-fields input[type="email"] {
+  flex: 1 1 220px;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  background: var(--paper);
+  color: var(--ink);
+}
+.newsletter-fields input[type="email"]:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.newsletter-fields button {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--paper);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-ui);
+  cursor: pointer;
+}
+.newsletter-fields button:hover { background: var(--accent-hover); }
+.newsletter-fields button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 /* ---------------------------------------------------------------------------
    404 page
    --------------------------------------------------------------------------- */

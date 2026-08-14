@@ -139,6 +139,40 @@ function renderHeader(active = null) {
   </header>`;
 }
 
+// Newsletter signup: no email provider is connected yet. This constant is
+// the ONE place to enable real capture later -- once a provider is chosen,
+// set NEWSLETTER_FORM_ACTION to that provider's real hosted-form action URL
+// (e.g. a Buttondown/ConvertKit "plain HTML form" embed action) -- that one
+// edit is the entire wiring change, no rebuild of renderNewsletterSignup()
+// itself. Left null (the current state) renders an honest "not live yet"
+// placeholder instead of a form with nowhere real to submit to.
+const NEWSLETTER_FORM_ACTION = null;
+const NEWSLETTER_FORM_METHOD = 'POST';
+
+/**
+ * Sitewide newsletter signup, rendered inside the shared footer so it
+ * appears on every page. Distinct from (and does not reintroduce) a
+ * donation/affiliate link -- renderFooter()'s comment about staying clean of
+ * those is unaffected; this is a plain program-updates signup.
+ */
+function renderNewsletterSignup() {
+  if (!NEWSLETTER_FORM_ACTION) {
+    return `<div class="newsletter-signup newsletter-signup--pending">
+      <h2 class="newsletter-heading">Get program updates by email</h2>
+      <p class="newsletter-description">Email sign-up isn&rsquo;t live yet &mdash; check back soon.</p>
+    </div>`;
+  }
+  return `<form class="newsletter-signup" action="${escapeHtml(NEWSLETTER_FORM_ACTION)}" method="${escapeHtml(NEWSLETTER_FORM_METHOD)}">
+      <h2 class="newsletter-heading">Get program updates by email</h2>
+      <p class="newsletter-description">One email when new drills, warmups, or focus content ship. No spam, unsubscribe anytime.</p>
+      <div class="newsletter-fields">
+        <label for="newsletter-email" class="sr-only">Email address</label>
+        <input id="newsletter-email" name="email" type="email" required placeholder="you@example.com" autocomplete="email">
+        <button type="submit">Subscribe</button>
+      </div>
+    </form>`;
+}
+
 /**
  * @returns {string} the shared footer -- Riot's required disclaimer verbatim,
  *   plus About/Privacy links. No Ko-fi/donation link and
@@ -152,6 +186,7 @@ function renderFooter() {
       <a href="${escapeHtml(site.url('about.html'))}">About</a>
       <a href="${escapeHtml(site.url('privacy.html'))}">Privacy</a>
     </p>
+    ${renderNewsletterSignup()}
   </footer>`;
 }
 
@@ -206,6 +241,7 @@ module.exports = {
   documentHead,
   renderHeader,
   renderFooter,
+  renderNewsletterSignup,
   documentShell,
   render404Page,
   adSlot
