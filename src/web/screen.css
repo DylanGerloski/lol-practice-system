@@ -427,3 +427,27 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
   .drill-grid { grid-template-columns: repeat(2, 1fr); }
 }
 .drill-grid .card { margin-bottom: 0; }
+
+/* ---------------------------------------------------------------------------
+   Footer credit line (portfolio-wide, see docs/DESIGN_PLAYBOOK.md's "What
+   stays shared across the portfolio") -- appended as its own block rather
+   than inline with the existing footer rules above so this task's diff
+   stays isolated from the in-flight theme-differentiation work in this
+   same file.
+   --------------------------------------------------------------------------- */
+.site-footer .footer-credit {
+  margin-top: var(--space-3);
+  color: var(--muted);
+}
+.site-footer .footer-credit a { color: var(--muted); }
+.site-footer .footer-credit a:hover { color: var(--accent); }
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.footer-social svg { display: block; }
+.footer-social .brand-mark-ground { fill: var(--brand-mark-ground); }
+.footer-social .brand-mark-ring { stroke: var(--brand-mark-ring); }
+.footer-social .brand-mark-line { stroke: var(--brand-mark-line); }
+.footer-social .brand-mark-dot { fill: var(--brand-mark-dot); }

@@ -51,3 +51,19 @@
   --ad-min-h-mobile:  100px;
   --ad-min-h-desktop: 280px;
 }
+
+/* ---------------------------------------------------------------------------
+   Footer social-mark colors (portfolio-wide, fixed brand colors -- NOT part
+   of this asset's own numbered perceptual ramp above). These come from the
+   operator's shared social-profile mark and must render identically across
+   all three properties and the profile itself, so they are declared as
+   their own small token group rather than mapped onto this site's ramp
+   indices. Same theme/light-mode value in both blocks above by design --
+   the mark is a fixed identity element, not a themed surface.
+   --------------------------------------------------------------------------- */
+:root {
+  --brand-mark-ground: #0f2233;
+  --brand-mark-ring:   #6f95a1;
+  --brand-mark-line:   #c99a44;
+  --brand-mark-dot:    #f2e0a8;
+}

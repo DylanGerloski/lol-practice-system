@@ -152,6 +152,33 @@ const NEWSLETTER_FORM_ACTION = null;
 const NEWSLETTER_FORM_METHOD = 'POST';
 
 /**
+ * Shared social-link mark (a ring, a jagged upward line, a dot at the tip)
+ * recreated as inline SVG from the operator's own profile picture. Colors
+ * are the artist's fixed brand colors, not derived from this site's own
+ * token ramp, so the mark stays recognizable and identical across every
+ * property and the social profile itself -- same self-contained-asset
+ * exception to the tokens-only rule as this file's own FAVICON_DATA_URI.
+ */
+// Colors are applied via CSS classes (tokens.css's --brand-mark-* custom
+// properties), not inline hex attributes, so the built HTML never carries a
+// literal hex value outside tokens.css -- keeps this passing
+// test/buildSite.test.js's "no hardcoded hex color outside a var()
+// reference" invariant while still declaring the colors as fixed, not
+// derived from this site's own ramp.
+const SOCIAL_ICON_SVG = '<svg width="18" height="18" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><circle class="brand-mark-ground" cx="50" cy="50" r="47"/><circle class="brand-mark-ring" cx="50" cy="50" r="35" fill="none" stroke-width="3"/><path class="brand-mark-line" d="M16 74 L38 58 L50 66 L83 27" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle class="brand-mark-dot" cx="83" cy="27" r="9"/></svg>';
+
+/**
+ * Portfolio-wide footer credit line -- identical wording/type role on all
+ * three properties, naming the operator and linking to the other two. Not a
+ * donation/affiliate link, so renderFooter()'s "kept deliberately clean"
+ * guarantee below is unaffected. See docs/DESIGN_PLAYBOOK.md's "What stays
+ * shared across the portfolio".
+ */
+function renderFooterCredit() {
+  return `<p class="footer-credit">Built by Dylan &mdash; also making <a href="https://repertoire-builder.com" rel="noopener noreferrer">Repertoire Builder</a> and <a href="https://dylangerloski.github.io/filetools/" rel="noopener noreferrer">filetools</a>. <a class="footer-social" href="https://x.com/builtittheycome" rel="noopener noreferrer">${SOCIAL_ICON_SVG}Follow @builtittheycome</a></p>`;
+}
+
+/**
  * Sitewide newsletter signup, rendered inside the shared footer so it
  * appears on every page. Distinct from (and does not reintroduce) a
  * donation/affiliate link -- renderFooter()'s comment about staying clean of
@@ -188,6 +215,7 @@ function renderFooter() {
       <a href="${escapeHtml(site.url('about.html'))}">About</a>
       <a href="${escapeHtml(site.url('privacy.html'))}">Privacy</a>
     </p>
+    ${renderFooterCredit()}
     ${renderNewsletterSignup()}
   </footer>`;
 }
