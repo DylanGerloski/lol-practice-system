@@ -38,15 +38,51 @@ const OUT_FILE = path.join(DIST, 'og-image.png');
  * Parses `--name: value;` custom-property declarations out of tokens.css
  * into a plain object, so this script styles itself from the same single
  * source of truth as every page instead of duplicating hex/px values.
- * Deliberately minimal (no full CSS parser needed -- tokens.css only ever
- * contains flat `--name: value;` declarations inside one :root block).
+ * Deliberately minimal (no full CSS parser needed).
+ *
+ * tokens.css now has THREE `:root` blocks (the dark-default ramps/roles,
+ * a `:root[data-theme="light"]` override, and an `@media print { :root
+ * {...} }` override) so a bare property regex over the whole file would
+ * build a last-wins map and pick up the LIGHT role values for every
+ * shared name (--paper, --ink, --muted, --accent, --font-sans,
+ * --weight-head) instead of the dark ones this og-image is meant to
+ * render in. Restricting the scan to the first `:root { ... }` block
+ * (matched up to its own closing brace, not any later attribute-selector
+ * or @media block) keeps this script reading the dark identity.
  */
 function parseTokens(cssSource) {
   const tokens = {};
+  const firstRootMatch = /:root\s*\{([\s\S]*?)\}/.exec(cssSource);
+  const scope = firstRootMatch ? firstRootMatch[1] : cssSource;
   const re = /--([\w-]+):\s*([^;]+);/g;
   let match;
-  while ((match = re.exec(cssSource)) !== null) {
+  while ((match = re.exec(scope)) !== null) {
     tokens[`--${match[1]}`] = match[2].trim();
+  }
+
+  // Role tokens (--paper, --ink, --accent, etc.) are now assigned FROM the
+  // ramp tokens one level down, e.g. `--paper: var(--color-bg-9);` rather
+  // than a literal hex value -- correct inside a full page's stylesheet
+  // (where --color-bg-9 is also in scope), but this script hands raw
+  // string values straight into a standalone <style> block with no other
+  // custom properties defined, where an unresolved var() reference is
+  // invalid and silently falls back to transparent/black. Resolve any
+  // value that is itself a var(--x) reference against this same scope's
+  // own tokens, repeatedly, so callers always get a directly-usable CSS
+  // value (a color, a font stack, a number) -- never a var() string.
+  const varRef = /^var\((--[\w-]+)\)$/;
+  for (const name of Object.keys(tokens)) {
+    let seen = new Set();
+    let value = tokens[name];
+    let refMatch = varRef.exec(value);
+    while (refMatch) {
+      const refName = refMatch[1];
+      if (seen.has(refName) || !(refName in tokens)) break; // cycle or unknown ref -- stop, leave as-is
+      seen.add(refName);
+      value = tokens[refName];
+      refMatch = varRef.exec(value);
+    }
+    tokens[name] = value;
   }
   return tokens;
 }

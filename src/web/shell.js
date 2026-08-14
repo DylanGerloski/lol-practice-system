@@ -49,16 +49,76 @@ const ADSENSE_AUTO_ADS_SCRIPT = `<script async src="https://pagead2.googlesyndic
 const { RIOT_DISCLAIMER, TRADEMARK_NOTICE } = site;
 
 // Inline SVG favicon: a mono wordmark glyph, no
-// image file, no new asset pipeline -- a single accent-blue circle badge
-// with a white "S" monogram. A data: URI can't reference a CSS custom
-// property, so its two colors are copied here literally from tokens.css's
-// --accent/--paper at the one call site that needs them; this is the same,
-// deliberate exception the human's other site's own FAVICON_DATA_URI takes to the "no hardcoded
-// hex outside tokens.css" rule -- it's a self-contained embedded image
-// asset, not page styling. scripts/build-og-image.js decodes this exact
-// string to reuse the same mark in the 1200x630 og-image, so the favicon and
-// the social-share image can never drift apart.
-const FAVICON_DATA_URI = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%231B54C8'/%3E%3Ctext x='32' y='45' font-family='Arial, Helvetica, sans-serif' font-size='38' font-weight='700' fill='%23FFFFFF' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E";
+// image file, no new asset pipeline -- a graphite disc with an amber "S"
+// monogram (--color-accent-3, this asset's --accent), matching the
+// amber/graphite theme identity rather than the retired accent-blue mark.
+// The original design called for the disc as --color-bg-9
+// (--paper); built as literally that, the disc is the exact same color as
+// the og-image card's own --paper background it's composited onto
+// (scripts/build-og-image.js), so it visually disappears there -- verified
+// by rendering dist/og-image.png this task and viewing it. Using
+// --color-bg-8 (--surface, one graphite step lighter) instead keeps the
+// same "graphite disc" identity while staying visible against both the
+// og-image card and a light or dark browser tab bar. A data: URI can't
+// reference a CSS custom property, so its two colors are copied here
+// literally from tokens.css at the one call site that needs them; this is
+// the same, deliberate exception the human's other site's own
+// FAVICON_DATA_URI takes to the "no hardcoded hex outside tokens.css"
+// rule -- it's a self-contained embedded image asset, not page styling.
+// scripts/build-og-image.js decodes this exact string to reuse the same
+// mark in the 1200x630 og-image, so the favicon and the social-share image
+// can never drift apart.
+const FAVICON_DATA_URI = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23343330'/%3E%3Ctext x='32' y='45' font-family='Arial, Helvetica, sans-serif' font-size='38' font-weight='700' fill='%23C09941' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E";
+
+// theme-color meta tag (mobile browser chrome). Same documented
+// hardcoded-hex exception as FAVICON_DATA_URI above -- a meta content
+// attribute can't reference a CSS custom property -- copied by value from
+// tokens.css's --color-bg-9 (the dark theme's --paper, the page's default
+// ground).
+const THEME_COLOR_META = '#1C1B18';
+
+// Pre-paint script: applies a stored theme choice, and marks the document
+// as JS-capable, before the <style> block below is parsed -- so there is
+// no flash of the wrong theme and the theme toggle (display:none by
+// default; see .js .theme-toggle in screen.css) only ever appears once JS
+// has actually run. Wrapped in try/catch for private-mode storage
+// failures. No localStorage value (first visit) leaves the <html> element
+// with no data-theme attribute at all, which is what makes dark the
+// default -- :root's plain values are already the dark role assignment.
+const THEME_PREPAINT_SCRIPT = `<script>
+(function () {
+  try {
+    var stored = localStorage.getItem('theme');
+    if (stored === 'light' || stored === 'dark') {
+      document.documentElement.setAttribute('data-theme', stored);
+    }
+    document.documentElement.classList.add('js');
+  } catch (e) {}
+})();
+</script>`;
+
+// Theme toggle behavior: syncs the button's label to whatever theme is
+// already in effect (covers a returning light-theme visitor, since the
+// button's server-rendered label always assumes dark), then on click
+// flips the theme, persists the choice, and re-labels. Inline, at the end
+// of the body, non-blocking, no dependency.
+const THEME_TOGGLE_SCRIPT = `<script>
+(function () {
+  var btn = document.querySelector('[data-theme-toggle]');
+  if (!btn) return;
+  function label(theme) {
+    btn.setAttribute('aria-label', theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+  }
+  label(document.documentElement.getAttribute('data-theme') || 'dark');
+  btn.addEventListener('click', function () {
+    var current = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    label(next);
+  });
+})();
+</script>`;
 
 // tokens.css + screen.css, read once at require time -- this IS the
 // concatenation the build writes to dist/site.css, and it is also inlined
@@ -114,11 +174,13 @@ function documentHead(opts) {
   <meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'none'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="${THEME_COLOR_META}">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">${canonicalLink}${robotsMeta}${og}
   <meta name="google-adsense-account" content="${escapeHtml(ADSENSE_CLIENT)}">
   ${ADSENSE_AUTO_ADS_SCRIPT}
   <link rel="icon" href="${FAVICON_DATA_URI}">
+  ${THEME_PREPAINT_SCRIPT}
   <style>${SITE_CSS}</style>${jsonLdBlock}${adsScriptBlock}
   <script data-goatcounter="${GOATCOUNTER_URL}" async src="https://gc.zgo.at/count.js"></script>
 </head>`;
@@ -133,8 +195,25 @@ function renderHeader(active = null) {
     .map(({ key, label, file }) => `<a href="${escapeHtml(site.url(file))}"${active === key ? ' aria-current="page"' : ''}>${escapeHtml(label)}</a>`)
     .join('\n      ');
 
+  // Two-tone wordmark: split SITE_NAME at its last space, no copy change,
+  // no new constant. "Solo Queue" (--ink) / "Practice" (--accent).
+  const lastSpace = site.SITE_NAME.lastIndexOf(' ');
+  const brandMarkup = lastSpace === -1
+    ? `<span class="brand-ink">${escapeHtml(site.SITE_NAME)}</span>`
+    : `<span class="brand-ink">${escapeHtml(site.SITE_NAME.slice(0, lastSpace))}</span><span class="brand-accent">${escapeHtml(site.SITE_NAME.slice(lastSpace))}</span>`;
+
+  // Brand + theme toggle share one row (.brand-row) so the toggle never
+  // adds a fourth wrapped nav row on narrow viewports. The toggle is
+  // display:none until .js confirms it can work (screen.css); its label
+  // text IS the action ("Switch to light theme"), swapped by
+  // THEME_TOGGLE_SCRIPT on click.
   return `<header class="site-header">
-    <a class="brand" href="${escapeHtml(site.url())}">${escapeHtml(site.SITE_NAME)}</a>
+    <div class="brand-row">
+      <a class="brand" href="${escapeHtml(site.url())}">${brandMarkup}</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme">
+        <span aria-hidden="true">&#9686;</span>
+      </button>
+    </div>
     <nav class="site-nav" aria-label="Main">
       ${links}
     </nav>
@@ -188,12 +267,6 @@ function renderFooterCredit() {
  * those is unaffected; this is a plain program-updates signup.
  */
 function renderNewsletterSignup() {
-  if (!NEWSLETTER_FORM_ACTION) {
-    return `<div class="newsletter-signup newsletter-signup--pending">
-      <h2 class="newsletter-heading">Get program updates by email</h2>
-      <p class="newsletter-description">Email sign-up isn&rsquo;t live yet &mdash; check back soon.</p>
-    </div>`;
-  }
   const embedTitle = 'Email signup for Solo Queue Practice updates';
   return `<div class="newsletter-signup">
       <h2 class="newsletter-heading">Get program updates by email</h2>
@@ -266,22 +339,23 @@ function renderFooter() {
 /**
  * @param {{title:string, description:string, bodyHtml:string, canonical?:string,
  *   ogType?:'website'|'article', jsonLd?:string, active?:string|null,
- *   noindex?:boolean, wide?:boolean}} opts
+ *   noindex?:boolean}} opts
  * @returns {string} a full standalone HTML document using the shared shell.
  */
 function documentShell(opts) {
-  const { title, description, bodyHtml, canonical, ogType, jsonLd, active = null, noindex, wide } = opts;
+  const { title, description, bodyHtml, canonical, ogType, jsonLd, active = null, noindex } = opts;
   return `<!doctype html>
 <html lang="en">
 ${documentHead({ title, description, canonical, ogType, jsonLd, noindex })}
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   ${renderHeader(active)}
-  <main id="main" class="page-shell${wide ? ' page-shell-wide' : ''}">
+  <main id="main" class="page-shell">
 ${bodyHtml}
   </main>
   ${renderFooter()}
   ${NEWSLETTER_EMBED_SCRIPT}
+  ${THEME_TOGGLE_SCRIPT}
 </body>
 </html>
 `;

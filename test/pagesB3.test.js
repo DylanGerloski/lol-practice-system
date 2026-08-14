@@ -53,15 +53,17 @@ test('every file in dist/print/ has a working (non-noindex-broken) type label --
   }
 });
 
-test('home card grid links to every major section, including tracker and downloads', () => {
+test('home page links to every major section, including tracker and downloads, via 3 ranked feature cards + 8 tile-index tiles', () => {
   buildSite();
   const content = readDist('index.html');
   for (const file of ['program.html', 'baseline.html', 'focus-menu.html', 'drills.html', 'warmup.html',
     'champion-pool.html', 'vod-review.html', 'tilt-rules.html', 'tracker.html', 'downloads.html', 'faq.html']) {
     assert.ok(content.includes(site.url(file)), `home page is missing a link to ${file}`);
   }
-  const cardCount = (content.match(/class="link-card"/g) || []).length;
-  assert.equal(cardCount, 11, 'expected exactly 11 section cards on the home page');
+  const featureCardCount = (content.match(/class="feature-card"/g) || []).length;
+  const tileCount = (content.match(/class="tile"/g) || []).length;
+  assert.equal(featureCardCount, 3, 'expected exactly 3 ranked "Start here" feature cards on the home page');
+  assert.equal(tileCount, 8, 'expected exactly 8 tiles in the "Everything else" tile index on the home page');
 });
 
 test('about.html carries the full Riot disclaimer and trademark notice in its own body (not just the shared footer)', () => {

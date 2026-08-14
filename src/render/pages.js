@@ -24,8 +24,13 @@ function documentShell({ title, description, bodyHtml, docName, cardDoc, canonic
   // program-guide, warmup-cards, drill-library) are unaffected.
   const canonicalLink = canonical ? `\n<link rel="canonical" href="${escapeHtml(canonical)}">` : '';
   const robotsMeta = noindex ? '\n<meta name="robots" content="noindex">' : '';
+  // The print pack (opened on screen as often as it's printed) always
+  // renders light regardless of the web build's dark-default theme
+  // toggle: tokens.css is shared with print.css, and without this
+  // attribute the whole printable pack would render dark. See
+  // tokens.css's :root[data-theme="light"] block.
   return `<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'none'">

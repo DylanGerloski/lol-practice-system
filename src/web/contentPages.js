@@ -132,9 +132,16 @@ function standardEndLinks(extra = []) {
 }
 
 function buildPage({ file, titleBase, description, active, introHtml, sectionsHtml, endLinksHtml }) {
-  const body = `${introHtml}
+  // Every guide-derived content page is prose-dominant (the widest thing
+  // any of them carries is the two-column baseline benchmarks table or the
+  // focus-menu drill-grid), so the whole page sits in one zone-measure
+  // reading column rather than being split block-by-block -- these pages
+  // inherit the token/type system without being redesigned themselves.
+  const body = `<div class="zone-measure">
+    ${introHtml}
     ${sectionsHtml}
-    ${endLinksHtml}`;
+    ${endLinksHtml}
+  </div>`;
   return shell.documentShell({
     title: site.pageTitle(titleBase),
     description,
