@@ -39,13 +39,35 @@ test('every produced HTML document contains the version/last-reviewed footer', (
   }
 });
 
+test('every produced HTML document ships the CSP and referrer meta tags', () => {
+  build();
+  const htmlFiles = EXPECTED_FILES.filter(f => f.endsWith('.html'));
+  for (const f of htmlFiles) {
+    const content = fs.readFileSync(path.join(DIST, f), 'utf8');
+    assert.match(
+      content,
+      /<meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'none'">/,
+      `${f} missing CSP meta tag`
+    );
+    assert.match(
+      content,
+      /<meta name="referrer" content="strict-origin-when-cross-origin">/,
+      `${f} missing referrer meta tag`
+    );
+  }
+});
+
 test('every produced HTML document has a unique <title>, a <meta description>, and html lang="en"', () => {
   build();
   const htmlFiles = EXPECTED_FILES.filter(f => f.endsWith('.html'));
   const titles = new Set();
   for (const f of htmlFiles) {
     const content = fs.readFileSync(path.join(DIST, f), 'utf8');
-    assert.ok(content.includes('<html lang="en">'), `${f} missing html lang attribute`);
+    // The print pack's <html> tag also carries data-theme="light" (the
+    // print pack always renders light regardless of the web build's
+    // dark-default theme toggle), so this checks for the lang attribute
+    // rather than an exact full-tag string.
+    assert.match(content, /<html lang="en"[^>]*>/, `${f} missing html lang attribute`);
     const titleMatch = content.match(/<title>(.*?)<\/title>/);
     assert.ok(titleMatch, `${f} missing <title>`);
     assert.ok(!titles.has(titleMatch[1]), `${f} has a duplicate <title>: ${titleMatch[1]}`);

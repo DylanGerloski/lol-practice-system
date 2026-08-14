@@ -111,6 +111,8 @@ function documentHead(opts) {
 
   return `<head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">${canonicalLink}${robotsMeta}${og}
@@ -118,7 +120,7 @@ function documentHead(opts) {
   ${ADSENSE_AUTO_ADS_SCRIPT}
   <link rel="icon" href="${FAVICON_DATA_URI}">
   <style>${SITE_CSS}</style>${jsonLdBlock}${adsScriptBlock}
-  <script data-goatcounter="${GOATCOUNTER_URL}" async src="//gc.zgo.at/count.js"></script>
+  <script data-goatcounter="${GOATCOUNTER_URL}" async src="https://gc.zgo.at/count.js"></script>
 </head>`;
 }
 
