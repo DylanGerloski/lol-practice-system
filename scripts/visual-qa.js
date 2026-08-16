@@ -186,6 +186,26 @@ async function main() {
 
     console.log('');
     console.log(formatScoreSummary(result.lhr.categories));
+
+    // 3. Em-dash hygiene: design-standards.md bans the literal em dash
+    // character outright (zero tolerance, 2026-08-15) -- catch a regression
+    // in whatever page is under QA, not just at the repo-wide test level.
+    const hygienePage = await browser.newPage();
+    await hygienePage.goto(pageUrl, { waitUntil: 'networkidle' });
+    const html = await hygienePage.content();
+    await hygienePage.close();
+    // Checks both the literal character and the HTML-entity/numeric-reference
+    // spellings, since &mdash;/&#8212;/&#x2014; decode to the same character
+    // once the DOM parses them -- a raw-source grep for the literal
+    // character alone misses those.
+    const hasLiteral = html.includes('—');
+    const hasEncoded = /&mdash;|&#8212;|&#x2014;/i.test(html);
+    if (hasLiteral || hasEncoded) {
+      console.error('Em-dash hygiene FAILED: rendered page contains an em dash (literal or HTML-entity-encoded). Replace with a plain hyphen or restructure per design-standards.md.');
+      process.exitCode = 1;
+    } else {
+      console.log('Em-dash hygiene: OK (no literal or encoded em dash in rendered output)');
+    }
   } finally {
     await browser.close();
     if (server) {

@@ -14,7 +14,7 @@
     ],
     "passBar": "90 CS at 10:00, no items",
     "progression": "Once you clear 90 three sessions in a row, move your pass bar to 107 CS at 10:00.",
-    "commonFailure": "Chasing kills across the wave instead of taking the closest safe minion — costs more CS than it gains."
+    "commonFailure": "Chasing kills across the wave instead of taking the closest safe minion - costs more CS than it gains."
   },
   {
     "id": "last-hit-under-tower",
@@ -41,13 +41,13 @@
     "duration": "10 minutes",
     "procedure": [
       "Set up a lane with your minions slightly ahead of the enemy's, near your side of the map.",
-      "Only last-hit — do not push the wave forward with extra damage.",
+      "Only last-hit - do not push the wave forward with extra damage.",
       "Hold the freeze point (roughly the midpoint between your tower and the enemy's) for 3 full waves.",
       "Note where the freeze breaks and why (a big minion died on the wrong side, you took a harass trade poorly, etc).",
       "Reset and repeat until you can hold a freeze for a full 3-wave cycle without it collapsing."
     ],
     "passBar": "Hold a freeze for 3 consecutive waves without it pushing or crashing",
-    "progression": "Practice freezing while also last-hitting perfectly — most players can do one or the other at first, not both.",
+    "progression": "Practice freezing while also last-hitting perfectly - most players can do one or the other at first, not both.",
     "commonFailure": "Auto-attacking a minion out of habit and accidentally pushing the wave past the freeze point."
   },
   {
@@ -76,13 +76,13 @@
     "procedure": [
       "Before the game, decide a ward-refresh cadence (e.g. every time trinket is off cooldown).",
       "Set a mental or physical timer cue for that cadence.",
-      "Every time the cadence hits, place a ward — even if nothing feels urgent.",
+      "Every time the cadence hits, place a ward - even if nothing feels urgent.",
       "After the game, check your vision score against your rank's typical range.",
       "Note any stretch of the game where you went more than 90 seconds with no active ward nearby."
     ],
     "passBar": "No gap over 90 seconds with zero active wards in your area of the map",
     "progression": "Add control wards on a second, slower cadence once the trinket cadence is automatic.",
-    "commonFailure": "Only warding when already worried about a gank — by then it's too late to prevent it."
+    "commonFailure": "Only warding when already worried about a gank - by then it's too late to prevent it."
   },
   {
     "id": "death-audit",
@@ -92,14 +92,14 @@
     "duration": "5 minutes per game, after playing",
     "procedure": [
       "After each death this game, write one sentence: what specifically caused it.",
-      "Avoid vague causes like \"got caught out\" — name the specific decision (missed vision, overextended past minion wave, ignored a missing enemy on the minimap).",
+      "Avoid vague causes like \"got caught out\" - name the specific decision (missed vision, overextended past minion wave, ignored a missing enemy on the minimap).",
       "Group deaths by cause across a full session (10 games).",
       "Identify your single most repeated death cause.",
       "Pick one fix for that specific cause and hold it for your next 10-game block."
     ],
     "passBar": "One written cause per death, no games skipped",
-    "progression": "Once causes stop repeating, audit deaths for allies too — learning to read a teammate's death pattern helps positioning around them.",
-    "commonFailure": "Writing \"bad luck\" or \"unlucky\" as a cause — almost no death is actually unavoidable; find the real decision point."
+    "progression": "Once causes stop repeating, audit deaths for allies too - learning to read a teammate's death pattern helps positioning around them.",
+    "commonFailure": "Writing \"bad luck\" or \"unlucky\" as a cause - almost no death is actually unavoidable; find the real decision point."
   },
   {
     "id": "minimap-glance-cadence",
@@ -116,7 +116,7 @@
     ],
     "passBar": "No gap over 15 seconds without a minimap glance during laning phase",
     "progression": "Extend the cadence requirement into mid-game teamfight positioning, where the cost of missing a glance is much higher.",
-    "commonFailure": "Glancing at the minimap but not actually processing what changed — the habit needs to end in a decision, not just a look."
+    "commonFailure": "Glancing at the minimap but not actually processing what changed - the habit needs to end in a decision, not just a look."
   },
   {
     "id": "jungle-clear-timing",
@@ -128,10 +128,10 @@
       "Run your standard opening clear in Practice Tool with a stopwatch running.",
       "Note the exact time your first full clear finishes.",
       "Run it again, this time trying to shave time by tightening pathing (fewer wasted steps between camps).",
-      "Do this 3 times and take your best clean clear as your calibration baseline — there is no universal target, only your own baseline.",
+      "Do this 3 times and take your best clean clear as your calibration baseline - there is no universal target, only your own baseline.",
       "Log your baseline in the tracker and compare future clears against it, not against a number you didn't measure yourself."
     ],
-    "passBar": "Calibrate from your own baseline — no fabricated number exists for this without knowing your champion and route",
+    "passBar": "Calibrate from your own baseline - no fabricated number exists for this without knowing your champion and route",
     "progression": "Once your clear time is stable, add a scripted gank attempt at a fixed timing (e.g. first back-to-back camp finished) and measure how often you're actually there on time.",
     "commonFailure": "Comparing your clear time to a pro player's without accounting for a different champion, route, or rune setup."
   },
@@ -180,11 +180,11 @@
       "Play the game normally, holding the rule even when something goes wrong.",
       "After the game, reread your own chat log if available.",
       "Flag any message that was a complaint rather than information or a plan.",
-      "Log whether you held the rule for the full game — this is a pass/fail habit check, not a graded skill."
+      "Log whether you held the rule for the full game - this is a pass/fail habit check, not a graded skill."
     ],
     "passBar": "Zero complaint-only messages in the chat log for the full game",
     "progression": "Extend the rule to voice comms with friends once it's automatic in text chat.",
-    "commonFailure": "Typing a complaint and then immediately typing something useful afterward — the complaint still went out; the fix is not typing it at all."
+    "commonFailure": "Typing a complaint and then immediately typing something useful afterward - the complaint still went out; the fix is not typing it at all."
   },
   {
     "id": "one-sentence-lesson",
@@ -200,7 +200,7 @@
       "Do not queue the next game until this sentence is written."
     ],
     "passBar": "One specific-action sentence logged per game, no games skipped",
-    "progression": "At each block review, reread your last 10 lessons and check whether the same lesson is repeating — a repeat means the lesson didn't actually change your play.",
-    "commonFailure": "Queueing immediately into the next game because a loss feels urgent to fix right now — this is exactly the tilt pattern the review step exists to interrupt."
+    "progression": "At each block review, reread your last 10 lessons and check whether the same lesson is repeating - a repeat means the lesson didn't actually change your play.",
+    "commonFailure": "Queueing immediately into the next game because a loss feels urgent to fix right now - this is exactly the tilt pattern the review step exists to interrupt."
   }
 ]
