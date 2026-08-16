@@ -1,6 +1,6 @@
 'use strict';
 
-// Tests for src/web/pagesB3.js (home/tracker/downloads/about/privacy).
+// Tests for src/web/sitePages.js (home/tracker/downloads/about/privacy).
 // build.js's build() runs first in each test that needs
 // dist/print/ populated, mirroring how `npm run build:all` actually orders
 // things (print pack, then site) -- these tests don't assume any other test
@@ -13,7 +13,7 @@ const path = require('path');
 
 const { build: buildPrint } = require('../src/build.js');
 const { build: buildSite, DIST, WEB_PAGES } = require('../src/web/buildSite.js');
-const pagesB3 = require('../src/web/pagesB3.js');
+const sitePages = require('../src/web/sitePages.js');
 const site = require('../src/site.js');
 
 const HOME_TRACKER_DOWNLOADS_ABOUT_PRIVACY_PAGES = ['index.html', 'tracker.html', 'downloads.html', 'about.html', 'privacy.html'];
@@ -26,7 +26,7 @@ test('downloads.html links every actual file currently in dist/print/ (excluding
   buildPrint();
   buildSite();
   const content = readDist('downloads.html');
-  const printFiles = fs.readdirSync(pagesB3.PRINT_DIR).filter(f => f !== 'print.css');
+  const printFiles = fs.readdirSync(sitePages.PRINT_DIR).filter(f => f !== 'print.css');
   assert.ok(printFiles.length > 0, 'expected the print pack to have produced at least one file');
   for (const f of printFiles) {
     assert.ok(content.includes(`print/${f}`), `downloads.html is missing a link to ${f}`);
@@ -45,7 +45,7 @@ test('downloads.html shows a file type and a size for every download row', () =>
 
 test('every file in dist/print/ has a working (non-noindex-broken) type label -- html/pdf/xlsx all recognized', () => {
   buildPrint();
-  const files = pagesB3.readPrintFiles();
+  const files = sitePages.readPrintFiles();
   assert.ok(files.length > 0);
   for (const f of files) {
     assert.notEqual(f.typeLabel, '', `${f.file} got an empty type label`);

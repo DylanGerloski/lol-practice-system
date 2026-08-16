@@ -70,7 +70,7 @@ const sections = [
     title: 'The Session Loop',
     wordBudget: 500,
     body: [
-      { type: 'p', text: 'Every ranked session - not every game, every sitting down to play - follows the same four-step loop: warm up, play two or three focused games, review once, log everything.' },
+      { type: 'p', text: 'Every ranked session (not every game, every sitting down to play) follows the same four-step loop: warm up, play two or three focused games, review once, log everything.' },
       { type: 'list', items: [
         'Warm up (15 minutes) using the Warmup Card matching your role. Do not skip this because you feel warmed up already from a previous session earlier in the day - fifteen minutes of cold hands costs you more games than the warmup costs you time.',
         'Play 2-3 games holding your current block\'s focus. Not five, not one - two or three keeps each game\'s review sharp in your memory and prevents the session from sliding into unfocused queue-and-forget play.',
@@ -155,7 +155,7 @@ const sections = [
     wordBudget: 300,
     body: [
       { type: 'p', text: 'Graduate out of a focus and pick a new one when both of these are true: you cleared the matching drill\'s pass bar in Practice Tool or its equivalent live-game measure, and your block-end average for that focus\'s number has moved meaningfully from where the block started - not just on your best game, across the block\'s average.' },
-      { type: 'p', text: 'If only one of the two is true - you cleared the drill in isolation but the live-game number has not moved, or the live number moved but you never actually cleared the drill cleanly - repeat the block. A drill cleared in Practice Tool that does not show up in real games has not actually transferred yet, and that gap is exactly what another block is for.' },
+      { type: 'p', text: 'If only one of the two is true (you cleared the drill in isolation but the live-game number has not moved, or the live number moved but you never actually cleared the drill cleanly), repeat the block. A drill cleared in Practice Tool that does not show up in real games has not actually transferred yet, and that gap is exactly what another block is for.' },
       { type: 'callout', text: 'It is normal, and common, to need two blocks on the same focus before it graduates. Nothing about this program rewards moving fast between focuses - it rewards a number that actually moved.' }
     ]
   },

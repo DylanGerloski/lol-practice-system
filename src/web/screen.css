@@ -354,7 +354,7 @@ main.page-shell {
 .stat-rail-row:last-of-type { border-bottom: none; }
 .stat-rail-value {
   /* size/weight come from the .t-section class applied alongside this one
-     in markup (src/web/pagesB3.js) -- kept out of this rule so it doesn't
+     in markup (src/web/sitePages.js) -- kept out of this rule so it doesn't
      also apply mono/tabular-nums/accent-color to every other h2 on the site */
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;

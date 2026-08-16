@@ -33,7 +33,7 @@ const { DRILL_WARMUP_PAGES } = require('./drillWarmupPages.js');
 // tracker, downloads, about, and privacy. Each of these pages lives in its
 // own small module and is merged into WEB_PAGES below, so this file itself
 // never needs restructuring as more pages land.
-const pagesB3 = require('./pagesB3.js');
+const sitePages = require('./sitePages.js');
 
 // SEO/metadata infrastructure -- sitemap.xml/robots.txt
 // generated from the final written file list, dist/ads.txt, and a build-time
@@ -83,12 +83,12 @@ function pruneStaleTopLevelFiles(writtenFiles) {
 // here (or in their own small module merged into this array) rather
 // than restructuring this build.
 const WEB_PAGES = [
-  ['index.html', pagesB3.renderHome],
+  ['index.html', sitePages.renderHome],
   ['404.html', shell.render404Page],
-  ['tracker.html', pagesB3.renderTracker],
-  ['downloads.html', pagesB3.renderDownloads],
-  ['about.html', pagesB3.renderAbout],
-  ['privacy.html', pagesB3.renderPrivacy],
+  ['tracker.html', sitePages.renderTracker],
+  ['downloads.html', sitePages.renderDownloads],
+  ['about.html', sitePages.renderAbout],
+  ['privacy.html', sitePages.renderPrivacy],
   // Guide-derived content pages (program/baseline/focus-menu/
   // champion-pool/vod-review/tilt-rules/faq), rendered from content/guide.js
   // via src/web/contentPages.js.
