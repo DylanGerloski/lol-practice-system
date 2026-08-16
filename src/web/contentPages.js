@@ -106,7 +106,7 @@ function renderVodChecklist() {
     'Checkpoint 2, First Back: note the timestamp, whether the recall timing was efficient, and whether your purchase matched the game state.',
     'Checkpoint 3, Mid-Game Grouping: note the timestamp, whether you were where you needed to be, and whether you called the objective timer early.',
     'Checkpoint 4, The Fight That Decided It: note the timestamp, watch it twice, and write one thing about your own positioning and one thing the enemy team did that worked.',
-    'Change Next Game: write the one specific action you will change — not a feeling.'
+    'Change Next Game: write the one specific action you will change - not a feeling.'
   ];
   return `<div class="vod-checklist">${items.map(checklistRow).join('\n')}</div>`;
 }
@@ -261,7 +261,7 @@ function renderVodReview() {
   const a8Html = renderSection('a8-self-vod-review');
   const checklistSection = `<section class="guide-section">
       <h2>VOD Review Checklist</h2>
-      <p>The same four checkpoints as a running checklist — print the fillable version below if you would rather write on paper.</p>
+      <p>The same four checkpoints as a running checklist - print the fillable version below if you would rather write on paper.</p>
       ${renderVodChecklist()}
     </section>`;
   const sectionsHtml = `${a8Html}

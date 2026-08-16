@@ -4,11 +4,11 @@
     "title": "Universal 15-Minute Warmup",
     "role": "Any role",
     "blocks": {
-      "physical": { "duration": "2 minutes", "description": "Loosen wrists and fingers — rotate wrists both directions, stretch fingers open and closed, shake hands out. This is not optional even if it feels silly; cold hands mechanic worse." },
+      "physical": { "duration": "2 minutes", "description": "Loosen wrists and fingers - rotate wrists both directions, stretch fingers open and closed, shake hands out. This is not optional even if it feels silly; cold hands play worse." },
       "mechanical": { "duration": "10 minutes", "description": "Practice Tool: full-map orb-walk kiting on a target dummy for 3 minutes, then last-hitting a wave for 4 minutes at your normal CS target, then 3 minutes of ability-combo repetition on your most-played champion." },
-      "mentalReset": { "duration": "2 minutes", "description": "Close all other windows and tabs. Write down one thing you want to focus on this session — not your rank, one specific measurable thing from your Focus Menu." }
+      "mentalReset": { "duration": "2 minutes", "description": "Close all other windows and tabs. Write down one thing you want to focus on this session - not your rank, one specific measurable thing from your Focus Menu." }
     },
-    "startWithinRule": "Queue for ranked within 30 minutes of finishing this warmup — priming from a warmup decays past that window.",
+    "startWithinRule": "Queue for ranked within 30 minutes of finishing this warmup - priming from a warmup decays past that window.",
     "sameSettingsRule": "Warm up at the exact same mouse sensitivity, keybinds, and resolution you play ranked at. Warming up on different settings trains the wrong muscle memory."
   },
   {
@@ -17,7 +17,7 @@
     "role": "Top or Mid",
     "blocks": {
       "physical": { "duration": "2 minutes", "description": "Wrist and finger loosening, same as the universal warmup." },
-      "mechanical": { "duration": "10 minutes", "description": "Practice Tool: 1v1 trading pattern against a bot for 5 minutes (land a trade, disengage, repeat — see the Trade-Then-Back drill), then a 5-minute wave-freeze setup rep." },
+      "mechanical": { "duration": "10 minutes", "description": "Practice Tool: 1v1 trading pattern against a bot for 5 minutes (land a trade, disengage, repeat - see the Trade-Then-Back drill), then a 5-minute wave-freeze setup rep." },
       "mentalReset": { "duration": "2 minutes", "description": "Pick your lane's likely matchup mentally and name one power spike you need to respect or exploit this game." }
     },
     "startWithinRule": "Queue for ranked within 30 minutes of finishing this warmup.",
