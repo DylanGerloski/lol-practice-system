@@ -13,11 +13,10 @@ const guide = require('../content/guide.js');
 const { build, DIST } = require('../src/build.js');
 const { build: buildSite, DIST: WEB_DIST } = require('../src/web/buildSite.js');
 
-// Governance change 2026-08-15 (design-standards.md): em dashes are banned
-// outright, zero tolerance -- replaced with a plain hyphen or restructured
-// with a period/comma. This is a build-time guard against a regression, not
-// a one-time cleanup: any new copy that introduces a literal em dash fails
-// the test suite.
+// This project's style guide bans em dashes outright -- replace with a
+// plain hyphen or restructure with a period/comma. This is a build-time
+// guard against a regression, not a one-time cleanup: any new copy that
+// introduces a literal em dash fails the test suite.
 const EM_DASH = '—';
 // The HTML-entity and numeric-character-reference spellings of an em dash
 // decode to the same literal character once a browser parses the DOM (this

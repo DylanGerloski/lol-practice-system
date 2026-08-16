@@ -4,7 +4,7 @@
     "title": "Universal 15-Minute Warmup",
     "role": "Any role",
     "blocks": {
-      "physical": { "duration": "2 minutes", "description": "Loosen wrists and fingers - rotate wrists both directions, stretch fingers open and closed, shake hands out. This is not optional even if it feels silly; cold hands mechanic worse." },
+      "physical": { "duration": "2 minutes", "description": "Loosen wrists and fingers - rotate wrists both directions, stretch fingers open and closed, shake hands out. This is not optional even if it feels silly; cold hands play worse." },
       "mechanical": { "duration": "10 minutes", "description": "Practice Tool: full-map orb-walk kiting on a target dummy for 3 minutes, then last-hitting a wave for 4 minutes at your normal CS target, then 3 minutes of ability-combo repetition on your most-played champion." },
       "mentalReset": { "duration": "2 minutes", "description": "Close all other windows and tabs. Write down one thing you want to focus on this session - not your rank, one specific measurable thing from your Focus Menu." }
     },
