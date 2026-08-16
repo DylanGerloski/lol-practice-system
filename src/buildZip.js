@@ -8,7 +8,7 @@
 // "npm run pdf" and before "npm run build:site" in build:all, so:
 //   - it can pick up the PDFs (if a browser was available) as well as the
 //     HTML/xlsx, without the core "npm run build" step depending on it, and
-//   - dist/print/'s dynamic file listing (src/web/pagesB3.js's
+//   - dist/print/'s dynamic file listing (src/web/sitePages.js's
 //     readPrintFiles()) picks the zip up automatically once build:site runs
 //     after it, with no code change needed in the downloads-page renderer.
 //

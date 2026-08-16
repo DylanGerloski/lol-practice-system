@@ -138,7 +138,7 @@ function renderWarmupCard(w) {
 
 function renderWarmup() {
   const introHtml = `<h1 id="warmup-top">LoL Warmup Routines by Role</h1>
-    <p class="lead">Five 15-minute routines - one universal, four role-specific - each built the same way: two minutes physical, ten minutes mechanical, two minutes mental reset. Queue within thirty minutes of finishing, on the same settings you play ranked at.</p>`;
+    <p class="lead">Five 15-minute routines (one universal, four role-specific), each built the same way: two minutes physical, ten minutes mechanical, two minutes mental reset. Queue within thirty minutes of finishing, on the same settings you play ranked at.</p>`;
   const first = warmups.slice(0, 3).map(renderWarmupCard).join('\n');
   const rest = warmups.slice(3).map(renderWarmupCard).join('\n');
   const body = `<div class="zone-measure">
