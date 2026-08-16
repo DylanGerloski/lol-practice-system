@@ -370,7 +370,7 @@ ${bodyHtml}
 function render404Page() {
   const title = `Page not found | ${site.SITE_NAME}`;
   const description = `The page you followed a link to doesn’t exist on ${site.SITE_NAME}. Here’s where to pick back up.`;
-  const body = `<div class="not-found">
+  const body = `<div class="not-found zone-measure">
       <h1>That page doesn’t exist</h1>
       <p class="lead">The link you followed may be out of date, or the page may have moved.</p>
       <ul>
