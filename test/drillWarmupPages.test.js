@@ -62,6 +62,19 @@ test('warmup.html renders every warmup in content/warmups.json as its own anchor
   }
 });
 
+test('drills.html and warmup.html each carry exactly one Article JSON-LD block matching their own canonical URL', () => {
+  buildSite();
+  for (const file of ['drills.html', 'warmup.html']) {
+    const html = fs.readFileSync(path.join(DIST, file), 'utf8');
+    const matches = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+    assert.equal(matches.length, 1, `${file} should carry exactly one JSON-LD block, found ${matches.length}`);
+    const data = JSON.parse(matches[0][1]);
+    assert.equal(data['@context'], 'https://schema.org');
+    assert.equal(data['@type'], 'Article');
+    assert.equal(data.mainEntityOfPage['@id'], site.absoluteUrl(file));
+  }
+});
+
 test('drills.html and warmup.html carry no manual ad-slot placeholder (Auto ads loads unconditionally, so the old empty placeholder wells were removed rather than left visually coexisting with it)', () => {
   buildSite();
   for (const file of ['drills.html', 'warmup.html']) {

@@ -23,6 +23,7 @@ const {
   renderGuideBlock,
   renderBenchmarksTable
 } = require('../render/pages.js');
+const { articleJsonLd, faqPageJsonLd } = require('./structuredData.js');
 
 const guide = require(path.join('..', '..', 'content', 'guide.js'));
 const benchmarks = require(path.join('..', '..', 'content', 'benchmarks.json'));
@@ -131,7 +132,7 @@ function standardEndLinks(extra = []) {
   ]);
 }
 
-function buildPage({ file, titleBase, description, active, introHtml, sectionsHtml, endLinksHtml }) {
+function buildPage({ file, titleBase, description, active, introHtml, sectionsHtml, endLinksHtml, jsonLd }) {
   // Every guide-derived content page is prose-dominant (the widest thing
   // any of them carries is the two-column baseline benchmarks table or the
   // focus-menu drill-grid), so the whole page sits in one zone-measure
@@ -142,13 +143,24 @@ function buildPage({ file, titleBase, description, active, introHtml, sectionsHt
     ${sectionsHtml}
     ${endLinksHtml}
   </div>`;
+  // Article JSON-LD by default (per structuredData.js's design: every
+  // content page gets Article) -- callers that need a different schema.org
+  // type (faq.html's FAQPage) pass jsonLd explicitly to override.
+  const resolvedJsonLd = jsonLd !== undefined ? jsonLd : articleJsonLd({
+    headline: titleBase,
+    description,
+    datePublished: site.BUILD_DATE,
+    dateModified: site.BUILD_DATE,
+    url: site.absoluteUrl(file)
+  });
   return shell.documentShell({
     title: site.pageTitle(titleBase),
     description,
     bodyHtml: body,
     canonical: site.absoluteUrl(file),
     active: active || null,
-    ogType: 'article'
+    ogType: 'article',
+    jsonLd: resolvedJsonLd
   });
 }
 
@@ -299,6 +311,27 @@ function renderTiltRules() {
 // ---------------------------------------------------------------------------
 // faq.html -- guide A11
 // ---------------------------------------------------------------------------
+// The FAQ guide section's "list" block is Q&A pairs written as one string
+// each ("Question? Answer text."), not structured data -- this splits each
+// on its first "?" to build FAQPage's required {question, answerHtml}
+// shape. Only the list block qualifies (the section's three lead-in `p`
+// blocks are "what this is not" statements, not questions, so FAQPage
+// schema -- which requires an actual question -- would misrepresent them).
+function extractFaqPairs() {
+  const s = section('a11-faq');
+  const listBlock = s.body.find((b) => b.type === 'list');
+  return listBlock.items.map((item) => {
+    const qEnd = item.indexOf('?');
+    return {
+      question: item.slice(0, qEnd + 1),
+      // Plain text, not HTML -- faqPageJsonLd's stripHtmlToText() is a
+      // no-op passthrough on text with no tags/entities, so this is safe
+      // to pass as-is.
+      answerHtml: item.slice(qEnd + 2).trim()
+    };
+  });
+}
+
 function renderFaq() {
   const introHtml = `<h1>FAQ and What This Is Not</h1>
     <p class="lead">Straight answers, including about what this program cannot promise.</p>`;
@@ -311,7 +344,8 @@ function renderFaq() {
     sectionsHtml: renderSectionsWithMidAd(['a11-faq']),
     endLinksHtml: standardEndLinks([
       [site.url('program.html'), 'Read the full program']
-    ])
+    ]),
+    jsonLd: faqPageJsonLd(extractFaqPairs())
   });
 }
 

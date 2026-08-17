@@ -147,6 +147,10 @@ const NAV_LINKS = [
 /**
  * @param {{title:string, description:string, canonical?:string,
  *   ogType?:'website'|'article', jsonLd?:string, noindex?:boolean}} opts
+ *   `jsonLd`, if given, must already be a complete, ready-to-embed
+ *   `<script type="application/ld+json">...</script>` string -- e.g. the
+ *   direct return value of one of src/web/structuredData.js's builders.
+ *   This function does not wrap it in another `<script>` tag itself.
  * @returns {string} a full <head>...</head> block.
  */
 function documentHead(opts) {
@@ -165,7 +169,7 @@ function documentHead(opts) {
     `\n  <meta property="og:image:width" content="1200">` +
     `\n  <meta property="og:image:height" content="630">` +
     `\n  <meta name="twitter:card" content="summary_large_image">`;
-  const jsonLdBlock = jsonLd ? `\n  <script type="application/ld+json">${jsonLd}</script>` : '';
+  const jsonLdBlock = jsonLd ? `\n  ${jsonLd}` : '';
   const adsScript = adsScriptTag();
   const adsScriptBlock = adsScript ? `\n  ${adsScript}` : '';
 
@@ -339,7 +343,7 @@ function renderFooter() {
 /**
  * @param {{title:string, description:string, bodyHtml:string, canonical?:string,
  *   ogType?:'website'|'article', jsonLd?:string, active?:string|null,
- *   noindex?:boolean}} opts
+ *   noindex?:boolean}} opts see documentHead() for `jsonLd`'s exact shape.
  * @returns {string} a full standalone HTML document using the shared shell.
  */
 function documentShell(opts) {
