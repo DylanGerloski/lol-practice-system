@@ -1,3 +1,13 @@
 node_modules
 TESTING.md
 visual-qa-output/
+draft_*.txt
+
+# Internal planning/tracking artifacts -- never pushed to a public repo,
+# per .claude/rules/public-repo-hygiene.md rule 2. Broad patterns since
+# growth/reviewer passes name these inconsistently.
+SEO_*.md
+*_AUDIT_*.md
+*_REPORT_*.md
+*HEALTH*.md
+*_PLAN.md

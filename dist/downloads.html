@@ -559,11 +559,17 @@ p:last-child, li:last-child { margin-bottom: 0; }
   color: var(--ink);
   text-decoration: none;
   border-radius: var(--radius-sm);
+  /* Transparent by default on every link (not just the active one) so
+     setting a real color only on [aria-current="page"] never shifts
+     layout -- same 3px accent-rule width used for the "Start here" tile
+     top-rule (see .tile below), repurposed as a bottom rule here so the
+     current page is marked by a shape, not color alone (WCAG 1.4.1). */
+  border-bottom: 3px solid transparent;
   transition: color var(--motion-duration-fast) var(--motion-ease-standard),
               background-color var(--motion-duration-fast) var(--motion-ease-standard);
 }
 .site-nav a:hover { color: var(--accent); background: var(--surface); }
-.site-nav a[aria-current="page"] { color: var(--accent); }
+.site-nav a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent-rule); }
 
 /* ---------------------------------------------------------------------------
    Main content grid -- 12/6/4 columns. Every direct block inside main
@@ -987,7 +993,7 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
     </div>
     <div class="download-row">
       <strong>Quick Start</strong>
-      <span class="download-meta"><a href="/print/01-quick-start.html">HTML (3.3 KB)</a> &middot; <a href="/print/01-quick-start.pdf">PDF (66 KB)</a></span>
+      <span class="download-meta"><a href="/print/01-quick-start.html">HTML (3.3 KB)</a> &middot; <a href="/print/01-quick-start.pdf">PDF (67 KB)</a></span>
     </div>
     <div class="download-row">
       <strong>Program Guide</strong>
@@ -995,7 +1001,7 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
     </div>
     <div class="download-row">
       <strong>Warmup Cards</strong>
-      <span class="download-meta"><a href="/print/03-warmup-cards.html">HTML (8.5 KB)</a> &middot; <a href="/print/03-warmup-cards.pdf">PDF (87 KB)</a></span>
+      <span class="download-meta"><a href="/print/03-warmup-cards.html">HTML (8.5 KB)</a> &middot; <a href="/print/03-warmup-cards.pdf">PDF (88 KB)</a></span>
     </div>
     <div class="download-row">
       <strong>Drill Library</strong>
@@ -1011,7 +1017,7 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
     </div>
     <div class="download-row">
       <strong>Solo Queue Practice Pack</strong>
-      <span class="download-meta"><a href="/print/solo-queue-practice-pack.zip">ZIP (817 KB)</a></span>
+      <span class="download-meta"><a href="/print/solo-queue-practice-pack.zip">ZIP (819 KB)</a></span>
     </div>
     <p>New here? The <a href="/print/00-readme.html">README</a> lists everything below in the order it is meant to be used.</p>
   </div>
