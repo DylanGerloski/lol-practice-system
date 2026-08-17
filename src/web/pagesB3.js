@@ -10,6 +10,7 @@ const path = require('path');
 const site = require('../site.js');
 const shell = require('./shell.js');
 const { escapeHtml } = require('../render/html.js');
+const { articleJsonLd, websiteJsonLd } = require('./structuredData.js');
 
 // Stat-rail source counts: read at build time from the same content
 // files the guide/drill/warmup pages already render from, rather than
@@ -237,12 +238,17 @@ function renderHome() {
       </div>
     </section>`;
 
+  const description = 'A free, ad-supported 30-day deliberate-practice program for League of Legends solo queue, with drills, warmups, and a printable tracker.';
   return shell.documentShell({
     title: site.pageTitle('Solo Queue Practice System'),
-    description: 'A free, ad-supported 30-day deliberate-practice program for League of Legends solo queue, with drills, warmups, and a printable tracker.',
+    description,
     bodyHtml: body,
     canonical: site.absoluteUrl(''),
-    active: 'home'
+    active: 'home',
+    jsonLd: websiteJsonLd({
+      url: site.absoluteUrl(''),
+      description
+    })
   });
 }
 
@@ -278,12 +284,20 @@ function renderTracker() {
     <p>Want the rest of the program on paper too? The <a href="${escapeHtml(site.url('downloads.html'))}">full printable pack</a> has the guide, the drills, and two blank study sheets alongside this workbook.</p>
   </div>`;
 
+  const description = 'A free spreadsheet for logging League of Legends solo queue games: a baseline sheet, a per-game log, and automatic ten-game averages.';
   return shell.documentShell({
     title: site.pageTitle('Free LoL Practice Tracker Spreadsheet'),
-    description: 'A free spreadsheet for logging League of Legends solo queue games: a baseline sheet, a per-game log, and automatic ten-game averages.',
+    description,
     bodyHtml: body,
     canonical: site.absoluteUrl('tracker.html'),
-    active: 'tracker'
+    active: 'tracker',
+    jsonLd: articleJsonLd({
+      headline: 'Free LoL Practice Tracker Spreadsheet',
+      description,
+      datePublished: site.BUILD_DATE,
+      dateModified: site.BUILD_DATE,
+      url: site.absoluteUrl('tracker.html')
+    })
   });
 }
 
@@ -319,12 +333,20 @@ function renderDownloads() {
     ${readmeLine}
   </div>`;
 
+  const description = 'Download the full Solo Queue Practice System pack free: program guide, drill library, warmup cards, two study sheets, and the tracker spreadsheet.';
   return shell.documentShell({
     title: site.pageTitle('Free Printable LoL Practice Pack'),
-    description: 'Download the full Solo Queue Practice System pack free: program guide, drill library, warmup cards, two study sheets, and the tracker spreadsheet.',
+    description,
     bodyHtml: body,
     canonical: site.absoluteUrl('downloads.html'),
-    active: 'downloads'
+    active: 'downloads',
+    jsonLd: articleJsonLd({
+      headline: 'Free Printable LoL Practice Pack',
+      description,
+      datePublished: site.BUILD_DATE,
+      dateModified: site.BUILD_DATE,
+      url: site.absoluteUrl('downloads.html')
+    })
   });
 }
 
@@ -347,12 +369,20 @@ function renderAbout() {
     <a class="btn-primary" href="${escapeHtml(site.url('program.html'))}">Read the program guide</a>
   </div>`;
 
+  const description = `Who built ${site.SITE_NAME}, why it is free, and the Riot Games fan-content disclaimer that governs this project.`;
   return shell.documentShell({
     title: site.pageTitle('About'),
-    description: `Who built ${site.SITE_NAME}, why it is free, and the Riot Games fan-content disclaimer that governs this project.`,
+    description,
     bodyHtml: body,
     canonical: site.absoluteUrl('about.html'),
-    active: null
+    active: null,
+    jsonLd: articleJsonLd({
+      headline: 'About',
+      description,
+      datePublished: site.BUILD_DATE,
+      dateModified: site.BUILD_DATE,
+      url: site.absoluteUrl('about.html')
+    })
   });
 }
 
@@ -380,12 +410,20 @@ function renderPrivacy() {
     <a class="btn-primary" href="${escapeHtml(site.url())}">Back to the program</a>
   </div>`;
 
+  const description = `What ${site.SITE_NAME} collects (nothing directly), and how its analytics and advertising partners use cookies.`;
   return shell.documentShell({
     title: site.pageTitle('Privacy'),
-    description: `What ${site.SITE_NAME} collects (nothing directly), and how its analytics and advertising partners use cookies.`,
+    description,
     bodyHtml: body,
     canonical: site.absoluteUrl('privacy.html'),
-    active: null
+    active: null,
+    jsonLd: articleJsonLd({
+      headline: 'Privacy',
+      description,
+      datePublished: site.BUILD_DATE,
+      dateModified: site.BUILD_DATE,
+      url: site.absoluteUrl('privacy.html')
+    })
   });
 }
 

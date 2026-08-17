@@ -91,6 +91,27 @@ test('vod-review.html links to the printable VOD review sheet', () => {
   assert.ok(html.includes(site.url('print/07-vod-review-sheet.html')), 'vod-review.html missing a link to the printable VOD sheet');
 });
 
+test('every content page carries exactly one well-formed JSON-LD block matching its own canonical URL, faq.html using FAQPage and the rest using Article', () => {
+  for (const [name, html] of rendered) {
+    const matches = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+    assert.equal(matches.length, 1, `${name} should carry exactly one JSON-LD block, found ${matches.length}`);
+    const data = JSON.parse(matches[0][1]);
+    assert.equal(data['@context'], 'https://schema.org');
+    if (name === 'faq.html') {
+      assert.equal(data['@type'], 'FAQPage');
+      assert.ok(Array.isArray(data.mainEntity) && data.mainEntity.length > 0, 'faq.html JSON-LD should carry at least one Q&A entry');
+      for (const entry of data.mainEntity) {
+        assert.equal(entry['@type'], 'Question');
+        assert.ok(entry.name.endsWith('?'), `faq.html JSON-LD question "${entry.name}" should end in "?"`);
+        assert.ok(entry.acceptedAnswer.text.length > 0);
+      }
+    } else {
+      assert.equal(data['@type'], 'Article');
+      assert.equal(data.mainEntityOfPage['@id'], site.absoluteUrl(name), `${name} JSON-LD url should match its own canonical URL`);
+    }
+  }
+});
+
 test('every content page carries the Riot disclaimer, canonical link, and a unique title/description', () => {
   const seenTitles = new Set();
   const seenDescriptions = new Set();
