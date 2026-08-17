@@ -65,3 +65,28 @@ test('websiteJsonLd emits a single WebSite block with no sitelinks searchbox act
   assert.equal(ld.description, 'tagline');
   assert.equal(ld.potentialAction, undefined);
 });
+
+test('websiteJsonLd omits the description key entirely when no description is given, rather than emitting description:null/undefined', () => {
+  const html = websiteJsonLd({ url: 'https://dylangerloski.github.io/solo-queue-practice/' });
+  const ld = parseJsonLdScript(html);
+  assert.equal(ld['@type'], 'WebSite');
+  assert.equal('description' in ld, false, 'description key should be entirely absent, not present with a null/undefined value');
+  assert.equal(ld.name, 'Solo Queue Practice', 'name should fall back to the SITE_NAME default');
+});
+
+test('faqPageJsonLd with an empty faqs array still emits a structurally valid FAQPage block with an empty mainEntity', () => {
+  const html = faqPageJsonLd([]);
+  const ld = parseJsonLdScript(html);
+  assert.equal(ld['@type'], 'FAQPage');
+  assert.ok(Array.isArray(ld.mainEntity));
+  assert.equal(ld.mainEntity.length, 0);
+});
+
+test('stripHtmlToText leaves an HTML entity outside its known decode list (&, <, >, ", \') untouched as literal text, rather than silently dropping or mangling it', () => {
+  // Documents the module's own stated assumption ("there is nothing else to
+  // decode" because prose uses literal unicode chars, not named entities) --
+  // if FAQ content ever does introduce an entity like &nbsp; or &hellip;, it
+  // should pass through as-is, not vanish or half-decode.
+  assert.equal(stripHtmlToText('<p>Wait&hellip; really?</p>'), 'Wait&hellip; really?');
+  assert.equal(stripHtmlToText('<p>A&nbsp;gap</p>'), 'A&nbsp;gap');
+});
