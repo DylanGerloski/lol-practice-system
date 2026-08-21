@@ -25,6 +25,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          # Full history, not the default single-commit shallow clone --
+          # src/web/pageLastModified.js runs `git log -1 -- <file>` per
+          # source file to compute each page's real last-modified date for
+          # sitemap.xml/privacy.html. A shallow clone would only ever see
+          # the one fetched commit, so `git log` would find nothing for a
+          # file untouched by that exact commit and silently fall back to
+          # today's date on every build -- exactly the bug this is fixing.
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
