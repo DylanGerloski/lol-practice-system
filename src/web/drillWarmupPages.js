@@ -14,6 +14,7 @@ const path = require('path');
 const site = require('../site.js');
 const shell = require('./shell.js');
 const { escapeHtml, card } = require('../render/html.js');
+const { articleJsonLd } = require('./structuredData.js');
 
 const drills = require(path.join('..', '..', 'content', 'drills.json'));
 const focuses = require(path.join('..', '..', 'content', 'focuses.json'));
@@ -98,13 +99,21 @@ function renderDrills() {
       [site.url('warmup.html'), 'Warmup routines by role']
     ])}
   </div>`;
+  const description = 'Twelve League of Legends practice-tool drills for CS, wave control, vision, trading, and tilt discipline, each with a measurable pass bar and a progression.';
   return shell.documentShell({
     title: site.pageTitle('12 League of Legends Practice Drills'),
-    description: 'Twelve League of Legends practice-tool drills for CS, wave control, vision, trading, and tilt discipline, each with a measurable pass bar and a progression.',
+    description,
     bodyHtml: body,
     canonical: site.absoluteUrl('drills.html'),
     active: 'drills',
-    ogType: 'article'
+    ogType: 'article',
+    jsonLd: articleJsonLd({
+      headline: '12 League of Legends Practice Drills',
+      description,
+      datePublished: site.BUILD_DATE,
+      dateModified: site.BUILD_DATE,
+      url: site.absoluteUrl('drills.html')
+    })
   });
 }
 
@@ -152,13 +161,21 @@ function renderWarmup() {
       [site.url('program.html'), 'Back to the 30-day program']
     ])}
   </div>`;
+  const description = 'Five 15-minute League of Legends warmup routines by role, each built from physical prep, a mechanical drill block, and a two-minute mental reset.';
   return shell.documentShell({
     title: site.pageTitle('LoL Warmup Routines by Role'),
-    description: 'Five 15-minute League of Legends warmup routines by role, each built from physical prep, a mechanical drill block, and a two-minute mental reset.',
+    description,
     bodyHtml: body,
     canonical: site.absoluteUrl('warmup.html'),
     active: 'warmup',
-    ogType: 'article'
+    ogType: 'article',
+    jsonLd: articleJsonLd({
+      headline: 'LoL Warmup Routines by Role',
+      description,
+      datePublished: site.BUILD_DATE,
+      dateModified: site.BUILD_DATE,
+      url: site.absoluteUrl('warmup.html')
+    })
   });
 }
 

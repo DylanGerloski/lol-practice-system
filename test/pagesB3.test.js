@@ -113,3 +113,24 @@ test('all five home/tracker/downloads/about/privacy pages are present in WEB_PAG
     assert.ok(WEB_PAGES.some(([n]) => n === name), `${name} missing from WEB_PAGES`);
   }
 });
+
+test('index.html carries a WebSite JSON-LD block; tracker/downloads/about/privacy each carry an Article block matching their own canonical URL', () => {
+  buildPrint();
+  buildSite();
+  const CANONICAL_FILE = { 'index.html': '', 'tracker.html': 'tracker.html', 'downloads.html': 'downloads.html', 'about.html': 'about.html', 'privacy.html': 'privacy.html' };
+  for (const page of HOME_TRACKER_DOWNLOADS_ABOUT_PRIVACY_PAGES) {
+    const content = readDist(page);
+    const matches = [...content.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+    assert.equal(matches.length, 1, `${page} should carry exactly one JSON-LD block, found ${matches.length}`);
+    const data = JSON.parse(matches[0][1]);
+    assert.equal(data['@context'], 'https://schema.org');
+    if (page === 'index.html') {
+      assert.equal(data['@type'], 'WebSite');
+      assert.equal(data.url, site.absoluteUrl(''));
+      assert.ok(!('potentialAction' in data), 'index.html WebSite JSON-LD should carry no sitelinks searchbox action (no on-site search)');
+    } else {
+      assert.equal(data['@type'], 'Article');
+      assert.equal(data.mainEntityOfPage['@id'], site.absoluteUrl(CANONICAL_FILE[page]));
+    }
+  }
+});

@@ -559,11 +559,17 @@ p:last-child, li:last-child { margin-bottom: 0; }
   color: var(--ink);
   text-decoration: none;
   border-radius: var(--radius-sm);
+  /* Transparent by default on every link (not just the active one) so
+     setting a real color only on [aria-current="page"] never shifts
+     layout -- same 3px accent-rule width used for the "Start here" tile
+     top-rule (see .tile below), repurposed as a bottom rule here so the
+     current page is marked by a shape, not color alone (WCAG 1.4.1). */
+  border-bottom: 3px solid transparent;
   transition: color var(--motion-duration-fast) var(--motion-ease-standard),
               background-color var(--motion-duration-fast) var(--motion-ease-standard);
 }
 .site-nav a:hover { color: var(--accent); background: var(--surface); }
-.site-nav a[aria-current="page"] { color: var(--accent); }
+.site-nav a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent-rule); }
 
 /* ---------------------------------------------------------------------------
    Main content grid -- 12/6/4 columns. Every direct block inside main
@@ -950,7 +956,8 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
 .footer-social .brand-mark-line { stroke: var(--brand-mark-line); }
 .footer-social .brand-mark-dot { fill: var(--brand-mark-dot); }
 </style>
-  <script data-goatcounter="https://dylangerrrrkerl.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How Many Champions Should You Play","description":"A method for building a two-main-plus-one-blind-pick champion pool that supports deliberate practice instead of diluting it.","datePublished":"2026-08-21","dateModified":"2026-08-21","author":{"@type":"Organization","name":"Solo Queue Practice"},"publisher":{"@type":"Organization","name":"Solo Queue Practice"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://lol-practice-system.com/champion-pool.html"}}</script>
+  <script data-goatcounter="https://dylangerrrrkerl.goatcounter.com/count" data-goatcounter-settings='{"allow_query":["utm_source","utm_medium","utm_campaign","utm_content","utm_term","ref"]}' async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>

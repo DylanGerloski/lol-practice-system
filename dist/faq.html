@@ -559,11 +559,17 @@ p:last-child, li:last-child { margin-bottom: 0; }
   color: var(--ink);
   text-decoration: none;
   border-radius: var(--radius-sm);
+  /* Transparent by default on every link (not just the active one) so
+     setting a real color only on [aria-current="page"] never shifts
+     layout -- same 3px accent-rule width used for the "Start here" tile
+     top-rule (see .tile below), repurposed as a bottom rule here so the
+     current page is marked by a shape, not color alone (WCAG 1.4.1). */
+  border-bottom: 3px solid transparent;
   transition: color var(--motion-duration-fast) var(--motion-ease-standard),
               background-color var(--motion-duration-fast) var(--motion-ease-standard);
 }
 .site-nav a:hover { color: var(--accent); background: var(--surface); }
-.site-nav a[aria-current="page"] { color: var(--accent); }
+.site-nav a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent-rule); }
 
 /* ---------------------------------------------------------------------------
    Main content grid -- 12/6/4 columns. Every direct block inside main
@@ -950,7 +956,8 @@ table.data-table th.num { text-align: right; font-variant-numeric: tabular-nums;
 .footer-social .brand-mark-line { stroke: var(--brand-mark-line); }
 .footer-social .brand-mark-dot { fill: var(--brand-mark-dot); }
 </style>
-  <script data-goatcounter="https://dylangerrrrkerl.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need a Riot API key or any account to use this?","acceptedAnswer":{"@type":"Answer","text":"No. Every drill and every measurement uses only your own client and the included spreadsheet."}},{"@type":"Question","name":"What if I do not have 30 games' worth of time before I need results?","acceptedAnswer":{"@type":"Answer","text":"This program is not built for a deadline - it is built for a durable habit change. A shorter version will show less data, not faster results."}},{"@type":"Question","name":"Can I run two focuses at once?","acceptedAnswer":{"@type":"Answer","text":"You can, but the review at the end becomes ambiguous - if both numbers move, you will not know which drill, if either, caused it. One at a time is the whole method."}},{"@type":"Question","name":"What if my rank drops during a block?","acceptedAnswer":{"@type":"Answer","text":"Keep logging honestly. A rank dip during deliberate focus work is common and not itself evidence the program is failing - the 30-game retrospective, not any single block, is where to actually judge that."}}]}</script>
+  <script data-goatcounter="https://dylangerrrrkerl.goatcounter.com/count" data-goatcounter-settings='{"allow_query":["utm_source","utm_medium","utm_campaign","utm_content","utm_term","ref"]}' async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
