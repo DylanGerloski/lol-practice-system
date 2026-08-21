@@ -186,7 +186,7 @@ function documentHead(opts) {
   <link rel="icon" href="${FAVICON_DATA_URI}">
   ${THEME_PREPAINT_SCRIPT}
   <style>${SITE_CSS}</style>${jsonLdBlock}${adsScriptBlock}
-  <script data-goatcounter="${GOATCOUNTER_URL}" async src="https://gc.zgo.at/count.js"></script>
+  <script data-goatcounter="${GOATCOUNTER_URL}" data-goatcounter-settings='{"allow_query":["utm_source","utm_medium","utm_campaign","utm_content","utm_term","ref"]}' async src="https://gc.zgo.at/count.js"></script>
 </head>`;
 }
 
