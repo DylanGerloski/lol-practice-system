@@ -14,8 +14,9 @@
  * indexing both would be a self-inflicted duplicate-content problem).
  */
 
-const { absoluteUrl, BUILD_DATE } = require('../site.js');
+const { absoluteUrl } = require('../site.js');
 const { escapeHtml } = require('../render/html.js');
+const { lastModifiedFor } = require('./pageLastModified.js');
 
 /**
  * Home page canonicalizes to the site root (https://.../) rather than
@@ -40,7 +41,7 @@ function buildSitemapEntries(files) {
     .filter((f) => f.endsWith('.html') && f !== '404.html' && !f.startsWith('print/'))
     .slice()
     .sort()
-    .map((f) => ({ file: f, loc: sitemapUrlFor(f), lastmod: BUILD_DATE }));
+    .map((f) => ({ file: f, loc: sitemapUrlFor(f), lastmod: lastModifiedFor(f) }));
 }
 
 /**

@@ -10,6 +10,7 @@ const path = require('path');
 const site = require('../site.js');
 const shell = require('./shell.js');
 const { escapeHtml } = require('../render/html.js');
+const { lastModifiedFor } = require('./pageLastModified.js');
 const { articleJsonLd, websiteJsonLd } = require('./structuredData.js');
 
 // Stat-rail source counts: read at build time from the same content
@@ -406,7 +407,7 @@ function renderPrivacy() {
       <li>No sale of any data to anyone, because none is collected here to sell.</li>
     </ul>
     <h2>Changes</h2>
-    <p>If this policy changes, the change will be posted on this page with an updated date. Last updated ${escapeHtml(site.BUILD_DATE)}.</p>
+    <p>If this policy changes, the change will be posted on this page with an updated date. Last updated ${escapeHtml(lastModifiedFor('privacy.html'))}.</p>
     <a class="btn-primary" href="${escapeHtml(site.url())}">Back to the program</a>
   </div>`;
 
