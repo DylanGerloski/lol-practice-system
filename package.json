@@ -7,13 +7,15 @@
     "build": "node src/build.js",
     "build:site": "node src/web/buildSite.js",
     "build:zip": "node src/buildZip.js",
-    "build:all": "npm run build && npm run pdf && npm run build:zip && npm run build:site",
+    "build:all": "npm run build && npm run pdf && npm run check:pdf-privacy && npm run build:zip && npm run build:site",
     "test": "node --test --test-concurrency=1 test/*.test.js",
     "pdf": "node src/pdf.js",
+    "check:pdf-privacy": "node scripts/check-pdf-privacy-leak.js",
     "visual-qa": "node scripts/visual-qa.js"
   },
   "devDependencies": {
     "lighthouse": "^13.4.1",
+    "pdfjs-dist": "^6.2.108",
     "playwright": "^1.62.1"
   }
 }
