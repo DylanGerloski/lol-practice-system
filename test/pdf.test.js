@@ -47,12 +47,16 @@ test('findBrowser() never throws, and returns either null or a non-empty string'
   });
 });
 
-test('run() never throws and skips cleanly when dist/ does not exist yet', () => {
+// run() is async (it drives the browser over the DevTools Protocol), but the
+// "no dist/print yet" skip path returns before any of that async work starts
+// -- still worth asserting doesNotReject rather than doesNotThrow now that the
+// function's return value is a Promise, not the result object itself.
+test('run() never throws and skips cleanly when dist/ does not exist yet', async () => {
   const originalExists = fs.existsSync;
   fs.existsSync = (p) => (p === pdf.DIST ? false : originalExists(p));
   try {
     let result;
-    assert.doesNotThrow(() => { result = pdf.run(); });
+    await assert.doesNotReject(async () => { result = await pdf.run(); });
     assert.equal(result.attempted, false);
     assert.equal(result.skippedReason, 'no_dist');
     assert.deepEqual(result.produced, []);
